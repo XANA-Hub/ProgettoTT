@@ -17,11 +17,9 @@ class Client: AsyncTask<String?, String?, String?>() {
             socket = Socket("192.168.178.149", 25565)
             Log.d("SERVER_INFO",socket.toString())
 
-
-
             // crea lo stream di output e invia il messaggio al server
-            //val out = PrintWriter(BufferedWriter(OutputStreamWriter(socket.getOutputStream())), true)
-            //out.println(message)
+            // val out = PrintWriter(BufferedWriter(OutputStreamWriter(socket.getOutputStream())), true)
+            // out.println(message)
 
             // crea lo stream di input e leggi la risposta del server
             val inStream = BufferedReader(InputStreamReader(socket.getInputStream()))
