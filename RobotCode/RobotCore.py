@@ -12,12 +12,11 @@ class Actor(pykka.ThreadingActor):
         messageToken = message.split(";")    #messageToken[0] = "ID:001"  [1] = "TYPE:qualcosa"  [2] = "BODY:qualcosa"
         if "Movement" in messageToken[TYPE]:
             ActorsConfig.actorMovementControl_ref.tell(messageToken[BODY][5:])
-        if "Robot_Arm" in messageToken[TYPE]:
+        elif "Robot_Arm" in messageToken[TYPE]:
             ActorsConfig.actorArmControl_ref.tell(messageToken[BODY][5:])
-        if "AI_Recognition" in messageToken[TYPE]:
+        elif "AI_Recognition" in messageToken[TYPE]:
             ActorsConfig.actorAI_ref.tell(messageToken[BODY][5:])
-        if "Start" in messageToken[TYPE]:
+        elif "Start" in messageToken[TYPE]:
             ActorsConfig.actorVideoHandler_ref.tell(messageToken[BODY][5:])
-
-def start():
-    Core.start()
+        else:
+            print("--RobotCore ERROR-- malformed message: " + message)
