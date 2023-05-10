@@ -18,5 +18,7 @@ class Actor(pykka.ThreadingActor):
             ActorsConfig.actorAI_ref.tell(messageToken[BODY][5:])
         elif "Start" in messageToken[TYPE]:
             ActorsConfig.actorVideoHandler_ref.tell(messageToken[BODY][5:])
+        elif "Stop" in messageToken[TYPE]:
+            pass
         else:
             print("--RobotCore ERROR-- malformed message: " + message)

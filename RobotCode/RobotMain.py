@@ -1,5 +1,6 @@
 from time import sleep
 import ActorsConfig
+import RobotSocket as Socket
 
 import RobotCore as Core
 import RobotControlArm as ArmControl
@@ -16,11 +17,12 @@ def main():
     ActorsConfig.actorVideoHandler_ref = VideoHandler.Actor.start()
 
     #start network support
-    pass
+    Socket.startSocket()
 
 if __name__ == "__main__":
     main()
 
+    '''
     #test message
     command = "ID:test;TYPE:Start;BODY:camera rollig, CHACK ACTION"
     ActorsConfig.actorCore_ref.tell(command)
@@ -46,4 +48,5 @@ if __name__ == "__main__":
     command = "ID:test;TYPE:Robot_Arm;BODY:grabbing enemy"
     ActorsConfig.actorCore_ref.tell(command)
     sleep(2)
+    '''
     
