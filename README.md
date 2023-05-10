@@ -1,8 +1,6 @@
 ## Freenove Tank Robot Kit for Raspberry Pi
 
 
-<img src='Picture/icon.png' width='30%'/>
-
 ### Download
 
 * **Use command in console**
