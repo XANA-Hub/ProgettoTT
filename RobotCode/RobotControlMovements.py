@@ -3,9 +3,10 @@ import pykka
 import ActorsConfig
 
 class Actor(pykka.ThreadingActor):
+    def __init__(self):
+        super().__init__()
+
     def on_receive(self, message):
-        print(message)
-        '''
         if "Forward" in message:
             self.Forward(message)
         elif "Backward" in message:
@@ -14,25 +15,14 @@ class Actor(pykka.ThreadingActor):
             self.Rotate_Left(message)
         elif "Rotate_Right" in message:
             self.Rotate_Right(message)
-        else:
-            print("--RobotControlMovement ERROR-- malformed message: " + message)
-        '''
-
-
-    def Forward(message):
-        print(message)
-        '''
-        if "Start" in message:
-            print(message)
-            pass
         elif "Stop" in message:
-            print(message)
-            pass
+            print("--RobotControlMovement-- terminating")
+            self.stop()
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
-            '''
 
-    def Backward(message):
+
+    def Forward(self, message):
         if "Start" in message:
             print(message)
             pass
@@ -42,7 +32,8 @@ class Actor(pykka.ThreadingActor):
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
-    def Rotate_Left(message):
+
+    def Backward(self, message):
         if "Start" in message:
             print(message)
             pass
@@ -52,7 +43,19 @@ class Actor(pykka.ThreadingActor):
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
-    def Rotate_Right(message):
+
+    def Rotate_Left(self, message):
+        if "Start" in message:
+            print(message)
+            pass
+        elif "Stop" in message:
+            print(message)
+            pass
+        else:
+            print("--RobotControlMovement ERROR-- malformed message: " + message)
+
+
+    def Rotate_Right(self, message):
         if "Start" in message:
             print(message)
             pass

@@ -1,3 +1,4 @@
+import threading
 from time import sleep
 import pykka            #https://pykka.readthedocs.io/en/stable/quickstart/
 
@@ -19,6 +20,18 @@ class Actor(pykka.ThreadingActor):
         elif "Start" in messageToken[TYPE]:
             ActorsConfig.actorVideoHandler_ref.tell(messageToken[BODY][5:])
         elif "Stop" in messageToken[TYPE]:
-            pass
+            self.terminating(messageToken[TYPE][5:])
         else:
             print("--RobotCore ERROR-- malformed message: " + message)
+
+    def terminating(self, message):
+
+        #send "Stop" message to all actors
+        ActorsConfig.actorAI_ref.tell(message)
+        ActorsConfig.actorArmControl_ref.tell(message)
+        ActorsConfig.actorMovementControl_ref.tell(message)
+        ActorsConfig.actorVideoHandler_ref.tell(message)
+
+        #terminate himself
+        print("--RobotCore-- terminating")
+        self.stop()

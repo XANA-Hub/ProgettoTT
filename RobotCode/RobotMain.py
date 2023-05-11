@@ -1,4 +1,3 @@
-from time import sleep
 import ActorsConfig
 import RobotSocket as Socket
 
