@@ -6,7 +6,8 @@ public class SceneInitialization : MonoBehaviour {
     // Managers
     //
 
-    [SerializeField] private bool soundManagerEnabled = false;
+    [SerializeField] private bool audioManagerEnabled = false;
+    [SerializeField] private bool touchManagerEnabled = false;
     [SerializeField] private bool inputManagerEnabled = false;
 
 
@@ -16,10 +17,16 @@ public class SceneInitialization : MonoBehaviour {
         // Managers
         //
 
-        if(soundManagerEnabled) {
-            MasterManager.instance.soundManager.Enable();
+        if(audioManagerEnabled) {
+            MasterManager.instance.audioManager.Enable();
         } else {
-            MasterManager.instance.soundManager.Disable();
+            MasterManager.instance.audioManager.Disable();
+        }
+
+        if(touchManagerEnabled) {
+            MasterManager.instance.touchManager.Enable();
+        } else {
+            MasterManager.instance.touchManager.Disable();
         }
 
         if(inputManagerEnabled) {
@@ -27,14 +34,6 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.inputManager.Disable();
         }
-
-        /*
-        if(gameManagerEnabled) {
-            MasterManager.instance.gameManager.Enable();
-        } else {
-            MasterManager.instance.gameManager.Disable();
-        }
-        */
 
         
         //

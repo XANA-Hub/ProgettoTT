@@ -10,7 +10,7 @@ public class MasterManager : MonoBehaviour {
     // Manager
     //
 
-    public SoundManager soundManager { get; private set; }
+    public AudioManager audioManager { get; private set; }
     public InputManager inputManager { get; private set; }
     public TouchManager touchManager{ get; private set; }
     //public GameManager gameManager { get; private set; }
@@ -41,7 +41,7 @@ public class MasterManager : MonoBehaviour {
 
 
         // Ottengo i vari GameObject figli
-        soundManager = GetComponentInChildren<SoundManager>();
+        audioManager = GetComponentInChildren<AudioManager>();
         inputManager = GetComponentInChildren<InputManager>();
         touchManager = GetComponentInChildren<TouchManager>();
         //gameManager = GetComponentInChildren<GameManager>();

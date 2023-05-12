@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d258fc1ecf428cc47853d46c2307dcdd
+guid: 1fb4ca0f0b3dc774f8b682c057d8357b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -132,8 +132,8 @@ TextureImporter:
       name: TouchControls_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 0
+        x: 2
+        y: 178
         width: 15
         height: 17
       alignment: 0
@@ -143,8 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 00a06c56a59dd8148bb3228ac24b435a
-      internalID: -1587500530
+      spriteID: a014396aa7aa1274b9948a706fc80cc6
+      internalID: -143670447
       vertices: []
       indices: 
       edges: []
@@ -153,8 +153,8 @@ TextureImporter:
       name: TouchControls_1
       rect:
         serializedVersion: 2
-        x: 18
-        y: 1
+        x: 21
+        y: 179
         width: 15
         height: 16
       alignment: 0
@@ -164,8 +164,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2fbf035929c27014384b2b854bfa767d
-      internalID: -1398870773
+      spriteID: d22de1336755e0a408e17c915585b220
+      internalID: 172331458
       vertices: []
       indices: 
       edges: []
@@ -174,8 +174,8 @@ TextureImporter:
       name: TouchControls_2
       rect:
         serializedVersion: 2
-        x: 35
-        y: 0
+        x: 40
+        y: 178
         width: 15
         height: 17
       alignment: 0
@@ -185,8 +185,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 299e2ea5976eb3d4aa603bbc689f22d4
-      internalID: 2005965631
+      spriteID: c11a339b7d92aaf48b1258d7b9468dfa
+      internalID: -1353939584
       vertices: []
       indices: 
       edges: []
@@ -195,8 +195,8 @@ TextureImporter:
       name: TouchControls_3
       rect:
         serializedVersion: 2
-        x: 52
-        y: 1
+        x: 59
+        y: 179
         width: 15
         height: 16
       alignment: 0
@@ -206,8 +206,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fdc7675c78b841345acec1bd09c9fbc3
-      internalID: 655072381
+      spriteID: 7e61632dff201a04492564c218254bbe
+      internalID: -925260447
       vertices: []
       indices: 
       edges: []
@@ -216,8 +216,8 @@ TextureImporter:
       name: TouchControls_4
       rect:
         serializedVersion: 2
-        x: 69
-        y: 0
+        x: 78
+        y: 178
         width: 15
         height: 17
       alignment: 0
@@ -227,8 +227,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b64af9e9cfecf04f90af39a7e9b7dbf
-      internalID: -1960899243
+      spriteID: c33a2ca1f1ed92b4089f27f9661bf34d
+      internalID: -838103955
       vertices: []
       indices: 
       edges: []
@@ -237,8 +237,8 @@ TextureImporter:
       name: TouchControls_5
       rect:
         serializedVersion: 2
-        x: 86
-        y: 1
+        x: 97
+        y: 179
         width: 15
         height: 16
       alignment: 0
@@ -248,8 +248,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22b17647918ffb840b3876ef22cf8422
-      internalID: -328696663
+      spriteID: 58779b6108c50a544ae75db789f47c3f
+      internalID: -555377459
       vertices: []
       indices: 
       edges: []
@@ -258,8 +258,8 @@ TextureImporter:
       name: TouchControls_6
       rect:
         serializedVersion: 2
-        x: 103
-        y: 0
+        x: 116
+        y: 178
         width: 15
         height: 17
       alignment: 0
@@ -269,8 +269,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f8c22c2868816dc4aa72d69ef5013a3b
-      internalID: -2074424208
+      spriteID: 4e741e4289ab6554d99d3e37d65293e5
+      internalID: -1076296736
       vertices: []
       indices: 
       edges: []
@@ -279,8 +279,8 @@ TextureImporter:
       name: TouchControls_7
       rect:
         serializedVersion: 2
-        x: 120
-        y: 1
+        x: 135
+        y: 179
         width: 15
         height: 16
       alignment: 0
@@ -290,8 +290,1226 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb5e35c14f91f784888b506fb619aac1
-      internalID: 1904787259
+      spriteID: 8ee4e2e10930e924d829a7268154650d
+      internalID: -285809943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_8
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 182
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70bbd9c16e697644e8bd2e5b78e633c5
+      internalID: 466758444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_9
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 182
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cba6be93a2e61c7449f40096fef644c3
+      internalID: 1682790749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_10
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 182
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f27ce41bc265ff140b1270ea4866c31e
+      internalID: -999478765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_11
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 180
+        width: 42
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25fc3d40ce797cb419e172479c92ed73
+      internalID: -1183571622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_12
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 160
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 442de2b7923a4504889e5326a9a7eefe
+      internalID: 1825676775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_13
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 164
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a937f7b17f30b28498f03226c9eb8d68
+      internalID: -2094190252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_14
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 164
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abe579e5e98b86441a49b5f03b850229
+      internalID: 1142346634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_15
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 163
+        width: 42
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42bfa7a73c2b29b478d5b40f60b8c4fd
+      internalID: -657879750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_16
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 146
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b43463f738064c646b9d17d9d62d3986
+      internalID: 1762113167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_17
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 146
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84d3543339e05024ab83e70107c61c96
+      internalID: 1281843953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_18
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 146
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f9f8adc66edc6047818d7f80495b775
+      internalID: 1932932982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_19
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 146
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3133420330729e47bf3922487452282
+      internalID: -929249716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_20
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 143
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94bae609fcd75c34299e2742bd3a0c67
+      internalID: -608034437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_21
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 146
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86b4bae54c97a4e4f9bdff3d2b3688b3
+      internalID: -1531920491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_22
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 146
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 500a0aed0b1ee4744b065b6fd34fcf90
+      internalID: -1999144632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_23
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 145
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 826a1b6cd17f68540a7cc2ef08304eba
+      internalID: 1435623549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_24
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 128
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bb79d7676d5c54428f186033ce2a816
+      internalID: 524139749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_25
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 128
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de8ba9bb532b83a438cd4bbf6e4f6d44
+      internalID: -1526248539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_26
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 128
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 859a733f1402eb84282521225354a76e
+      internalID: -164370418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_27
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 128
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aba11256193964040be61f36a06ad0ca
+      internalID: 520602817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_28
+      rect:
+        serializedVersion: 2
+        x: 73
+        y: 126
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90fa36965f16ee948b9e4aaf06abae8a
+      internalID: -1151534280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_29
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 128
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa51454b054960e49bc0072d012730a7
+      internalID: -511380794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_30
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 128
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39126fe411ab97845923fc2cc0af3b15
+      internalID: 1783104883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_31
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 110
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3433d86e61093444e83812d79a721a8c
+      internalID: 1589481662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_32
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 110
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffdfe51c7ab845a489d7af34fa9ef7f8
+      internalID: -178305789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_33
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 110
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d32e18ea67ce34f47910563332764fb1
+      internalID: -1591567225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_34
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 110
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91d63d4e6c5e8714198a35448425838b
+      internalID: 378747894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_35
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 110
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78310697381ecdc43b4c61463696475b
+      internalID: -1659238868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_36
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 110
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bcb7a04e44c4ab7428f742a8931fecab
+      internalID: 637922832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_37
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 110
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4caae20f020db8b42a2c7a4dad7bcac6
+      internalID: 1193606900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_38
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 108
+        width: 43
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1863662b70e9ca8468306fdb04d33e3a
+      internalID: -1896790156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_39
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 110
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edfc5ecc4dbc18048970fb09e9aed359
+      internalID: 1934181076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_40
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 90
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6931ee62849606f44a55108492ec2fea
+      internalID: -1867143397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_41
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 90
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f49820b12101fdc47bc033bb3cd81582
+      internalID: -246121823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_42
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 91
+        width: 43
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 879fb51c92c3a95409cd1fc92e6f01d0
+      internalID: 589441515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_43
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 73
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2be256172757b4d478b522836a49ee83
+      internalID: -1283522507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_44
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 72
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4928b8a3b8ea3bb4688705441c7ae78c
+      internalID: -1744065984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_45
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 75
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb05d920f5aac8748b12ec2cbd12467c
+      internalID: 189204248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_46
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 75
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a408213d4ec2dd944a63e7945eedd830
+      internalID: -509579737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_47
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 75
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e208844b0a9751344aa33f9520c1d606
+      internalID: 373361424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_48
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 57
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9faab9b6c9d87ba4c9b461408dec605f
+      internalID: 537927037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_49
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 57
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35030d2cee13ad248848fd06b9ab8be0
+      internalID: 2069703474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_50
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 57
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae2185974088b8d4c8ccb4088820bab6
+      internalID: -971840974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_51
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 54
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ba1d6c43f9e7074cbf1b49e7a443558
+      internalID: -430314331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_52
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 55
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22c1ce8dbde7ec34195c340480201cb3
+      internalID: 1006586308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_53
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 37
+        width: 51
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11c0a5128dbd78a4d842ceb86f392411
+      internalID: 715423914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_54
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 38
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab46bd411819f6c4fba2287eb12ad1db
+      internalID: -1471129005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_55
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 39
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4272d108dd8e9484ba07e0cc251fcee6
+      internalID: 1947518356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_56
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 21
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e814e4da746d4c44fb6822548ca85d19
+      internalID: -1396762798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_57
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 21
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bae8750c15781349927a5f0f5ed663b
+      internalID: 1379735361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_58
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 21
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72106f1d938281641abebb195262cda7
+      internalID: -751174886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_59
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 21
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 260d028e0a4c3124d95b7791b2aebd18
+      internalID: -1414760344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_60
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 21
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0651117b25253a64cb6152f4db1b4b2d
+      internalID: -160153981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_61
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 21
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba1a733ef7f5a3d48adf6386f4a9c990
+      internalID: -2093235433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_62
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 21
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7abb0ef6dde921c419b703e579b8da9f
+      internalID: 915376484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_63
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 1
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fae329cf8be29f347b4a19a56466f415
+      internalID: 99859022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_64
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 1
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddbe92feced4f6346a3143770c438caf
+      internalID: 1699406923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TouchControls_65
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 2
+        width: 64
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5c613b8d64d80448b5ff829ceb40cc5
+      internalID: -230030816
       vertices: []
       indices: 
       edges: []
@@ -307,14 +1525,72 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TouchControls_6: -2074424208
-      TouchControls_7: 1904787259
-      TouchControls_0: -1587500530
-      TouchControls_3: 655072381
-      TouchControls_1: -1398870773
-      TouchControls_4: -1960899243
-      TouchControls_5: -328696663
-      TouchControls_2: 2005965631
+      TouchControls_19: -929249716
+      TouchControls_7: -285809943
+      TouchControls_33: -1591567225
+      TouchControls_34: 378747894
+      TouchControls_20: -608034437
+      TouchControls_36: 637922832
+      TouchControls_0: -143670447
+      TouchControls_42: 589441515
+      TouchControls_13: -2094190252
+      TouchControls_46: -509579737
+      TouchControls_3: -925260447
+      TouchControls_35: -1659238868
+      TouchControls_39: 1934181076
+      TouchControls_63: 99859022
+      TouchControls_41: -246121823
+      TouchControls_27: 520602817
+      TouchControls_29: -511380794
+      TouchControls_11: -1183571622
+      TouchControls_17: 1281843953
+      TouchControls_44: -1744065984
+      TouchControls_51: -430314331
+      TouchControls_23: 1435623549
+      TouchControls_57: 1379735361
+      TouchControls_55: 1947518356
+      TouchControls_61: -2093235433
+      TouchControls_9: 1682790749
+      TouchControls_24: 524139749
+      TouchControls_28: -1151534280
+      TouchControls_14: 1142346634
+      TouchControls_22: -1999144632
+      TouchControls_31: 1589481662
+      TouchControls_43: -1283522507
+      TouchControls_5: -555377459
+      TouchControls_25: -1526248539
+      TouchControls_40: -1867143397
+      TouchControls_32: -178305789
+      TouchControls_38: -1896790156
+      TouchControls_10: -999478765
+      TouchControls_18: 1932932982
+      TouchControls_58: -751174886
+      TouchControls_48: 537927037
+      TouchControls_6: -1076296736
+      TouchControls_65: -230030816
+      TouchControls_45: 189204248
+      TouchControls_49: 2069703474
+      TouchControls_53: 715423914
+      TouchControls_60: -160153981
+      TouchControls_50: -971840974
+      TouchControls_21: -1531920491
+      TouchControls_16: 1762113167
+      TouchControls_37: 1193606900
+      TouchControls_1: 172331458
+      TouchControls_64: 1699406923
+      TouchControls_12: 1825676775
+      TouchControls_15: -657879750
+      TouchControls_62: 915376484
+      TouchControls_52: 1006586308
+      TouchControls_4: -838103955
+      TouchControls_26: -164370418
+      TouchControls_30: 1783104883
+      TouchControls_54: -1471129005
+      TouchControls_2: -1353939584
+      TouchControls_47: 373361424
+      TouchControls_56: -1396762798
+      TouchControls_8: 466758444
+      TouchControls_59: -1414760344
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

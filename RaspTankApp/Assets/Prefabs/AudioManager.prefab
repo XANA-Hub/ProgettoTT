@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1051327946238222043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1809464576254755622}
+  - component: {fileID: 6762679058758538084}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1809464576254755622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051327946238222043}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6762679058758538084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051327946238222043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601266bd9843dce48ac8977b62680da5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxOn: {fileID: 0}
+  sfxOff: {fileID: 0}
+  sfxButton: {fileID: 0}
+  sfxVolSlider: {fileID: 8368278572289519675, guid: 65810b1cf53d13b40aea5bbcddce15f5, type: 3}
+  musicOn: {fileID: 0}
+  musicOff: {fileID: 0}
+  musicButton: {fileID: 0}
+  musicVolSlider: {fileID: 8368278572289519675, guid: f7976479e7e0fa44ea9fbe376d4e147f, type: 3}
+  delayInCrossfading: 0.3
+  tracks:
+  - name: Battle
+    track: {fileID: 8300000, guid: 3120abfbdc8ff2d48af33f5db60a3e53, type: 3}
+  - name: Dungeon
+    track: {fileID: 8300000, guid: da1ed323566c166468116b88fa0bbcb2, type: 3}
+  - name: House
+    track: {fileID: 8300000, guid: 05b6653667ef7544f895c9f59c2b23a3, type: 3}
+  - name: Intro
+    track: {fileID: 8300000, guid: bcaf0a19ddd57b44eaf6ea0fc34e08eb, type: 3}
+  - name: MainMenu
+    track: {fileID: 8300000, guid: c99d2cf0dcd7df9498c1069ee1116730, type: 3}
+  - name: StartingTown
+    track: {fileID: 8300000, guid: 92481700ddf78d64f95d55861d5b7e1f, type: 3}
+  sounds:
+  - name: UI
+    clips:
+    - {fileID: 8300000, guid: 0a4a6e7c6a2a4524a946af8afcd96a53, type: 3}

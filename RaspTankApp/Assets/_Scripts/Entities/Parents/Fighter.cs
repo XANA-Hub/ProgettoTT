@@ -21,7 +21,7 @@ public class Fighter : MonoBehaviour {
 
     protected virtual void Death() {
         
-        MasterManager.instance.soundManager.PlaySound("EntityDeath");
+        MasterManager.instance.audioManager.PlaySound("EntityDeath");
         Debug.Log("L'entità " + this.name + " è morta!");
     }
 
