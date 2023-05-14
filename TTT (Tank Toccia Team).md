@@ -56,6 +56,6 @@
 		- Stop: will not have any body
 
 ### Suddivisione Sprint
-- Sprint 1: Console Remota e Robot funzionante con solo le funzionalità di base (movimento ruote e braccio)
-- Sprint 2: introduzione stream video (e gioco?)
-- Sprint 3: introduzione AI
+- [[Sprint 1]]: Console Remota e Robot funzionante con solo le funzionalità di base (movimento ruote e braccio)
+- [[Sprint 2]]: introduzione stream video (e gioco?)
+- [[Sprint 3]]: introduzione AI
