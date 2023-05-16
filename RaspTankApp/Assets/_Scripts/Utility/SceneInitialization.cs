@@ -9,6 +9,7 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool audioManagerEnabled = false;
     [SerializeField] private bool touchManagerEnabled = false;
     [SerializeField] private bool inputManagerEnabled = false;
+    [SerializeField] private bool clientTCPManagerEnabled = false;
 
 
     private void Awake() {
@@ -34,6 +35,13 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.inputManager.Disable();
         }
+
+        if(clientTCPManagerEnabled) {
+            MasterManager.instance.clientTCPManager.Enable();
+        } else {
+            MasterManager.instance.clientTCPManager.Disable();
+        }
+
 
         
         //

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1809464576254755622}
   - component: {fileID: 6762679058758538084}
+  - component: {fileID: 6188873139051255993}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051327946238222043}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,13 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601266bd9843dce48ac8977b62680da5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sfxOn: {fileID: 0}
-  sfxOff: {fileID: 0}
-  sfxButton: {fileID: 0}
+  sfxOn: {fileID: -160153981, guid: 1fb4ca0f0b3dc774f8b682c057d8357b, type: 3}
+  sfxOff: {fileID: 915376484, guid: 1fb4ca0f0b3dc774f8b682c057d8357b, type: 3}
+  sfxButton: {fileID: 1758262256517883421, guid: 0ad511a1a45a40f4b9b450350913ba82, type: 3}
   sfxVolSlider: {fileID: 8368278572289519675, guid: 65810b1cf53d13b40aea5bbcddce15f5, type: 3}
-  musicOn: {fileID: 0}
-  musicOff: {fileID: 0}
-  musicButton: {fileID: 0}
+  musicOn: {fileID: -511380794, guid: 1fb4ca0f0b3dc774f8b682c057d8357b, type: 3}
+  musicOff: {fileID: 520602817, guid: 1fb4ca0f0b3dc774f8b682c057d8357b, type: 3}
+  musicButton: {fileID: 7488985402824249385, guid: 1e675050ba404de4fb17e1b9a847244c, type: 3}
   musicVolSlider: {fileID: 8368278572289519675, guid: f7976479e7e0fa44ea9fbe376d4e147f, type: 3}
   delayInCrossfading: 0.3
   tracks:
@@ -67,6 +68,14 @@ MonoBehaviour:
   - name: StartingTown
     track: {fileID: 8300000, guid: 92481700ddf78d64f95d55861d5b7e1f, type: 3}
   sounds:
-  - name: UI
+  - name: MenuToggle
     clips:
     - {fileID: 8300000, guid: 0a4a6e7c6a2a4524a946af8afcd96a53, type: 3}
+--- !u!81 &6188873139051255993
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1051327946238222043}
+  m_Enabled: 1

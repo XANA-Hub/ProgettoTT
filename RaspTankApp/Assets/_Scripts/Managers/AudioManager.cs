@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class AudioManager : MonoBehaviour 
-{
-	public static AudioManager instance;
+public class AudioManager : MonoBehaviour  {
+
+	//public static AudioManager instance;
 
 	public Sprite sfxOn;
 	public Sprite sfxOff;
@@ -41,13 +41,12 @@ public class AudioManager : MonoBehaviour
     public float SfxVolume => !PlayerPrefs.HasKey("SFX Volume") ? 1f : PlayerPrefs.GetFloat("SFX Volume");
 
     private void Awake() {
-		instance = this;
 
 		// Configuring Audio Source For Playing Music And SFX
 		music = gameObject.AddComponent<AudioSource> ();
 		music.loop = true;
-		sfx = gameObject.AddComponent<AudioSource> ();
 
+		sfx = gameObject.AddComponent<AudioSource> ();
 		sfxMute = false;
 
 		musicMute = false;
@@ -105,7 +104,9 @@ public class AudioManager : MonoBehaviour
     public void PlayMusic(string trackName)  {
         if (trackName != "")
             currentTrack = trackName;
+
 		AudioClip to = null;
+
 		foreach (MusicTrack track in tracks)
 				if (track.name == trackName)
 					to = track.track;
@@ -116,8 +117,7 @@ public class AudioManager : MonoBehaviour
 	// Cross fading - Smooth Transition When Track Is Switched
     private IEnumerator CrossFade(AudioClip to) {
 		if (music.clip != null) {
-			while (delayInCrossfading > 0) 
-			{
+			while (delayInCrossfading > 0) {
 				music.volume = delayInCrossfading * MusicVolume;
 				delayInCrossfading -= Time.unscaledDeltaTime;
 				yield return 0;
@@ -184,6 +184,7 @@ public class AudioManager : MonoBehaviour
 	public void SfxSlider() {
 		float vol = sfxVolSlider.value;
 		sfx.volume = vol;
+
 		// Sets And Save The Value When User Use Slider
 		PlayerPrefs.SetFloat ("SFX Volume", vol);
 		PlayerPrefs.Save ();
@@ -193,6 +194,7 @@ public class AudioManager : MonoBehaviour
 	public void MusicSlider() {
 		float vol = musicVolSlider.value;
 		music.volume = vol;
+
 		// Sets And Save The Value When User Use Slider
 		PlayerPrefs.SetFloat ("Music Volume", vol);
 		PlayerPrefs.Save ();
