@@ -1,10 +1,12 @@
 import pykka
 
 import ActorsConfig
+import RobotWheelsControl
 
 class Actor(pykka.ThreadingActor):
     def __init__(self):
         super().__init__()
+        self.pwm = RobotWheelsControl.InitPwm
 
     def on_receive(self, message):
         if "Forward" in message:
@@ -24,9 +26,11 @@ class Actor(pykka.ThreadingActor):
 
     def Forward(self, message):
         if "Start" in message:
+            RobotWheelsControl.MoveForward(self.pwm)
             print(message)
             pass
         elif "Stop" in message:
+            RobotWheelsControl.StopForward(self.pwm)
             print(message)
             pass
         else:
@@ -35,9 +39,11 @@ class Actor(pykka.ThreadingActor):
 
     def Backward(self, message):
         if "Start" in message:
+            RobotWheelsControl.MoveBackward(self.pwm)
             print(message)
             pass
         elif "Stop" in message:
+            RobotWheelsControl.StopBackward(self.pwm)
             print(message)
             pass
         else:
@@ -46,9 +52,11 @@ class Actor(pykka.ThreadingActor):
 
     def Rotate_Left(self, message):
         if "Start" in message:
+            RobotWheelsControl.SteerLeft(self.pwm)
             print(message)
             pass
         elif "Stop" in message:
+            RobotWheelsControl.StopLeft(self.pwm)
             print(message)
             pass
         else:
@@ -57,9 +65,11 @@ class Actor(pykka.ThreadingActor):
 
     def Rotate_Right(self, message):
         if "Start" in message:
+            RobotWheelsControl.SteerRight(self.pwm)
             print(message)
             pass
         elif "Stop" in message:
+            RobotWheelsControl.StopRight(self.pwm)
             print(message)
             pass
         else:

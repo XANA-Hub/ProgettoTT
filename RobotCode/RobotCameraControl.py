@@ -1,9 +1,6 @@
-#!/usr/bin/python3
-# Capture a JPEG while still running in the preview mode. When you
-# capture to a file, the return value is the metadata for that image.
 import time
 import picamera2
-import socket
+import socket   #da rimuovere
 import libcamera
 
 camera = None
@@ -31,11 +28,9 @@ def sendVideo(video_socket):
             stream=video_socket.makefile('wb')
             camera = picamera2.Picamera2()
             camera.configure(camera.create_video_configuration(main={"size": (400, 300)}))
-            #output = StreamingOutput()
             encoder=picamera2.encoders.H264Encoder(1000000)
-            output=picamera2.outputs.FileOutput(stream)
             #encoder = picamera2.encoders.JpegEncoder(q=90)
-            #output = io.Bytes()
+            output=picamera2.outputs.FileOutput(stream)
             camera.start_recording(encoder, output, quality=picamera2.encoders.Quality.VERY_HIGH)
             return camera
         except:
