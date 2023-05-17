@@ -10,7 +10,7 @@ video_socket = None
 
 def startSocket():
     try:
-        print("Avvio del server con indirizzo "+HOST+"..")
+        print("Avvio del server TCP con indirizzo "+HOST)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
             s.bind((HOST, PORT))
@@ -23,8 +23,8 @@ def startSocket():
                 global connection
                 connection = conn
                 print(f"Connected by {addr}")
-                #startVideoSocket(addr)
-                #ActorsConfig.actorCore_ref.tell("ID:init;TYPE:Camera;BODY:Start")
+                startVideoSocket(addr[0])
+                ActorsConfig.actorCore_ref.tell("ID:init;TYPE:Camera;BODY:Start")
                 print("Inizio il server loop")
                 while True:
                     data = conn.recv(1024)
@@ -37,7 +37,6 @@ def startSocket():
         ActorsConfig.actorCore_ref.tell("ID:term;TYPE:Stop;BODY:None")
         #Non si interrompe credo per processi in background degli attori
         sys.exit()
-
     except:
         print("Rilevata eccezione")
         resetConfiguration()
@@ -45,8 +44,8 @@ def startSocket():
         startSocket()
 
 def startVideoSocket(addr):
-    global video_socket
     print("Preparo la socket UDP")
+    global video_socket
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect((addr, PORT))
     video_socket = s

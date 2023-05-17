@@ -9,6 +9,7 @@ import RobotVideoHandler as VideoHandler
 
 def main():
     #start all the actors
+    print("Avvio gli attori")
     ActorsConfig.actorCore_ref = Core.Actor.start()
     ActorsConfig.actorArmControl_ref = ArmControl.Actor.start()
     ActorsConfig.actorMovementControl_ref = MovementControl.Actor.start()
@@ -16,11 +17,12 @@ def main():
     ActorsConfig.actorVideoHandler_ref = VideoHandler.Actor.start()
 
     #start network support
+    print("Avvio le socket")
     Socket.startSocket()
 
 if __name__ == "__main__":
+    print("Programma avviato")
     main()
-
     '''
     #test message
     command = "ID:test;TYPE:Start;BODY:camera rollig, CHACK ACTION"
