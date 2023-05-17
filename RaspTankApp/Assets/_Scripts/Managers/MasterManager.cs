@@ -14,6 +14,7 @@ public class MasterManager : MonoBehaviour {
     public InputManager inputManager { get; private set; }
     public TouchManager touchManager{ get; private set; }
     public ClientTCPManager clientTCPManager { get; private set; }
+    public VideoReceiverManager videoReceiverManager { get; private set; }
     //public GameManager gameManager { get; private set; }
 
 
@@ -46,6 +47,7 @@ public class MasterManager : MonoBehaviour {
         inputManager = GetComponentInChildren<InputManager>();
         touchManager = GetComponentInChildren<TouchManager>();
         clientTCPManager = GetComponentInChildren<ClientTCPManager>();
+        videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         //gameManager = GetComponentInChildren<GameManager>();
 
     }

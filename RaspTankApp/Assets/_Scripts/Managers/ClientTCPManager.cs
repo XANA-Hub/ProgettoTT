@@ -1,6 +1,3 @@
-// This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. 
-// To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/ 
-// or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 using System;
 using System.Net.Sockets;
 using System.Text;
@@ -11,51 +8,56 @@ public class ClientTCPManager : MonoBehaviour {
 	
     public string ipAddress = "192.168.178.69";
     public int port = 25565;
-	private TcpClient socketConnection;
-    
 
+	private TcpClient client;
+	private Thread clientReceiveThread; 	
+    
 
 	// Use this for initialization 	
 	private void Start () {
 
         // Imposta l'indirizzo IP e la porta del server a cui connettersi   
-        ConnectToServer(ipAddress, port);
+        ConnectToServer();
 
 	}  
-    private void ConnectToServer(string ipAddress, int port) {
-        try {
-            socketConnection = new TcpClient();
-            socketConnection.Connect(ipAddress, port);
-            Debug.Log("Connesso al server!");
-        }
-        catch (Exception e) {
-            Debug.Log("Errore durante la connessione al server: " + e.Message);
-        }
-    }
 
-	/// <summary> 	
-	/// Runs in background clientReceiveThread; Listens for incomming data. 	
-	/// </summary>     
+
+	private void ConnectToServer () { 		
+		try {  			
+			clientReceiveThread = new Thread (new ThreadStart(ListenForData)); 			
+			clientReceiveThread.IsBackground = true; 			
+			clientReceiveThread.Start();  
+
+			Debug.Log("TCP: Connessione al server avvenuta con successo!");		
+		} 		
+		catch (Exception e) { 			
+			Debug.Log("On client connect exception " + e); 		
+		} 	
+	}  	
+
+
 	private void ListenForData() { 		
 		try { 			
 
+			client = new TcpClient(ipAddress, port);  			
 			Byte[] bytes = new Byte[1024];   
 
-			while (true) { 
+			while (true) { 			
 
 				// Get a stream object for reading 				
-				using (NetworkStream stream = socketConnection.GetStream()) { 					
-					int length; 		
+				using (NetworkStream stream = client.GetStream()) { 
+
+					int length; 			
 
 					// Read incomming stream into byte arrary. 					
 					while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) { 
 
 						var incommingData = new byte[length]; 						
-						Array.Copy(bytes, 0, incommingData, 0, length);
+						Array.Copy(bytes, 0, incommingData, 0, length); 
 
 						// Convert byte array to string message. 						
-						string serverMessage = Encoding.UTF8.GetString(incommingData); 						
-						Debug.Log("server message received as: " + serverMessage); 					
+						string serverMessage = Encoding.ASCII.GetString(incommingData); 						
+						Debug.Log("Server message received as: " + serverMessage); 					
 					} 				
 				} 			
 			}         
@@ -63,27 +65,24 @@ public class ClientTCPManager : MonoBehaviour {
 		catch (SocketException socketException) {             
 			Debug.Log("Socket exception: " + socketException);         
 		}     
-	}  
+	}  	
 
-
-	/// <summary> 	
-	/// Send message to server using socket connection. 	
-	/// </summary> 	
 	public void SendData(string clientMessage) {     
         
-		if (socketConnection == null) {             
+		if (client == null) {             
 			return;         
 		}  		
         
-		try { 			
+		try {
+				
 			// Get a stream object for writing. 			
-			NetworkStream stream = socketConnection.GetStream(); 			
+			NetworkStream stream = client.GetStream(); 			
 			if (stream.CanWrite) {                 	
 
 				// Convert string message to byte array.                 
 				byte[] clientMessageAsByteArray = Encoding.UTF8.GetBytes(clientMessage); 				
 				
-                // Write byte array to socketConnection stream.                 
+                // Write byte array to client stream.                 
 				stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);                 
 				Debug.Log("Client sent his message - should be received by server");             
 			}         
@@ -99,6 +98,12 @@ public class ClientTCPManager : MonoBehaviour {
 
     public void Disable() {
         this.gameObject.SetActive(false);
+    }
+
+	void OnApplicationQuit() {
+
+        if (client != null) 
+        	client.Close();
     }
 
 }
