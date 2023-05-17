@@ -1,9 +1,11 @@
 import time
 import picamera2
-import socket   #da rimuovere
+import socket   #solo per il test
 import libcamera
+import RobotSocket
 
 camera = None
+isVideoStarted = False
 
 def initCamera():
     camera = picamera2.Picamera2()
@@ -23,22 +25,28 @@ def captureImage(path):
     print(metadata)
     killCamera(camera)
 
-def sendVideo(video_socket):
+def sendVideo():
         try:
-            stream=video_socket.makefile('wb')
+            stream = RobotSocket.video_socket.makefile('wb')
             camera = picamera2.Picamera2()
             camera.configure(camera.create_video_configuration(main={"size": (400, 300)}))
             encoder=picamera2.encoders.H264Encoder(1000000)
             #encoder = picamera2.encoders.JpegEncoder(q=90)
             output=picamera2.outputs.FileOutput(stream)
             camera.start_recording(encoder, output, quality=picamera2.encoders.Quality.VERY_HIGH)
+            isVideoStarted = True
             return camera
         except:
-            camera.stop_recording()
+            if isVideoStarted:
+                camera.stop_recording()
+                camera = None
+                isVideoStarted = False
 
 def stopVideo(camera):
-    camera.stop_recording()
-    camera = None
+    if isVideoStarted:
+        camera.stop_recording()
+        camera = None
+        isVideoStarted = False
 
 def test():
     try:

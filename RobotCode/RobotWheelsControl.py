@@ -53,13 +53,13 @@ def InitLeftWheelForward(pwm):
         pwm.set_mode(pinLF, pigpio.OUTPUT)
         pwm.set_PWM_frequency(pinLF, 200)
         pwm.set_PWM_range(pinLF, 40000)
-        pwm.set_PWM_dutycycle(pinLF, 2000)
+        pwm.set_PWM_dutycycle(pinLF, 3000)
 
 def InitLeftWheelBackward(pwm):
         pwm.set_mode(pinLB, pigpio.OUTPUT)
         pwm.set_PWM_frequency(pinLB, 200)
         pwm.set_PWM_range(pinLB, 40000)
-        pwm.set_PWM_dutycycle(pinLB, 2000)
+        pwm.set_PWM_dutycycle(pinLB, 3000)
 
 def InitRightWheelForward(pwm):
         pwm.set_mode(pinRF, pigpio.OUTPUT)

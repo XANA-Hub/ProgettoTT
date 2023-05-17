@@ -15,7 +15,7 @@ class Actor(pykka.ThreadingActor):
             ActorsConfig.actorArmControl_ref.tell(messageToken[BODY][5:])
         elif "AI_Recognition" in messageToken[TYPE]:
             ActorsConfig.actorAI_ref.tell(messageToken[BODY][5:])
-        elif "Start" in messageToken[TYPE]:
+        elif "Camera" in messageToken[TYPE]:
             ActorsConfig.actorVideoHandler_ref.tell(messageToken[BODY][5:])
         elif "Stop" in messageToken[TYPE]:
             self.terminating(messageToken[TYPE][5:])
