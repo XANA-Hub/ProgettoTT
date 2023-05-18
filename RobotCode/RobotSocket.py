@@ -24,7 +24,8 @@ def startSocket():
                 connection = conn
                 print(f"Connected by {addr}")
                 startVideoSocket(addr[0])
-                ActorsConfig.actorCore_ref.tell("ID:init;TYPE:Camera;BODY:Start")
+                #ID:init;TYPE:Camera;
+                ActorsConfig.actorVideoHandler_ref.tell("BODY:Start")
                 print("Inizio il server loop")
                 while True:
                     data = conn.recv(1024)
