@@ -1,109 +1,104 @@
 using System;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using UnityEngine;
 
-public class ClientTCPManager : MonoBehaviour {  	
+public class ClientTCPManager : MonoBehaviour {
 	
     public string ipAddress = "192.168.178.69";
     public int port = 25565;
 
-	private TcpClient client;
-	private Thread clientReceiveThread; 	
-    
+    private TcpClient client;
 
-	// Use this for initialization 	
-	private void Start () {
+    private void Start() {
 
         // Imposta l'indirizzo IP e la porta del server a cui connettersi   
         ConnectToServer();
+    }
 
-	}  
+    private void ConnectToServer() {
 
+        Loom.RunAsync(() => {
+            try {
+                client = new TcpClient(ipAddress, port);
+                ReceiveAndPrintData();
+            }
+            catch (SocketException socketException) {
+                Debug.Log("TCP: Socket exception: " + socketException);
+            }
+        });
+    }
 
-	private void ConnectToServer () { 		
-		try {  			
-			clientReceiveThread = new Thread (new ThreadStart(ListenForData)); 			
-			clientReceiveThread.IsBackground = true; 			
-			clientReceiveThread.Start();  
+    private void ReceiveAndPrintData() {
 
-			Debug.Log("TCP: Connessione al server avvenuta con successo!");		
-		} 		
-		catch (Exception e) { 			
-			Debug.Log("On client connect exception " + e); 		
-		} 	
-	}  	
+        Byte[] bytes = new Byte[1024];
+        int length = 0;
 
+        Debug.Log("TCP: Sono dentro a ReceiveAndPrintData");
+        using (NetworkStream stream = client.GetStream()) {
+            while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
+                var incomingData = new byte[length];
+                Array.Copy(bytes, 0, incomingData, 0, length);
 
-	private void ListenForData() { 		
-		try { 			
+                string serverMessage = Encoding.ASCII.GetString(incomingData);
+                Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
+            }
+        }
+    }
 
-			client = new TcpClient(ipAddress, port);  			
-			Byte[] bytes = new Byte[1024];   
+    /*
+    private void ReceiveAndPrintDataMultiple() {
+       
+        Byte[] bytes = new Byte[1024];
 
-			while (true) { 			
+        while (true) {
+            using (NetworkStream stream = client.GetStream()) {
+                int length;
 
-				// Get a stream object for reading 				
-				using (NetworkStream stream = client.GetStream()) { 
+                while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
+                    var incommingData = new byte[length];
+                    Array.Copy(bytes, 0, incommingData, 0, length);
 
-					int length; 			
+                    string serverMessage = Encoding.ASCII.GetString(incommingData);
+                    Debug.Log("TCP: Server message received as: " + serverMessage);
+                }
+            }
+        }
+            
+    }
+    */
 
-					// Read incomming stream into byte arrary. 					
-					while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) { 
+    public void SendData(string clientMessage) {
 
-						var incommingData = new byte[length]; 						
-						Array.Copy(bytes, 0, incommingData, 0, length); 
+        if (client == null) {
+            return;
+        }
 
-						// Convert byte array to string message. 						
-						string serverMessage = Encoding.ASCII.GetString(incommingData); 						
-						Debug.Log("Server message received as: " + serverMessage); 					
-					} 				
-				} 			
-			}         
-		}         
-		catch (SocketException socketException) {             
-			Debug.Log("Socket exception: " + socketException);         
-		}     
-	}  	
+        try {
+            NetworkStream stream = client.GetStream();
+            if (stream.CanWrite) {
+                byte[] clientMessageAsByteArray = Encoding.UTF8.GetBytes(clientMessage);
 
-	public void SendData(string clientMessage) {     
-        
-		if (client == null) {             
-			return;         
-		}  		
-        
-		try {
-				
-			// Get a stream object for writing. 			
-			NetworkStream stream = client.GetStream(); 			
-			if (stream.CanWrite) {                 	
-
-				// Convert string message to byte array.                 
-				byte[] clientMessageAsByteArray = Encoding.UTF8.GetBytes(clientMessage); 				
-				
-                // Write byte array to client stream.                 
-				stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);                 
-				Debug.Log("Client sent his message - should be received by server");             
-			}         
-		} 		
-		catch (SocketException socketException) {             
-			Debug.Log("Socket exception: " + socketException);         
-		}     
-	} 
+                stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
+                Debug.Log("TCP: Messaggio inviato!");
+            }
+        }
+        catch (SocketException socketException) {
+            Debug.Log("TCP: Socket exception: " + socketException);
+        }
+    }
 
     public void Enable() {
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     public void Disable() {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
-	void OnApplicationQuit() {
-
-        if (client != null) 
-        	client.Close();
+    private void OnApplicationQuit() {
+        if (client != null) {
+            client.Close();
+        }
     }
-
 }

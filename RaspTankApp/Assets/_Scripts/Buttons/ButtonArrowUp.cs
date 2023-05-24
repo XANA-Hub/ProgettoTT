@@ -17,7 +17,7 @@ public class ButtonArrowUp : Button {
         base.OnPointerDown(eventData);
 
         //MasterManager.instance.clientTCPManager.SendData("ID:001;TYPE:Movement;BODY:Forward_Start");
-        MasterManager.instance.clientTCPManager.SendData("ID:001;TYPE:AI_Recognition;BODY:Start");
+        MasterManager.instance.clientTCPManager.SendData("ID:001;TYPE:Movement;BODY:Forward_Start");
         Debug.Log(this.gameObject.name + " OnPointerDown invocato!");
         
     }

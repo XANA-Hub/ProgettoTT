@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3950047829795998435}
-  - component: {fileID: 3950047829795998432}
+  - component: {fileID: 5104330724885895287}
   m_Layer: 0
   m_Name: VideoReceiverManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3950047829795998432
+--- !u!114 &5104330724885895287
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,9 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3950047829795998445}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad740e415beccd640ba089c77a008428, type: 3}
+  m_Script: {fileID: 11500000, guid: 20fffa4f10dc5e344a4ab1870a249ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 3128962734718481078, guid: 782612558685ac942b30e46d4a44e79b, type: 3}
-  enableLog: 1
-  port: 25564
+  serverIP: 192.168.178.69
+  serverPort: 25565

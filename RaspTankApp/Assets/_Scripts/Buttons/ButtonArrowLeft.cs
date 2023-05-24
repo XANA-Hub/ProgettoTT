@@ -16,7 +16,7 @@ public class ButtonArrowLeft : Button {
     public override void OnPointerDown(PointerEventData eventData) {
         base.OnPointerDown(eventData);
 
-         MasterManager.instance.clientTCPManager.SendData("ID:001;TYPE:Movement;BODY:RotateLeft_Start");
+        MasterManager.instance.clientTCPManager.SendData("ID:001;TYPE:Movement;BODY:RotateLeft_Start");
         Debug.Log(this.gameObject.name + " OnPointerDown invocato!");
     }
 
