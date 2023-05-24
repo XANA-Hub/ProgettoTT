@@ -2,11 +2,12 @@ import socket
 import ActorsConfig
 import sys
 
-HOST = "192.168.178.69"      # Standard loopback interface address (localhost)
-PORT = 25565          # Port to listen on (non-privileged ports are > 1023)
+HOST = "localhost" #"192.168.178.69"     # Standard loopback interface address (localhost)
+PORT = 25565                # Port to listen on (non-privileged ports are > 1023)
+REMOTE_PORT = 25565         # Port for sending video stream
 
-connection = None
-video_socket = None
+#conn = None
+#video_socket = None
 
 def startSocket():
     try:
@@ -16,33 +17,37 @@ def startSocket():
             s.bind((HOST, PORT))
             s.listen(1)
             print("Server socket pronto")
-            conn, addr = s.accept()
-            print("Ricevuta richiesta")
-            s.close()
-            with conn:
-                global connection
-                connection = conn
-                print(f"Connected by {addr}")
-                startVideoSocket(addr[0])
+
+            # loop per collegare più client uno dopo l'altro
+            while True:
+                conn, addr = s.accept()
+                conn.send(b"ready")  #questa send "sblocca" il clinet in attesa di poter mandare i comandi, serve per la gestione di più utenti che cercano di collegarsi contemporaneamente
+                print("Collegato utente: " + str(addr))
+                #startVideoSocket(addr[0])
                 #ID:init;TYPE:Camera;
-                ActorsConfig.actorVideoHandler_ref.tell("BODY:Start")
-                print("Inizio il server loop")
-                while True:
+                #ActorsConfig.actorVideoHandler_ref.tell("BODY:Start")
+                while True:     #loop per la ricezione dei messaggi
                     data = conn.recv(1024)
                     if not data:
                         break
-                    print(data.decode("utf-8"))
-                    ActorsConfig.actorCore_ref.tell(data.decode("utf-8"))
+                    data = data.decode("utf-8")
+                    print(data)
+                    ActorsConfig.actorCore_ref.tell(data) #Anche la stop deve arrivare al core per far finire lo stream video e chiudere la relativa socket
+                    if "Type:Stop" in data:  #this way the connection closes and the socket goes back to the accept
+                        break
+                print("User scollegato")
+                    
     except KeyboardInterrupt:
         print("Rilevata interruzione utente")
-        ActorsConfig.actorCore_ref.tell("ID:term;TYPE:Stop;BODY:None")
-        #Non si interrompe credo per processi in background degli attori
+        ActorsConfig.actorCore_ref.tell("ID:term;TYPE:Terminate;BODY:None")
         sys.exit()
+        '''
     except:
         print("Rilevata eccezione")
         resetConfiguration()
         print("Reset connessioni effettuato")
         startSocket()
+        
 
 def startVideoSocket(addr):
     print("Preparo la socket UDP")
@@ -63,3 +68,4 @@ def resetConfiguration():
 
 def sendResult(data):
     connection.sendall(data.encode('utf-8'))
+    '''

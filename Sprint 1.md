@@ -14,6 +14,9 @@ __Robot__: [[Tutorial.pdf|Documentation]]
 	Ci interessa avere risposta ai messaggi inviati?
 - Protocollo di scambio messaggi:
 	I messaggi scambiati tra i due dovranno condividere uno stesso protocollo di codifica dell'informazione. Messaggi malfomati verrano scartati automaticamente.
+- Gestione della socket:
+	Chi apre/chiude la socket? Cosa succede se un utente si scollega e ricollega? Due utenti diversi che provano a collegarsi?
+	Se il robot crasha? Gestione dell'errore "Brocken Pipe"
 
 ### Progettazione
 
@@ -65,9 +68,17 @@ Per la connessione possiamo accontentarci di una socket tcp attraverso la quale 
 			- Grab
 			- Release
 		- Start: will not have any body
-		- Stop: will not have any body
+		- Stop: will not have any body    `NOTA: da cambiare il termine Stop, è presente anche nei comandi precedenti... è ubn po' un casino`
 
 Console: Tenendo in considerazione il progetto finale, già da questo primo Sprint modelliamo la console tramite Unity.
+
+##### Gestione socket
+Socket dovrà essere lanciata all'avvio dell'applicazione e mettersi in ascolto di una connessione da User. Un solo user alla volta deve potersi collegare.
+Ogni volta che uno user si scollega si rimette in ascolto.
+La socket si chiuderà solo quando il programma lato robot verrà terminato.
+Il comando "Stop" si limiterà a far terminare la sessione tra l'utente e il robot, la socket si rimettera in ascolto di una nuova connessione.
+
+Problema: quando un secondo utente si collega inizia a mandare dati che rimangono nel buffer della cocket anche se questa non ha fatto l'accept. Per risolvere il problema adesso il ==client si mette in attesa di ricevere una risposta dal robot== prima di iniziare ad inviare i comandi
 
 
 

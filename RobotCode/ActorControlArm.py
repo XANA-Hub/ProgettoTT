@@ -10,7 +10,7 @@ class Actor(pykka.ThreadingActor):
             self.Grab(message)
         elif "Release" in message:
             self.Release(message)
-        elif "Stop" in message:
+        elif "Terminate" in message:
             print("--RobotControlArm-- terminating")
             self.stop()
         else:
@@ -18,16 +18,16 @@ class Actor(pykka.ThreadingActor):
 
 
     def ArmUp(self, message):
-        print(message)
+        pass
 
 
     def ArmDown(self, message):
-        print(message)
+        pass
 
 
     def Grab(self, message):
-        print(message)
+        pass
         
 
     def Release(self, message):
-        print(message)
+        pass

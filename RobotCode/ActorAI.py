@@ -7,8 +7,8 @@ class Actor(pykka.ThreadingActor):
         if "Start" in message:
             print("--RobotAI-- initializing")
             RobotSocket.sendResult("Risposta plausibile")
-        if "Stop" in message:
+        if "Terminate" in message:
             print("--RobotAI-- terminating")
             self.stop()
-        else: 
-            print(message)
+        else:
+            print("--RobotAI ERROR-- malformed message: " + message)

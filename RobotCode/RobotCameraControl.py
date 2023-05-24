@@ -1,10 +1,11 @@
 import time
-import picamera2
+#import picamera2
 import socket   #solo per il test
-import libcamera
+#import libcamera
 
 isVideoStarted = False
 
+'''
 def initCamera():
     camera = picamera2.Picamera2()
     return camera
@@ -26,8 +27,8 @@ def sendVideo(camera, video_socket):
             print("Mi preparo ad inviare il flusso video ad "+str(video_socket))
             stream = video_socket.makefile('wb')
             camera.configure(camera.create_video_configuration(main={"size": (400, 300)}))
-            encoder=picamera2.encoders.H264Encoder(1000000)
-            #encoder = picamera2.encoders.JpegEncoder(q=90)
+            #encoder=picamera2.encoders.H264Encoder(1000000)
+            encoder = picamera2.encoders.JpegEncoder(q=90)
             output=picamera2.outputs.FileOutput(stream)
             camera.start_recording(encoder, output, quality=picamera2.encoders.Quality.VERY_HIGH)
             global isVideoStarted
@@ -64,3 +65,4 @@ def test():
 
 if __name__=='__main__':
         test()
+        '''
