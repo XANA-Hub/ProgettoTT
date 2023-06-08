@@ -13,9 +13,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("robot pronto inizio invio dei comandi")
 
     #test message
-    s.sendall(b"ID:000;TYPE:Start;BODY:127.0.0.1:5005")
+    s.sendall(b"ID:000;TYPE:Start;BODY:127.0.0.1:5004")
     sleep(2)
-    '''
     s.sendall(b"ID:000;TYPE:Movement;BODY:MoveForward_Start")
     sleep(2)
     s.sendall(b"ID:000;TYPE:Movement;BODY:MoveForward_Stop")
@@ -33,6 +32,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.sendall(b"ID:000;TYPE:Disconnect;BODY:EndDelVideoStream")
     sleep(2)
     s.sendall(b"ID:000;TYPE:Terminate;BODY:TerminazionePerTesting")
-    '''
-    s.sendall(b"ID:000;TYPE:Disconnect;BODY:EndDelVideoStream")
-    sleep(2)
