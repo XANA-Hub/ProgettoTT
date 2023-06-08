@@ -1,20 +1,17 @@
 import socket
+from time import sleep
 import ActorsConfig
 import sys
 
-HOST = "localhost" #"192.168.178.69"     # Standard loopback interface address (localhost)
-PORT = 25565                # Port to listen on (non-privileged ports are > 1023)
-REMOTE_PORT = 25565         # Port for sending video stream
+HOST = "localhost"                      # Standard loopback interface address (localhost)
+PORT = 25565                            # Port to listen on (non-privileged ports are > 1023)
 
-#conn = None
-#video_socket = None
-
-def startSocket():
+def startSocket(ip = HOST, port = PORT):
     try:
-        print("Avvio del server TCP con indirizzo "+HOST)
+        print("Avvio del server TCP con indirizzo " + ip + ":" + str(port))
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-            s.bind((HOST, PORT))
+            s.bind((ip, port))
             s.listen(1)
             print("Server socket pronto")
 
@@ -29,6 +26,8 @@ def startSocket():
                 while True:     #loop per la ricezione dei messaggi
                     data = conn.recv(1024)
                     if not data:
+                        #qua dentro posso capire quando il client crasha
+                        ActorsConfig.actorCore_ref.tell("ID:000;TYPE:Client Crashed;BODY:None")     #this will tell the core to handle the crash
                         break
                     data = data.decode("utf-8")
                     print(data)
@@ -49,13 +48,6 @@ def startSocket():
         startSocket()
         
 
-def startVideoSocket(addr):
-    print("Preparo la socket UDP")
-    global video_socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect((addr, PORT))
-    video_socket = s
-
 def resetConfiguration():
     global connection
     global video_socket
@@ -69,3 +61,20 @@ def resetConfiguration():
 def sendResult(data):
     connection.sendall(data.encode('utf-8'))
     '''
+
+def startVideoSocket():
+    global socketVideo
+    socketVideo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+def closeVideoSocket():
+    print("closing video socket")
+    socketVideo.close()
+
+
+
+
+def sendVideoData(addr, port):
+    print("start sending to address: " + addr + ":" + port)
+    while True:
+        socketVideo.sendto(b"Test", (addr, int(port)))
+        sleep(3)

@@ -13,3 +13,7 @@ Il robot deve avere capacità di acquisizione e trasmissione video.
 - Gestione degli indirizzi? Embedded
 
 ### Progettazione
+Processo:
+1) invio comando Start
+2) Video handler chiede alla logica sottostante di aprire una nuova socket
+3) La logica sottostante chiude socket rimaste aperte e ne apre una nuova

@@ -51,7 +51,8 @@ Per la connessione possiamo accontentarci di una socket tcp attraverso la quale 
 		- Movement
 		- Robot_Arm
 		- Start
-		- Stop
+		- Disconnect: will terminate the connection with the current user
+		- Terminate: will stop the robot (non inviabile da un cliente per ora)
 	- BODY normalmente ricade nei seguenti casi a seconda del TYPE
 		- Movement:
 			- Forward Start
@@ -67,8 +68,10 @@ Per la connessione possiamo accontentarci di una socket tcp attraverso la quale 
 			- Down
 			- Grab
 			- Release
-		- Start: will not have any body
-		- Stop: will not have any body    `NOTA: da cambiare il termine Stop, è presente anche nei comandi precedenti... è ubn po' un casino`
+		- Start:
+			- IP:Port (no spaces) indicate address of client socket to send the video
+		- Disconnect: will not have any body
+		- Terminate: will not have any body
 
 Console: Tenendo in considerazione il progetto finale, già da questo primo Sprint modelliamo la console tramite Unity.
 
@@ -78,7 +81,7 @@ Ogni volta che uno user si scollega si rimette in ascolto.
 La socket si chiuderà solo quando il programma lato robot verrà terminato.
 Il comando "Stop" si limiterà a far terminare la sessione tra l'utente e il robot, la socket si rimettera in ascolto di una nuova connessione.
 
-Problema: quando un secondo utente si collega inizia a mandare dati che rimangono nel buffer della cocket anche se questa non ha fatto l'accept. Per risolvere il problema adesso il ==client si mette in attesa di ricevere una risposta dal robot== prima di iniziare ad inviare i comandi
+Problema: quando un secondo utente si collega inizia a mandare dati che rimangono nel buffer della socket anche se questa non ha fatto l'accept. Per risolvere il problema adesso il ==client si mette in attesa di ricevere una risposta dal robot== prima di iniziare ad inviare i comandi
 
 
 

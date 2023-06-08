@@ -13,8 +13,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("robot pronto inizio invio dei comandi")
 
     #test message
-    s.sendall(b"ID:000;TYPE:Start;BODY:camera rollig, CHACK ACTION")
+    s.sendall(b"ID:000;TYPE:Start;BODY:127.0.0.1:5005")
     sleep(2)
+    '''
     s.sendall(b"ID:000;TYPE:Movement;BODY:MoveForward_Start")
     sleep(2)
     s.sendall(b"ID:000;TYPE:Movement;BODY:MoveForward_Stop")
@@ -23,10 +24,15 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     sleep(2)
     s.sendall(b"ID:000;TYPE:Movement;BODY:Rotate_Left_Stop")
     sleep(2)
-    s.sendall(b"ID:000;TYPE:AI_Recognition;BODY:searching for an enemy")
+    s.sendall(b"ID:000;TYPE:AI_Recognition;BODY:Identify_Current")
     sleep(2)
-    s.sendall(b"ID:000;TYPE:Robot_Arm;BODY:lowering arm")
+    s.sendall(b"ID:000;TYPE:Robot_Arm;BODY:Down")
     sleep(2)
-    s.sendall(b"ID:000;TYPE:Robot_Arm;BODY:grabbing enemy")
+    s.sendall(b"ID:000;TYPE:Robot_Arm;BODY:Grab")
     sleep(2)
-    s.sendall(b"ID:000;TYPE:Stop;BODY:terminating actors")
+    s.sendall(b"ID:000;TYPE:Disconnect;BODY:EndDelVideoStream")
+    sleep(2)
+    s.sendall(b"ID:000;TYPE:Terminate;BODY:TerminazionePerTesting")
+    '''
+    s.sendall(b"ID:000;TYPE:Disconnect;BODY:EndDelVideoStream")
+    sleep(2)

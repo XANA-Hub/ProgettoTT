@@ -34,7 +34,8 @@
 		- Robot_Arm
 		- AI_Recognition
 		- Start
-		- Stop
+		- Disconnect
+		- Terminate
 	- BODY normalmente ricade nei seguenti casi a seconda del TYPE
 		- Movement:
 			- Forward Start
@@ -51,10 +52,10 @@
 			- Grab
 			- Release
 		- AI_Recognition:
-			- Identify current      (si limita a cercare ciò che è inquadrato al momento)
+			- Identify_Current      (si limita a cercare ciò che è inquadrato al momento)
 		- Start: will not have any body
-		- Stop: will not have any body, represent the client stopping the connection
-		- Terminating: will not have any body, is used for termination of the Actors
+		- Disconnect: will not have any body, represent the client stopping the connection
+		- Terminate: will not have any body, is used for termination of the Actors
 
 ### Suddivisione Sprint
 - [[Sprint 1]]: Console Remota e Robot funzionante con solo le funzionalità di base (movimento ruote e braccio)

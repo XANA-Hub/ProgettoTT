@@ -18,16 +18,20 @@ class Actor(pykka.ThreadingActor):
 
 
     def ArmUp(self, message):
+        print("--RobotControlArm ArmUp-- " + message)
         pass
 
 
     def ArmDown(self, message):
+        print("--RobotControlArm ArmDown-- " + message)
         pass
 
 
     def Grab(self, message):
+        print("--RobotControlArm Grab-- " + message)
         pass
         
 
     def Release(self, message):
+        print("--RobotControlArm Release-- " + message)
         pass
