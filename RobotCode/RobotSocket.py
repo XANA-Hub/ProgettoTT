@@ -30,7 +30,7 @@ def startSocket(ip = HOST, port = PORT):
                     data = data.decode("utf-8")
                     print(data)
                     ActorsConfig.actorCore_ref.tell(data) #Anche la stop deve arrivare al core per far finire lo stream video e chiudere la relativa socket
-                    if "Type:Disconnect" in data:  #this way the connection closes and the socket goes back to the accept
+                    if "TYPE:Disconnect" in data:  #this way the connection closes and the socket goes back to the accept
                         break
                 print("User scollegato")
                     
