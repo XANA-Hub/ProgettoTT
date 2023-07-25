@@ -31,12 +31,14 @@ def startSocket(ip = HOST, port = PORT):
                     if not data:        #data is null, the client has crashed
                         ActorsConfig.actorCore_ref.tell("ID:000;TYPE:Client Crashed;BODY:None")     #this will tell the core to handle the crash
                         print("User crashed")
+                        print("------------------------------------------------------------")
                         break
                     data = data.decode("utf-8")
                     if TEST: print("data: " + data)
                     ActorsConfig.actorCore_ref.tell(data)   #Nota, in caso di disconnect, giriamo il messaggio al core per la terminazione dello stream video
                     if "TYPE:Disconnect" in data:           #this way the connection closes and the socket goes back to the accept
                         print("User scollegato")
+                        print("------------------------------------------------------------")
                         break
                     
     except KeyboardInterrupt:
