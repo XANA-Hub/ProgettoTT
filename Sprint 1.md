@@ -83,6 +83,9 @@ Il comando "Stop" si limiterà a far terminare la sessione tra l'utente e il rob
 
 Problema: quando un secondo utente si collega inizia a mandare dati che rimangono nel buffer della socket anche se questa non ha fatto l'accept. Per risolvere il problema adesso il ==client si mette in attesa di ricevere una risposta dal robot== prima di iniziare ad inviare i comandi
 
-
+### Run with
+``` bash
+python3 RobotCore.py [ServerIp] [ServerPort]
+```
 
 

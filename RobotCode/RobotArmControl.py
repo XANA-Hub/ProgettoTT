@@ -1,6 +1,6 @@
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
-#import pigpio
+import pigpio
 
 pwm = None
 
@@ -8,7 +8,7 @@ pwm = None
 pinArm = 7
 #Pinza
 pinClaw = 8
-'''
+
 def resetPosition(pwm):
       setServoPwm(pwm, pinArm, 90)
       setServoPwm(pwm, pinClaw, 140)
@@ -103,4 +103,3 @@ def test():
 
 if __name__=='__main__':
         test()
-        '''

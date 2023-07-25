@@ -1,6 +1,6 @@
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
-#import pigpio
+import pigpio
 
 pwm = None
 
@@ -11,7 +11,6 @@ pinLF = 23
 pinRB = 6
 pinRF = 5
 
-'''
 def Stop(pwm):
     pwm.set_mode(pinLF, 0)
     pwm.set_mode(pinRF, 0)
@@ -121,4 +120,3 @@ def test():
               
 if __name__=='__main__':
         test()
-        '''

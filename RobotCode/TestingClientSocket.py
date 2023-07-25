@@ -1,7 +1,7 @@
 import socket
 from time import sleep
 
-HOST = "192.168.1.177"      # The server's hostname or IP address
+HOST = "localhost"          # The server's hostname or IP address
 PORT = 25565                # The port used by the server
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
