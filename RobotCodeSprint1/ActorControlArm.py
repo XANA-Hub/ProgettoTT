@@ -1,14 +1,15 @@
 import pykka
-#import RobotArmControl
+import RobotArmControl
 
 TEST = True
 
 class Actor(pykka.ThreadingActor):
     def __init__(self):
         super().__init__()
-        #self.pwm = RobotArmControl.InitPwm()
-        #RobotArmControl.initializeArm(self.pwm)
-        #RobotArmControl.initializeClaw(self.pwm)
+        self.pwm = RobotArmControl.InitPwm()
+        RobotArmControl.initializeArm(self.pwm)
+        RobotArmControl.initializeClaw(self.pwm)
+        RobotArmControl.resetPosition(self.pwm)
 
     def on_receive(self, message):
         if "Up" in message:
@@ -29,7 +30,7 @@ class Actor(pykka.ThreadingActor):
 
     def ArmUp(self, message):
         if TEST: print("--RobotControlArm ArmUp-- " + message)
-        #RobotArmControl.riseArm(self.pwm)
+        RobotArmControl.riseArm(self.pwm)
 
 
     def ArmDown(self, message):
@@ -39,9 +40,9 @@ class Actor(pykka.ThreadingActor):
 
     def Grab(self, message):
         if TEST: print("--RobotControlArm Grab-- " + message)
-        #RobotArmControl.closeClaw(self.pwm)
+        RobotArmControl.closeClaw(self.pwm)
         
 
     def Release(self, message):
         if TEST: print("--RobotControlArm Release-- " + message)
-        #RobotArmControl.openClaw(self.pwm)
+        RobotArmControl.openClaw(self.pwm)
