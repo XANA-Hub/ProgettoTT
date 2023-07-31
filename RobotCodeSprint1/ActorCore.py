@@ -23,6 +23,10 @@ class Actor(pykka.ThreadingActor):
         elif "Terminate" in messageToken[TYPE]:     #can only be generate by the system (socket class) for complete termination of the robot
             self.terminating(messageToken[TYPE][5:])
 
+        elif "Disconnect" in messageToken[TYPE]:
+            #disconnect will close the connection for the stream video, for now it does nothing
+            pass
+
         elif "Client Crashed" in messageToken[TYPE]:
             self.clientCrash()
 

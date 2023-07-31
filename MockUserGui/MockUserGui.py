@@ -19,6 +19,7 @@ armDownCommand = b"ID:000;TYPE:Robot_Arm;BODY:Down"
 armUpCommand = b"ID:000;TYPE:Robot_Arm;BODY:Up"
 grabCommand = b"ID:000;TYPE:Robot_Arm;BODY:Grab"
 releaseCommand = b"ID:000;TYPE:Robot_Arm;BODY:Release"
+DisconnectCommand = b"ID:000;TYPE:Disconnect;BODY:Disconnect"
 
 #socket connection --------------------------------------------------------------------------------
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -60,6 +61,9 @@ def grab_pressed(event):
 def release_pressed(event):
     s.sendall(releaseCommand)
 
+def disconnect_pressed(event):
+    s.sendall(DisconnectCommand)
+    window.quit()
 
 #tkinter setup ------------------------------------------------------------------------------------
 window = tk.Tk()
@@ -188,6 +192,17 @@ buttonRelease = tk.Button(
 )
 buttonRelease.pack(side=tk.BOTTOM)
 buttonRelease.bind("<ButtonPress-1>", release_pressed)
+
+buttonRelease = tk.Button(
+    master=window,
+    text="Disconnect",
+    width=10,
+    height=5,
+    bg="white",
+    fg="black",
+)
+buttonRelease.pack(side=tk.BOTTOM)
+buttonRelease.bind("<ButtonPress-1>", disconnect_pressed)
 
 
 window.mainloop() #to keep the window open
