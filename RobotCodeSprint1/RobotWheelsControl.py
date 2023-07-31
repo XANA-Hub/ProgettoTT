@@ -3,6 +3,7 @@ import time
 import pigpio
 
 pwm = None
+rangePWM=4000
 
 #Ruota sinistra
 pinLB = 24
@@ -38,7 +39,6 @@ def MoveForward(pwm):
         InitRightWheelForward(pwm)
 
 def MoveBackward(pwm):
-        print("ciao")
         InitLeftWheelBackward(pwm)
         InitRightWheelBackward(pwm)
 
@@ -52,27 +52,27 @@ def SteerRight(pwm):
         
 def InitLeftWheelForward(pwm):
         pwm.set_mode(pinLF, pigpio.OUTPUT)
-        pwm.set_PWM_frequency(pinLF, 200)
-        pwm.set_PWM_range(pinLF, 40000)
-        pwm.set_PWM_dutycycle(pinLF, 3000)
+        pwm.set_PWM_frequency(pinLF, 50)
+        pwm.set_PWM_range(pinLF, rangePWM)
+        pwm.set_PWM_dutycycle(pinLF, rangePWM)
 
 def InitLeftWheelBackward(pwm):
         pwm.set_mode(pinLB, pigpio.OUTPUT)
-        pwm.set_PWM_frequency(pinLB, 200)
-        pwm.set_PWM_range(pinLB, 40000)
-        pwm.set_PWM_dutycycle(pinLB, 3000)
+        pwm.set_PWM_frequency(pinLB, 50)
+        pwm.set_PWM_range(pinLB, rangePWM)
+        pwm.set_PWM_dutycycle(pinLB, rangePWM)
 
 def InitRightWheelForward(pwm):
         pwm.set_mode(pinRF, pigpio.OUTPUT)
         pwm.set_PWM_frequency(pinRF, 200)
-        pwm.set_PWM_range(pinRF, 40000)
-        pwm.set_PWM_dutycycle(pinRF, 2000)
+        pwm.set_PWM_range(pinRF, rangePWM)
+        pwm.set_PWM_dutycycle(pinRF, 0)
 
 def InitRightWheelBackward(pwm):
         pwm.set_mode(pinRB, pigpio.OUTPUT)
         pwm.set_PWM_frequency(pinRB, 200)
-        pwm.set_PWM_range(pinRB, 40000)
-        pwm.set_PWM_dutycycle(pinRB, 2000)
+        pwm.set_PWM_range(pinRB, rangePWM)
+        pwm.set_PWM_dutycycle(pinRB, 0)
 
 def PrintModes(pwm):
         print("LF: "+str(pwm.get_mode(pinLF)))
@@ -91,24 +91,28 @@ def test():
         PrintModes(pwm)
         print("Prova forward")
         MoveForward(pwm)
+        PrintModes(pwm)
         time.sleep(3)
         print("Stop forward")
         StopForward(pwm)
         time.sleep(3)
         print("Prova backward")
         MoveBackward(pwm)
+        PrintModes(pwm)
         time.sleep(3)
         print("Stop Backward")
         StopBackward(pwm)
         time.sleep(3)
         print("Prova Destra")
         SteerRight(pwm)
+        PrintModes(pwm)
         time.sleep(3)
         print("Stop Destra")
         StopRight(pwm)
         time.sleep(3)
         print("Prova Sinistra")
         SteerLeft(pwm)
+        PrintModes(pwm)
         time.sleep(3)
         print("Stop Sinistra")
         StopLeft(pwm)
