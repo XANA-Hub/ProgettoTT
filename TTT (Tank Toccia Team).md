@@ -53,7 +53,7 @@
 			- Release
 		- AI_Recognition:
 			- Identify_Current      (si limita a cercare ciò che è inquadrato al momento)
-		- Start: will not have any body
+		- Start: will have address and body of client in the format 192.168.n.n:port.
 		- Disconnect: will not have any body, represent the client stopping the connection
 		- Terminate: will not have any body, is used for termination of the Actors
 
