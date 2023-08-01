@@ -17,9 +17,15 @@ class Actor(pykka.ThreadingActor):
             self.Rotate_Left(message)
         elif "Rotate_Right" in message:
             self.Rotate_Right(message)
-            
+
+        elif "Disconnect" in message:
+            if TEST: print("--RobotControlMovement-- disconnecting")
+            self.ResetPos()
+        elif "Client Crashed" in message:
+            if TEST: print("--RobotControlMovement-- client crashed")
+            self.ResetPos()
         elif "Terminate" in message:    #turn off ActorControlMovement
-            print("--RobotControlMovement-- terminating")
+            if TEST: print("--RobotControlMovement-- terminating")
             self.stop()
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
@@ -67,3 +73,6 @@ class Actor(pykka.ThreadingActor):
             RobotWheelsControl.Stop(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
+
+    def ResetPos(self):
+        RobotWheelsControl.Stop(self.pwm)

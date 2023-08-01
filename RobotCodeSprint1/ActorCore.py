@@ -24,19 +24,21 @@ class Actor(pykka.ThreadingActor):
             self.terminating(messageToken[TYPE][5:])
 
         elif "Disconnect" in messageToken[TYPE]:
+            ActorsConfig.actorArmControl_ref.tell(messageToken[TYPE][5:])
+            ActorsConfig.actorMovementControl_ref.tell(messageToken[TYPE][5:])
             #disconnect will close the connection for the stream video, for now it does nothing
-            pass
 
         elif "Client Crashed" in messageToken[TYPE]:
-            self.clientCrash()
+            self.clientCrash(messageToken[TYPE][5:])
 
         else:
             print("--RobotCore ERROR-- malformed message: " + message)
 
 
-    def clientCrash(self):
+    def clientCrash(self, message):
         #for now in case of crash no action needs to be performed
-        pass
+        ActorsConfig.actorArmControl_ref.tell(message)
+        ActorsConfig.actorMovementControl_ref.tell(message)
 
 
     def terminating(self, messageToken):

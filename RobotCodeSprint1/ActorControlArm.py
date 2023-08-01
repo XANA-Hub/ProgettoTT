@@ -21,6 +21,12 @@ class Actor(pykka.ThreadingActor):
         elif "Release" in message:
             self.Release(message)
 
+        elif "Disconnect" in message:
+            if TEST: print("--RobotControlArm-- disconnecting")
+            self.ResetPos()
+        elif "Client Crashed" in message:
+            if TEST: print("--RobotControlArm-- client crashed")
+            self.ResetPos()
         elif "Terminate" in message:            #turn off ActorControlArm
             print("--RobotControlArm-- terminating")
             self.stop()
@@ -35,7 +41,7 @@ class Actor(pykka.ThreadingActor):
 
     def ArmDown(self, message):
         if TEST: print("--RobotControlArm ArmDown-- " + message)
-        #RobotArmControl.lowArm(self.pwm)
+        RobotArmControl.lowArm(self.pwm)
 
 
     def Grab(self, message):
@@ -46,3 +52,6 @@ class Actor(pykka.ThreadingActor):
     def Release(self, message):
         if TEST: print("--RobotControlArm Release-- " + message)
         RobotArmControl.openClaw(self.pwm)
+
+    def ResetPos(self):
+        RobotArmControl.resetPosition(self.pwm)
