@@ -26,7 +26,7 @@ class Actor(pykka.ThreadingActor):
             self.ResetPos()
         elif "Terminate" in message:    #turn off ActorControlMovement
             if TEST: print("--RobotControlMovement-- terminating")
-            self.stop()
+            self.ResetPos()
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -37,7 +37,7 @@ class Actor(pykka.ThreadingActor):
             RobotWheelsControl.MoveForward(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Forward-- " + message)
-            RobotWheelsControl.Stop(self.pwm)
+            RobotWheelsControl.StopForward(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -48,7 +48,7 @@ class Actor(pykka.ThreadingActor):
             RobotWheelsControl.MoveBackward(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Backward-- " + message)
-            RobotWheelsControl.Stop(self.pwm)
+            RobotWheelsControl.StopBackward(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -59,7 +59,7 @@ class Actor(pykka.ThreadingActor):
             RobotWheelsControl.SteerLeft(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Rotate_Left-- " + message)
-            RobotWheelsControl.Stop(self.pwm)
+            RobotWheelsControl.StopLeft(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -70,7 +70,7 @@ class Actor(pykka.ThreadingActor):
             RobotWheelsControl.SteerRight(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Rotate_Right-- " + message)
-            RobotWheelsControl.Stop(self.pwm)
+            RobotWheelsControl.StopRight(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 

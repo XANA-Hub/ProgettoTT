@@ -3,7 +3,12 @@ import time
 import pigpio
 
 pwm = None
-rangePWM = 4000
+rangePWM=4000
+'''
+range - range massimo del valore di duty_cycle, ci garantisce un certo livello di precisione
+frequency - frequenza del segnale
+dutycycle - valore per il quale il segnale rimane alto
+'''
 
 #Braccio
 pinArm = 7
