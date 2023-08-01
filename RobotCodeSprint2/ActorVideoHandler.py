@@ -24,8 +24,9 @@ class Actor(pykka.ThreadingActor):
         elif "Disconnect" in message:
             if TEST: print("--RobotVideoHandler-- stopping video transmission")
             self.stopVideo()
-        elif "Clinet Crashed" in message:  #check sintassi e check se fare le stesse cose che fa Disconnect
-            pass
+        elif "Client Crashed" in message:  #check sintassi e check se fare le stesse cose che fa Disconnect
+            if TEST: print("--RobotVideoHandler-- stopping video transmission")
+            self.stopVideo()
 
         elif "Terminate" in message:
             if TEST: print("--RobotVideoHandler-- terminating")

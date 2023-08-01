@@ -26,7 +26,7 @@ def captureImage(camera, path):
 
 def sendVideo(camera, stream_file):
         try:
-            camera.configure(camera.create_video_configuration(main={"size": (400, 300)}))
+            camera.configure(camera.create_video_configuration(main={"size": (400, 300)},transform=libcamera.Transform(hflip=1,vflip=1)))
             encoder=picamera2.encoders.H264Encoder(1000000)
             #encoder = picamera2.encoders.JpegEncoder(q=90)
             output=picamera2.outputs.FileOutput(stream_file)
@@ -44,13 +44,11 @@ def stopVideo(camera):
 
 
 def test():
-    try:
-        '''        
+    try:     
         camera = initCamera()
         print("Test fotocamera")
         captureImage(camera, "image.jpg")
         killCamera(camera)
-        '''
         #Funziona
         print("Test flusso video")
         #video_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -60,6 +58,7 @@ def test():
         #stream = video_socket.makefile('wb')
         sendVideo(camera, stream)
         print("Flusso avviato")
+        camera.capture_file("imageVideo.jpg")
         time.sleep(10)
         stopVideo(camera)
         print("Flusso interrotto")
