@@ -42,6 +42,10 @@ def startSocket(ip = HOST, port = PORT):
 
 def startVideoSocket(ip, port):
     global socketVideo
+
+
+
+    
     socketVideo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     socketVideo.connect((ip, port))
 

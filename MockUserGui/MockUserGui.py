@@ -6,7 +6,6 @@ HOST = "localhost"        # The server's hostname or IP address
 PORT = 25565              # The port used by the server
 
 #command
-startCommand = b"ID:000;TYPE:Start;BODY:127.0.0.1:5004"
 forwardStartCommand = b"ID:000;TYPE:Movement;BODY:Forward Start"
 forwardStopCommand = b"ID:000;TYPE:Movement;BODY:Forward Stop"
 backwardStartCommand = b"ID:000;TYPE:Movement;BODY:Backward Start"
@@ -20,6 +19,7 @@ armUpCommand = b"ID:000;TYPE:Robot_Arm;BODY:Up"
 grabCommand = b"ID:000;TYPE:Robot_Arm;BODY:Grab"
 releaseCommand = b"ID:000;TYPE:Robot_Arm;BODY:Release"
 DisconnectCommand = b"ID:000;TYPE:Disconnect;BODY:Disconnect"
+ConnectedCommand = b"ID:000;TYPE:Start;BODY:192.168.1.238:25565"    #cambia a seconda di chi lo lancia
 
 #socket connection --------------------------------------------------------------------------------
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,6 +29,7 @@ print("connected with socket server")
 print("in attesa di risposta dal robot")
 s.recv(1024)
 print("robot pronto inizio invio dei comandi")
+s.sendall(ConnectedCommand)
 
 
 #tkinter event handler -----------------------------------------------------------------------
