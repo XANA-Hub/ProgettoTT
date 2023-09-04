@@ -1,207 +1,49 @@
 using System;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
+using UnityEngine;
 
-public class AudioManager : MonoBehaviour  {
+// Tutorial: https://www.youtube.com/watch?v=6OT43pvUyfY
+// e https://www.youtube.com/watch?v=QL29aTa7J5Q
+//
 
-	//public static AudioManager instance;
+public class AudioManager: MonoBehaviour {
 
-	public Sprite sfxOn;
-	public Sprite sfxOff;
-	public Image sfxButton;
-	public Slider sfxVolSlider;
-
-	public Sprite musicOn;
-	public Sprite musicOff;
-	public Image musicButton;
-	public Slider musicVolSlider;
-
-	public float delayInCrossfading = 0.3f;
-
-    public List<MusicTrack> tracks = new List<MusicTrack>();
-    public List<Sound> sounds = new List<Sound>();
-
-	private bool sfxMute;
-	private bool musicMute;
-    private AudioSource music;
-    private AudioSource sfx;
-
-    private Sound GetSoundByName(string sName) => sounds.Find(x => x.name == sName);
-
-    private static readonly List<string> mixBuffer = new List<string>();
-    private const float mixBufferClearDelay = 0.05f;
-
-    internal string currentTrack;
-
-	public float MusicVolume => !PlayerPrefs.HasKey("Music Volume") ? 1f : PlayerPrefs.GetFloat("Music Volume");
-
-    public float SfxVolume => !PlayerPrefs.HasKey("SFX Volume") ? 1f : PlayerPrefs.GetFloat("SFX Volume");
-
-    private void Awake() {
-
-		// Configuring Audio Source For Playing Music And SFX
-		music = gameObject.AddComponent<AudioSource> ();
-		music.loop = true;
-
-		sfx = gameObject.AddComponent<AudioSource> ();
-		sfxMute = false;
-
-		musicMute = false;
-
-		// Check If Sfx Volume Is Not 0
-		if (Math.Abs(SfxVolume) > 0.05f) {
-			// Set The Saved Value Of SFX Volume
-			sfxVolSlider.value = SfxVolume;
-			sfx.volume = SfxVolume;
-		}
-		else { // Set The Values To 0
-			sfxVolSlider.value = 0;
-			sfx.volume = 0;
-		}
-
-		// Check If Music Volume Is Not 0
-		if (Math.Abs(MusicVolume) > 0.05f) {
-			// Set The Saved Value Of Music Volume
-			musicVolSlider.value = MusicVolume;
-			music.volume = MusicVolume;
-		}
-		else { // Set The Values To 0
-			musicVolSlider.value = 0;
-			music.volume = 0;
-		}
+	public Sound[] sounds;
+	private static Dictionary<string, float> soundTimerDictionary;
+	private Sound music = null;
+	private string previousMusicName;
+	public string startingMusic;
 
 
-		// Checks If The sfxMute Is True Or Not
-		if (PlayerPrefs.GetInt ("sfxMute") == 1) {
-			SfxToggle ();
-		}
-		// Checks If The musicMute Is True Or Not
-		if (PlayerPrefs.GetInt ("musicMute") == 1) {
-			MusicToggle ();
-		}
+	private void Awake() {
+		
+		soundTimerDictionary = new Dictionary<string, float>();
 
-		StartCoroutine(MixBufferRoutine());
-    }
+		// Ottengo tutti i suoni
+		foreach(Sound s in sounds) {
+			s.source = gameObject.AddComponent<AudioSource>();
+			s.source.clip = s.clip;
 
-	// Responsible for limiting the frequency of playing sounds
-    private IEnumerator MixBufferRoutine() {
-        float time = 0;
+			s.source.volume = s.volume;
+			s.source.pitch = s.pitch;
+			s.source.loop = s.isLoop;
 
-        while (true) {
-            time += Time.unscaledDeltaTime;
-            yield return 0;
-            if (time >= mixBufferClearDelay) {
-                mixBuffer.Clear();
-                time = 0;
-            }
-        }
-    }
-
-    // Play a music track with Cross fading
-    public void PlayMusic(string trackName)  {
-        if (trackName != "")
-            currentTrack = trackName;
-
-		AudioClip to = null;
-
-		foreach (MusicTrack track in tracks)
-				if (track.name == trackName)
-					to = track.track;
-
-		StartCoroutine(CrossFade(to));
-	}
-
-	// Cross fading - Smooth Transition When Track Is Switched
-    private IEnumerator CrossFade(AudioClip to) {
-		if (music.clip != null) {
-			while (delayInCrossfading > 0) {
-				music.volume = delayInCrossfading * MusicVolume;
-				delayInCrossfading -= Time.unscaledDeltaTime;
-				yield return 0;
+			if(s.hasCooldown) {
+				Debug.Log(s.name);
+				soundTimerDictionary[s.name] = 0f;
 			}
 		}
-		music.clip = to;
-		if (to == null) {
-			music.Stop();
-			yield break;
-		}
-		delayInCrossfading = 0;
-
-        if (!music.isPlaying)
-            music.Play();
-		
-        while (delayInCrossfading < 1f) {
-			music.volume = delayInCrossfading * MusicVolume;
-			delayInCrossfading += Time.unscaledDeltaTime;
-			yield return 0;
-		}
-		music.volume = MusicVolume;
 	}
 
-	public void StopSound() {
-		sfx.Stop ();
+	private void Start() {
+
+		// Musica menù principale, viene riprodotta subito
+		Debug.Log("MUSIC INIZIATAAA");
+		PlayMusic(startingMusic);
 	}
 
-	// Sfx Button On/Off
-	public void SfxToggle() {
-        sfxMute = !sfxMute;
-        sfx.mute = sfxMute;
-
-		sfxButton.sprite = !sfxMute ? sfxOn : sfxOff;
-
-		PlayerPrefs.SetInt ("sfxMute", AudioUtils.BoolToBinary(sfxMute));
-        PlayerPrefs.Save();
-    }
-
-	// Music Button On/Off
-	public void MusicToggle() {
-        musicMute = !musicMute;
-        music.mute = musicMute;
-
-		musicButton.sprite = !musicMute ? musicOn : musicOff;
-
-        PlayerPrefs.SetInt("musicMute", AudioUtils.BoolToBinary(musicMute));
-        PlayerPrefs.Save();
-    }
-
-	// A single sound effect
-    public void PlaySound(string clip) {
-        Sound sound = GetSoundByName(clip);
-
-        if (sound != null && !mixBuffer.Contains(clip)) {
-            if (sound.clips.Count == 0)
-                return;
-				
-            mixBuffer.Add(clip);
-            sfx.PlayOneShot(sound.clips
-                .GetRandom()); // Randomly Play Sound Each Time Through The Array Of clip
-        }
-    }
-
-    // Changing Sfx Vol Using Slider
-	public void SfxSlider() {
-		float vol = sfxVolSlider.value;
-		sfx.volume = vol;
-
-		// Sets And Save The Value When User Use Slider
-		PlayerPrefs.SetFloat ("SFX Volume", vol);
-		PlayerPrefs.Save ();
-	}
-
-	// Changing Music Vol Using Slider
-	public void MusicSlider() {
-		float vol = musicVolSlider.value;
-		music.volume = vol;
-
-		// Sets And Save The Value When User Use Slider
-		PlayerPrefs.SetFloat ("Music Volume", vol);
-		PlayerPrefs.Save ();
-	}
-
-
+	
     public void Enable() {
         this.gameObject.SetActive(true);
     }
@@ -210,6 +52,148 @@ public class AudioManager : MonoBehaviour  {
         this.gameObject.SetActive(false);
     }
 
+	public void PlaySound(string name) {
+		
+		// Vogliamo trovare tra tutti i suoni, quello il cui nome
+		// è uguale a "name"
+		Sound sound = Array.Find(sounds, s => s.name == name);
 
-    
+		if (sound == null) {
+			Debug.LogError("PlaySound: Suono " + name + " non trovato!");
+			return;
+		}
+
+		if (!CanPlaySound(sound)) {
+			return;
+		}
+
+		sound.source.Play();
+	}
+
+	public void PlayMusic(string name) {
+		
+		// Fermo la musica precedente
+		if(music != null) {
+			previousMusicName = music.name;
+			StartCoroutine(FadeOut(music, 3f, Mathf.SmoothStep));
+		}
+
+		// Vogliamo trovare tra tutti i suoni, quello il cui nome
+		// è uguale a "name"
+		music = Array.Find(sounds, s => s.name == name);
+
+		if (music == null) {
+			Debug.LogError("PlayMusic: Musica " + name + " non trovata!");
+			return;
+		}
+
+		if (!CanPlaySound(music)) {
+			return;
+		}
+
+		StartCoroutine(FadeIn(music, 3f, Mathf.SmoothStep));
+
+	} 
+
+	public void PlayPreviousMusic() {
+
+		// Fermo la musica precedente
+		if(music != null) {
+			//music.source.Stop();
+			StartCoroutine(FadeOut(music, 3f, Mathf.SmoothStep));
+		}
+
+		// Vogliamo trovare tra tutti i suoni, quello il cui nome
+		// è uguale a "name"
+		music = Array.Find(sounds, s => s.name == previousMusicName);
+
+		if (music == null) {
+			Debug.LogError("PlayPreviousMusic: Musica " + previousMusicName + " non trovata!");
+			return;
+		}
+
+		if (!CanPlaySound(music)) {
+			return;
+		}
+
+		StartCoroutine(FadeIn(music, 3f, Mathf.SmoothStep));
+
+	}
+
+	public void StopMusic(string name) {
+
+		Sound sound = Array.Find(sounds, s => s.name == name);
+
+		if (sound == null) {
+			Debug.LogError("Stop: Suono " + name + " non trovato!");
+			return;
+		}
+
+		StartCoroutine(FadeOut(sound, 3f, Mathf.SmoothStep));
+	}
+
+	public void StopSound(string name) {
+
+		Sound sound = Array.Find(sounds, s => s.name == name);
+
+		if (sound == null) {
+			Debug.LogError("Stop: Suono " + name + " non trovato!");
+			return;
+		}
+
+		sound.source.Stop();
+	}
+
+	private static bool CanPlaySound(Sound sound) {
+		
+		if (soundTimerDictionary.ContainsKey(sound.name)) {
+			float lastTimePlayed = soundTimerDictionary[sound.name];
+
+			if ((lastTimePlayed + sound.clip.length) < Time.time) {
+				soundTimerDictionary[sound.name] = Time.time;
+				return true;
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	//
+	// Fade-In e Fade-Out
+	//
+
+	public static IEnumerator FadeOut(Sound sound, float fadingTime, Func<float, float, float, float> Interpolate) {
+        float startVolume = sound.source.volume;
+        float frameCount = fadingTime / Time.deltaTime;
+        float framesPassed = 0;
+
+        while (framesPassed <= frameCount) {
+            var t = framesPassed++ / frameCount;
+            sound.source.volume = Interpolate(startVolume, 0, t);
+            yield return null;
+        }
+
+        sound.source.volume = 0;
+        sound.source.Pause();
+    }
+    public static IEnumerator FadeIn(Sound sound, float fadingTime, Func<float, float, float, float> Interpolate) {
+        
+		sound.source.Play();
+        sound.source.volume = 0;
+
+        float resultVolume = sound.volume;
+        float frameCount = fadingTime / Time.deltaTime;
+        float framesPassed = 0;
+
+        while (framesPassed <= frameCount) {
+            var t = framesPassed++ / frameCount;
+            sound.source.volume = Interpolate(0, resultVolume, t);
+            yield return null;
+        }
+
+        sound.source.volume = resultVolume;
+    }
 }
+

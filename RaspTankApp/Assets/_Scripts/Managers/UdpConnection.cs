@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
     
-public class UdpConnectionOLD {
+public class UdpConnection {
 
     private UdpClient udpClient;
     

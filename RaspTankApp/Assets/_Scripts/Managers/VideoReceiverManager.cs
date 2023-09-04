@@ -11,7 +11,7 @@ public class VideoReceiverManager : MonoBehaviour {
     private IPEndPoint localEndPoint;
     private void Start() {
 
-        Debug.Log("UDP: Avvio il receiver");
+        Debug.Log("UDP: Avvio il video receiver");
         ConnectToServer();
     }
 
@@ -57,8 +57,6 @@ public class VideoReceiverManager : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
-        if (client != null) {
-            client.Close();
-        }
+        client?.Close();
     }
 }

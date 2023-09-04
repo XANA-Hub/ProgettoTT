@@ -35,14 +35,13 @@ public class ClientTCPManager : MonoBehaviour {
         int length = 0;
 
         Debug.Log("TCP: Sono dentro a ReceiveAndPrintData");
-        using (NetworkStream stream = client.GetStream()) {
-            while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
-                var incomingData = new byte[length];
-                Array.Copy(bytes, 0, incomingData, 0, length);
+        using NetworkStream stream = client.GetStream();
+        while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
+            var incomingData = new byte[length];
+            Array.Copy(bytes, 0, incomingData, 0, length);
 
-                string serverMessage = Encoding.ASCII.GetString(incomingData);
-                Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
-            }
+            string serverMessage = Encoding.ASCII.GetString(incomingData);
+            Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
         }
     }
 
@@ -97,8 +96,8 @@ public class ClientTCPManager : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
-        if (client != null) {
-            client.Close();
-        }
+
+        this.SendData(RobotCommands.disconnect);
+        client?.Close();
     }
 }

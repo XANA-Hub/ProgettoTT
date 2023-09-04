@@ -15,6 +15,7 @@ public class MasterManager : MonoBehaviour {
     public TouchManager touchManager{ get; private set; }
     public ClientTCPManager clientTCPManager { get; private set; }
     public VideoReceiverManager videoReceiverManager { get; private set; }
+    public GameObject hud { get; private set; }
     //public GameManager gameManager { get; private set; }
 
 
@@ -28,12 +29,6 @@ public class MasterManager : MonoBehaviour {
         if(instance != null) {
 
             Destroy(this.gameObject);
-
-            // Tutte le righe sotto prima del return derivano dal GameManager
-            //
-            //Destroy(player.gameObject);
-            //Destroy(characterMenu);
-            //Destroy(hud);
             
 
             return;
@@ -43,11 +38,12 @@ public class MasterManager : MonoBehaviour {
 
 
         // Ottengo i vari GameObject figli
+        hud = this.transform.GetChild(0).gameObject;
+        videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         audioManager = GetComponentInChildren<AudioManager>();
         inputManager = GetComponentInChildren<InputManager>();
         touchManager = GetComponentInChildren<TouchManager>();
         clientTCPManager = GetComponentInChildren<ClientTCPManager>();
-        videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         //gameManager = GetComponentInChildren<GameManager>();
 
     }
