@@ -42,6 +42,10 @@ public class ClientTCPManager : MonoBehaviour {
 
             string serverMessage = Encoding.ASCII.GetString(incomingData);
             Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
+
+            if(serverMessage == "ready") {
+                MasterManager.instance.clientTCPManager.SendData(RobotCommands.start);
+            }
         }
     }
 
@@ -96,8 +100,7 @@ public class ClientTCPManager : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
-
-        this.SendData(RobotCommands.disconnect);
+        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
         client?.Close();
     }
 }

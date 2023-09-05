@@ -16,7 +16,7 @@ public static class RobotCommands {
     public const string armGrab = "ID:000;TYPE:Robot_Arm;BODY:Grab";
     public const string armRelease = "ID:000;TYPE:Robot_Arm;BODY:Release";
     public const string disconnect = "ID:000;TYPE:Disconnect;BODY:Disconnect";
-    public const string connect = "ID:000;TYPE:Start;BODY:192.168.1.238:25565";
+    public const string start = "ID:000;TYPE:Start;BODY:192.168.1.13:25565";
     public const string AIIdentifyCurrent = "ID:000;TYPE:AI_Recognition;BODY:Identify_Current";
 
 
