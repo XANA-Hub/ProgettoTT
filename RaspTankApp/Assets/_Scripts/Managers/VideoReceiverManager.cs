@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
 public class VideoReceiverManager : MonoBehaviour
 {   
@@ -45,9 +44,11 @@ public class VideoReceiverManager : MonoBehaviour
                 });
 
             }
-            catch (Exception e)
+            catch(Exception)
             {
-                Debug.LogError("Error receiving data: " + e.Message);
+                //Debug.LogError("Error receiving data: " + e.Message);
+                continue;
+
             }
         }
     }
@@ -59,7 +60,7 @@ public class VideoReceiverManager : MonoBehaviour
             receivedTexture.LoadImage(byteArray);
             rawImage.texture = receivedTexture;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             Debug.LogError("Error converting bytes to texture: " + e.Message);
         }
@@ -75,8 +76,9 @@ public class VideoReceiverManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        // Stop listening and clean up resources when the script is destroyed
-        isListening = false;
-        udpClient.Close();
+        if (isListening) {
+            udpClient.Close();
+            isListening = false;
+        }
     }
 }
