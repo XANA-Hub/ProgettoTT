@@ -7,7 +7,6 @@ public class SceneInitialization : MonoBehaviour {
     //
 
     [SerializeField] private bool audioManagerEnabled = false;
-    [SerializeField] private bool touchManagerEnabled = false;
     [SerializeField] private bool inputManagerEnabled = false;
     [SerializeField] private bool clientTCPManagerEnabled = false;
     [SerializeField] private bool videoReceiverManagerEnabled = false;
@@ -23,12 +22,6 @@ public class SceneInitialization : MonoBehaviour {
             MasterManager.instance.audioManager.Enable();
         } else {
             MasterManager.instance.audioManager.Disable();
-        }
-
-        if(touchManagerEnabled) {
-            MasterManager.instance.touchManager.Enable();
-        } else {
-            MasterManager.instance.touchManager.Disable();
         }
 
         if(inputManagerEnabled) {

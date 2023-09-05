@@ -252,10 +252,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManagerEnabled: 1
-  touchManagerEnabled: 0
   inputManagerEnabled: 0
-  clientTCPManagerEnabled: 1
-  videoReceiverManagerEnabled: 0
+  clientTCPManagerEnabled: 0
+  videoReceiverManagerEnabled: 1
 --- !u!1 &1107547126
 GameObject:
   m_ObjectHideFlags: 0

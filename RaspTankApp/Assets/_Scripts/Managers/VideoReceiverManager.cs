@@ -1,62 +1,81 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using UnityEngine;
 
-public class VideoReceiverManager : MonoBehaviour {
-	
+public class VideoReceiverManager : MonoBehaviour
+{   
     public int port = 25565;
+    public RawImage rawImage;
+    private Texture2D receivedTexture;
+    private UdpClient udpClient;
+    private bool isListening = true;
 
-    private UdpClient client;
-    private IPEndPoint localEndPoint;
-    private void Start() {
+    private void Start()
+    {
+        receivedTexture = new Texture2D(640, 480); // Initialize the Texture2D
 
-        Debug.Log("UDP: Avvio il video receiver");
-        ConnectToServer();
-    }
-
-    private void ConnectToServer() {
-
-        // Imposta la porta del server a cui connettersi
-        localEndPoint = new IPEndPoint(IPAddress.Any, port);
-
+        // Create a UDP client and bind it to a specific port
+        udpClient = new UdpClient(port); // Change this port to the desired port number 
+        
         Loom.RunAsync(() => {
-            try {
-                Debug.Log("UDP: sono dentro al thread");
-                client = new UdpClient(localEndPoint);
-                Debug.Log("UDP: nuovo client creato");
-                ReceiveAndPrintData();
-            }
-            catch (SocketException socketException) {
-                Debug.Log("UDP: Socket exception: " + socketException);
-            }
+            ReceiveData();
         });
-
     }
 
-    private void ReceiveAndPrintData() {
+    private void ReceiveData()
+    {
+        while (isListening)
+        {
+            try
+            {
+                IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] data = udpClient.Receive(ref anyIP);
 
-        IPEndPoint remoteEndPoint = localEndPoint;
+                // Converti i dati in una stringa utilizzando un encoding specifico (ad esempio, UTF-8)
+                //string message = Encoding.UTF8.GetString(data);
+                // Stampa il messaggio nella console di Unity
+                //Debug.Log("Messaggio ricevuto: " + message);
+                
+                Loom.QueueOnMainThread(() => {
+                    convertBytesToTexture(data);
+                });
 
-        while (true) {
-            Debug.Log("UDP: Mi preparo a ricevere, dentro al loop");
-            byte[] receivedData = client.Receive(ref remoteEndPoint);
-            //Debug.Log(receivedData);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error receiving data: " + e.Message);
+            }
+        }
+    }
 
-            string serverMessage = Encoding.ASCII.GetString(receivedData);
-            Debug.Log(serverMessage);
+    private void convertBytesToTexture(byte[] byteArray)
+    {
+        try
+        {
+            receivedTexture.LoadImage(byteArray);
+            rawImage.texture = receivedTexture;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error converting bytes to texture: " + e.Message);
         }
     }
 
     public void Enable() {
-        gameObject.SetActive(true);
+        this.gameObject.SetActive(true);
     }
 
     public void Disable() {
-        gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
     }
 
-    private void OnApplicationQuit() {
-        client?.Close();
+    private void OnApplicationQuit()
+    {
+        // Stop listening and clean up resources when the script is destroyed
+        isListening = false;
+        udpClient.Close();
     }
 }
