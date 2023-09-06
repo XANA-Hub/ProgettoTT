@@ -20,6 +20,7 @@ grabCommand = b"ID:000;TYPE:Robot_Arm;BODY:Grab"
 releaseCommand = b"ID:000;TYPE:Robot_Arm;BODY:Release"
 DisconnectCommand = b"ID:000;TYPE:Disconnect;BODY:Disconnect"
 ConnectedCommand = b"ID:000;TYPE:Start;BODY:192.168.1.238:25565"    #cambia a seconda di chi lo lancia
+AIrequestCommand = b"ID:000;TYPE:AI_Recognition;BODY:Identify_Current"
 
 #socket connection --------------------------------------------------------------------------------
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -61,6 +62,11 @@ def grab_pressed(event):
     s.sendall(grabCommand)
 def release_pressed(event):
     s.sendall(releaseCommand)
+
+def AIrequest(event):
+    s.sendall(AIrequestCommand)
+    data = s.recv(1024)
+    print(data)
 
 def disconnect_pressed(event):
     s.sendall(DisconnectCommand)
@@ -204,6 +210,17 @@ buttonRelease = tk.Button(
 )
 buttonRelease.pack(side=tk.BOTTOM)
 buttonRelease.bind("<ButtonPress-1>", disconnect_pressed)
+
+buttonRelease = tk.Button(
+    master=window,
+    text="AIrequest",
+    width=10,
+    height=5,
+    bg="white",
+    fg="black",
+)
+buttonRelease.pack(side=tk.BOTTOM)
+buttonRelease.bind("<ButtonPress-1>", AIrequest)
 
 
 window.mainloop() #to keep the window open

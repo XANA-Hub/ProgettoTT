@@ -24,6 +24,9 @@ class Actor(pykka.ThreadingActor):
             #start will initialize the connection with the client for the stream video
             ActorsConfig.actorVideoHandler_ref.tell(messageToken[TYPE][5:] + ";" + messageToken[BODY][5:])          # Start;192.168.n.n:PORTA
 
+        elif "AI_Recognition" in messageToken[TYPE]:
+            ActorsConfig.actorAI_ref.tell(messageToken[BODY][5:])
+
         elif "Terminate" in messageToken[TYPE]:         #can only be generate by the system (socket class) for complete termination of the robot for now
             self.terminating(messageToken[TYPE][5:])
             self.stop()
