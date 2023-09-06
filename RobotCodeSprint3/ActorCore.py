@@ -58,6 +58,7 @@ class Actor(pykka.ThreadingActor):
         ActorsConfig.actorArmControl_ref.tell(messageToken)
         ActorsConfig.actorMovementControl_ref.tell(messageToken)
         ActorsConfig.actorVideoHandler_ref.tell(messageToken)
+        ActorsConfig.actorAI_ref.tell(messageToken)
 
         #terminate himself
         print("--RobotCore-- terminating")

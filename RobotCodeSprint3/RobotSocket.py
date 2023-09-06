@@ -9,9 +9,9 @@ HOST = "192.168.1.16"                      # Standard loopback interface address
 PORT = 25565                            # Standard port to listen on (non-privileged ports are > 1023)
 
 socketVideo = None
-socketTCP = None
 
 def startSocket(ip = HOST, port = PORT):
+    global conn
     try:
         print("Avvio del server TCP con indirizzo " + ip + ":" + str(port))
         socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)           #creazione della socket tcp
@@ -54,8 +54,14 @@ def startSocket(ip = HOST, port = PORT):
 
 
 def sendAIresponse(response):
+    print("socket converting to bytes...")
+    print(response)
     response = bytes(response, 'utf-8')         #convert string to bytes
-    socketTCP.sendAll(response)
+    print("socket sending...")
+    print(conn)
+    print(response)
+    conn.send(response)
+    print("finito di inviare")
 
 def startVideoSocket(ip, port):
     socketVideo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

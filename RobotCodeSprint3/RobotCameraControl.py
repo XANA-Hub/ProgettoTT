@@ -6,7 +6,7 @@ import libcamera
 def initCamera():
     camera = picamera2.Picamera2()
     #POSSIBILI SIZE 640x480 - 400x300
-    preview_config = camera.create_preview_configuration(main={"size": (640, 480)},transform=libcamera.Transform(hflip=1,vflip=1))
+    preview_config = camera.create_preview_configuration(main={"size": (1280, 720)},transform=libcamera.Transform(hflip=1,vflip=1))
     camera.configure(preview_config)
     return camera
 

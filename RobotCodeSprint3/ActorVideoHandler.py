@@ -37,17 +37,16 @@ class Actor(pykka.ThreadingActor):
             
 
     def startVideo(self, address):
-        if TEST: print("--ActorVideoHandler-- start stream video iniziata")
         messageToken = address.split(":")                  # 192.168.n.n:PORTA
         stream_file = rs.startVideoSocket(messageToken[0], int(messageToken[1]))
         RobotCameraControl.sendVideo(self.camera, stream_file)
-        if TEST: print("--ActorVideoHandler-- start stream video conclusa")
+        if TEST: print("--ActorVideoHandler-- stream video started")
 
         
     def stopVideo(self):
         RobotCameraControl.stopVideo(self.camera)
         rs.closeVideoSocket()
-        if TEST: print("--ActorVideoHandler-- stop stream video conclusa")
+        if TEST: print("--ActorVideoHandler--  stream video closed")
         #se invoco la close quando non esiste la socket? Possibile da "Terminate" <-- DA TESTARE
 
 
