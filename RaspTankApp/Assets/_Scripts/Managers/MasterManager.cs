@@ -11,11 +11,11 @@ public class MasterManager : MonoBehaviour {
     //
 
     public AudioManager audioManager { get; private set; }
-    public InputManager inputManager { get; private set; }
     public ClientTCPManager clientTCPManager { get; private set; }
     public VideoReceiverManager videoReceiverManager { get; private set; }
     public GameObject hud { get; private set; }
-    //public GameManager gameManager { get; private set; }
+    public GameManager gameManager { get; private set; }
+    //public RobotResponseManager robotResponseManager { get; private set; }
 
 
     //
@@ -40,9 +40,9 @@ public class MasterManager : MonoBehaviour {
         hud = this.transform.GetChild(0).gameObject;
         videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         audioManager = GetComponentInChildren<AudioManager>();
-        inputManager = GetComponentInChildren<InputManager>();
         clientTCPManager = GetComponentInChildren<ClientTCPManager>();
-        //gameManager = GetComponentInChildren<GameManager>();
+        gameManager = GetComponentInChildren<GameManager>();
+        //robotResponseManager = GetComponentInChildren<RobotResponseManager>();
 
     }
     

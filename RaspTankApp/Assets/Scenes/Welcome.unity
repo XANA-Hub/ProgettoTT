@@ -255,6 +255,8 @@ MonoBehaviour:
   inputManagerEnabled: 0
   clientTCPManagerEnabled: 1
   videoReceiverManagerEnabled: 1
+  gameManagerEnabled: 1
+  robotResponseManagerEnabled: 1
 --- !u!1 &1107547126
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class ClientTCPManager : MonoBehaviour {
 	
     public string ipAddress = "192.168.178.69";
     public int port = 25565;
+    private string serverMessage = "EMPTY";
 
     private TcpClient client;
 
@@ -24,7 +25,7 @@ public class ClientTCPManager : MonoBehaviour {
                 ReceiveAndPrintData();
             }
             catch (SocketException socketException) {
-                Debug.Log("TCP: Socket exception: " + socketException);
+                Debug.Log("TCp Socket exception: " + socketException);
             }
         });
     }
@@ -39,13 +40,30 @@ public class ClientTCPManager : MonoBehaviour {
         while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
             var incomingData = new byte[length];
             Array.Copy(bytes, 0, incomingData, 0, length);
-
-            string serverMessage = Encoding.ASCII.GetString(incomingData);
+            serverMessage = Encoding.ASCII.GetString(incomingData);
             Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
 
-            if(serverMessage == "ready") {
-                MasterManager.instance.clientTCPManager.SendData(RobotCommands.start);
-            }
+            checkMessage(serverMessage);
+        }
+    }
+
+    // Forse da togliere, serve nel caso voglia fare un RobotResponseManager
+    public string getLatestServerMessage() {
+        return serverMessage;
+    }
+
+    private void checkMessage(string message) {
+        
+        // Avvio il flusso video
+        if(message ==  RobotCommands.readyResponse) {
+            Debug.Log("Ho ricevuto il comando READY - avvio il flusso video");
+            MasterManager.instance.clientTCPManager.SendData(RobotCommands.start);
+        }
+
+        // Ho trovato un pezzo degli scacchi, mostro la schermata della battaglia
+        else if(message == RobotCommands.identifyResponse) {
+            Debug.Log("Ho ricevuto il comando IDENTIFIED - avvio la battaglia");
+            MasterManager.instance.gameManager.ShowBattleScreen();
         }
     }
 
@@ -81,13 +99,12 @@ public class ClientTCPManager : MonoBehaviour {
             NetworkStream stream = client.GetStream();
             if (stream.CanWrite) {
                 byte[] clientMessageAsByteArray = Encoding.UTF8.GetBytes(clientMessage);
-
                 stream.Write(clientMessageAsByteArray, 0, clientMessageAsByteArray.Length);
                 Debug.Log("TCP: Messaggio inviato!");
             }
         }
         catch (SocketException socketException) {
-            Debug.Log("TCP: Socket exception: " + socketException);
+            Debug.Log("TCP Socket exception: " + socketException);
         }
     }
 

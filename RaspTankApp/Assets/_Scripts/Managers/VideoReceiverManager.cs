@@ -33,11 +33,10 @@ public class VideoReceiverManager : MonoBehaviour
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data = udpClient.Receive(ref anyIP);
 
-                Debug.Log(data);
                 // Converti i dati in una stringa utilizzando un encoding specifico (ad esempio, UTF-8)
                 // string message = Encoding.UTF8.GetString(data);
                 // Stampa il messaggio nella console di Unity
-                //Debug.Log("Messaggio ricevuto: " + message);
+                // Debug.Log("Messaggio ricevuto: " + message);
                 
                 Loom.QueueOnMainThread(() => {
                     convertBytesToTexture(data);

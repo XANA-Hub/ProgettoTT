@@ -7,9 +7,10 @@ public class SceneInitialization : MonoBehaviour {
     //
 
     [SerializeField] private bool audioManagerEnabled = false;
-    [SerializeField] private bool inputManagerEnabled = false;
     [SerializeField] private bool clientTCPManagerEnabled = false;
     [SerializeField] private bool videoReceiverManagerEnabled = false;
+    [SerializeField] private bool gameManagerEnabled = false;
+
 
 
     private void Awake() {
@@ -23,13 +24,6 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.audioManager.Disable();
         }
-
-        if(inputManagerEnabled) {
-            MasterManager.instance.inputManager.Enable();
-        } else {
-            MasterManager.instance.inputManager.Disable();
-        }
-
         if(clientTCPManagerEnabled) {
             MasterManager.instance.clientTCPManager.Enable();
         } else {
@@ -39,6 +33,11 @@ public class SceneInitialization : MonoBehaviour {
             MasterManager.instance.videoReceiverManager.Enable();
         } else {
             MasterManager.instance.videoReceiverManager.Disable();
+        }
+        if(gameManagerEnabled) {
+            MasterManager.instance.gameManager.Enable();
+        } else {
+            MasterManager.instance.gameManager.Disable();
         }
 
 
