@@ -9,8 +9,7 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool audioManagerEnabled = false;
     [SerializeField] private bool clientTCPManagerEnabled = false;
     [SerializeField] private bool videoReceiverManagerEnabled = false;
-    [SerializeField] private bool gameManagerEnabled = false;
-
+    [SerializeField] private bool battleManagerEnabled = false;
 
 
     private void Awake() {
@@ -34,10 +33,10 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.videoReceiverManager.Disable();
         }
-        if(gameManagerEnabled) {
-            MasterManager.instance.gameManager.Enable();
+        if(battleManagerEnabled) {
+            MasterManager.instance.battleManager.Enable();
         } else {
-            MasterManager.instance.gameManager.Disable();
+            MasterManager.instance.battleManager.Disable();
         }
 
 

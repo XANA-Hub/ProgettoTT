@@ -9,13 +9,13 @@ public class MasterManager : MonoBehaviour {
     //
     // Manager
     //
-
     public AudioManager audioManager { get; private set; }
     public ClientTCPManager clientTCPManager { get; private set; }
     public VideoReceiverManager videoReceiverManager { get; private set; }
     public GameObject hud { get; private set; }
-    public GameManager gameManager { get; private set; }
-    //public RobotResponseManager robotResponseManager { get; private set; }
+    public Player player { get; private set; }
+    public MonsterDatabase monsterDatabase { get; private set; }
+    public BattleManager battleManager { get; private set; }
 
 
     //
@@ -41,7 +41,9 @@ public class MasterManager : MonoBehaviour {
         videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         audioManager = GetComponentInChildren<AudioManager>();
         clientTCPManager = GetComponentInChildren<ClientTCPManager>();
-        gameManager = GetComponentInChildren<GameManager>();
+        player = GetComponentInChildren<Player>();
+        monsterDatabase = GetComponentInChildren<MonsterDatabase>();
+        battleManager = GetComponentInChildren<BattleManager>();
         //robotResponseManager = GetComponentInChildren<RobotResponseManager>();
 
     }

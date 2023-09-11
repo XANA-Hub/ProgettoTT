@@ -2,6 +2,8 @@ using UnityEngine;
 
 [System.Serializable]
 public class FighterData {
+
+    // Attributi base
     public string name;     // Nome dell'entità
     public Sprite sprite;   // Sprite dell'entità
 

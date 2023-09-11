@@ -7,27 +7,46 @@ public class ClientTCPManager : MonoBehaviour {
 	
     public string ipAddress = "192.168.178.69";
     public int port = 25565;
+    public int maxRetries = 5;
     private string serverMessage = "EMPTY";
+    private bool isApplicationQuitting = false;
 
     private TcpClient client;
 
     private void Start() {
 
         // Imposta l'indirizzo IP e la porta del server a cui connettersi   
-        ConnectToServer();
+        ConnectToServerWithRetry();
     }
 
-    private void ConnectToServer() {
+    private void ConnectToServerWithRetry() {
+        
+        int currentRetry = 0;
 
         Loom.RunAsync(() => {
-            try {
-                client = new TcpClient(ipAddress, port);
-                ReceiveAndPrintData();
-            }
-            catch (SocketException socketException) {
-                Debug.Log("TCp Socket exception: " + socketException);
+            while (currentRetry < maxRetries) {
+
+                // Esci dal ciclo se l'applicazione sta terminando
+                if (isApplicationQuitting) {
+                    Debug.LogWarning("L'applicazione è stata terminata, smetto di tentare la connessione...");
+                    return;
+                }
+
+                try {
+                    client = new TcpClient(ipAddress, port);
+                    ReceiveAndPrintData();
+                    break; // Esci dal ciclo se la connessione ha successo
+                }
+                catch (SocketException socketException) {
+                    currentRetry++;
+                    Debug.Log("TCP Socket Exception (tentativo numero " + currentRetry + "): " + socketException);
+                    if (currentRetry >= maxRetries) {
+                        Debug.LogError("Connessione non riuscita dopo " + maxRetries + " tentativi. Smetto...");
+                    }
+                }
             }
         });
+
     }
 
     private void ReceiveAndPrintData() {
@@ -63,9 +82,26 @@ public class ClientTCPManager : MonoBehaviour {
         // Ho trovato un pezzo degli scacchi, mostro la schermata della battaglia
         else if(message == RobotCommands.identifyResponse) {
             Debug.Log("Ho ricevuto il comando IDENTIFIED - avvio la battaglia");
-            MasterManager.instance.gameManager.ShowBattleScreen();
+            MasterManager.instance.battleManager.StartBattle();
         }
     }
+
+    /*
+    private void ConnectToServer() {
+
+        Loom.RunAsync(() => {
+            try {
+                client = new TcpClient(ipAddress, port);
+                ReceiveAndPrintData();
+            }
+            catch (SocketException socketException) {
+                Debug.Log("TCp Socket exception: " + socketException);
+            }
+        });
+    }
+    */
+    
+    // --------------------
 
     /*
     private void ReceiveAndPrintDataMultiple() {
@@ -117,6 +153,7 @@ public class ClientTCPManager : MonoBehaviour {
     }
 
     private void OnApplicationQuit() {
+        isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
         MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
         client?.Close();
     }

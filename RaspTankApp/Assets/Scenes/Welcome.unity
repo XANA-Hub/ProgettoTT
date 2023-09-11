@@ -254,7 +254,7 @@ MonoBehaviour:
   audioManagerEnabled: 1
   clientTCPManagerEnabled: 1
   videoReceiverManagerEnabled: 1
-  gameManagerEnabled: 1
+  battleManagerEnabled: 1
 --- !u!1 &1107547126
 GameObject:
   m_ObjectHideFlags: 0
