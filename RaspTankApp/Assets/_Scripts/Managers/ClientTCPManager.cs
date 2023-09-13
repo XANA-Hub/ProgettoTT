@@ -82,7 +82,7 @@ public class ClientTCPManager : MonoBehaviour {
         // Ho trovato un pezzo degli scacchi, mostro la schermata della battaglia
         else if(message == RobotCommands.identifyResponse) {
             Debug.Log("Ho ricevuto il comando IDENTIFIED - avvio la battaglia");
-            MasterManager.instance.battleManager.StartBattle();
+            // MasterManager.instance.battleManager.SetUpBattle();
         }
     }
 

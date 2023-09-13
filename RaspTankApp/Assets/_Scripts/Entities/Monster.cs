@@ -17,9 +17,10 @@ public class Monster : MonoBehaviour {
     public void Awake() {
 
         // Calcola il livello del mostro in base al livello del giocatore
-        level = CalculateLevel(MasterManager.instance.player.getLevel());
+        level = CalculateLevel(MasterManager.instance.player.getLevel(), 2);
         Debug.Log("LIVELLO MOSTRO GENERATO: " + level);
         CalculateStats(); // Calcola le statistiche effettive in base al livello
+        Debug.Log("ACTUAL HPPP: " + actualHP);
     }
 
     // Metodo per calcolare le statistiche effettive in base al livello
@@ -31,13 +32,29 @@ public class Monster : MonoBehaviour {
     }
     
     // Metodo per calcolare il livello del mostro in base al livello del giocatore
-    private int CalculateLevel(int playerLevel) {
+    public int CalculateLevel(int playerLevel, int levelVariation) {
 
-        // Genera un livello casuale per il nemico basato sul livello del giocatore
-        int livelloCasualeNemico = Random.Range(playerLevel - 2, playerLevel + 2);
-        livelloCasualeNemico = Mathf.Max(1, livelloCasualeNemico);
+        // Calcola un livello casuale entro l'intervallo di levelVariation
+        int randomLevelOffset = Random.Range(-levelVariation, levelVariation + 1);
 
-        return livelloCasualeNemico;
+        // Calcola il livello del nemico in base al livello del giocatore e all'offset casuale
+        int enemyLevel = playerLevel + randomLevelOffset;
+
+        // Assicurati che il livello del nemico sia almeno 1 (non può essere negativo)
+        enemyLevel = Mathf.Max(1, enemyLevel);
+
+        return enemyLevel;
+    }
+
+    public bool takeDamage(int dmgAmount) {
+
+        actualHP -= dmgAmount;
+
+        // Morto
+        if(actualHP <= 0) 
+            return true;
+        else
+            return false;
     }
 
 

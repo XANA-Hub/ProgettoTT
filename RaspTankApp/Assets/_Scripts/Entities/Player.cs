@@ -25,6 +25,17 @@ public class Player : MonoBehaviour {
         actualHP  = data.baseHealth + (level * 10);
     }
 
+    public bool takeDamage(int dmgAmount) {
+
+        actualHP -= dmgAmount;
+
+        // Morto
+        if(actualHP <= 0) 
+            return true;
+        else
+            return false;
+    }
+
     public int getLevel() {
         return this.level;
     }

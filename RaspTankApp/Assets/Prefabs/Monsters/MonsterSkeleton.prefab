@@ -49,5 +49,5 @@ MonoBehaviour:
     sprite: {fileID: 1169129682, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
     baseAttack: 20
     baseDefense: 10
-    baseHealth: 25
+    baseHealth: 30
     baseHeal: 4
