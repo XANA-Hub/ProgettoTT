@@ -1689,6 +1689,7 @@ MonoBehaviour:
   criticalHitProbability: 0.125
   criticalHitMultiplier: 1.5
   fleeProbability: 0.3
+  healProbability: 0.4
 --- !u!1 &2709348493991587955
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,6 +4589,7 @@ MonoBehaviour:
   monsters:
   - {fileID: 4926191844051674340, guid: e7f354c98b3546e429c833cf5bec446a, type: 3}
   - {fileID: 4926191844051674340, guid: 60614892b1536864096ff674cf000879, type: 3}
+  - {fileID: 4926191844051674340, guid: 208f6cc84152f5b428d248d7fb22f7e4, type: 3}
   - {fileID: 4926191844051674340, guid: 208f6cc84152f5b428d248d7fb22f7e4, type: 3}
 --- !u!1 &6699676186662159066
 GameObject:

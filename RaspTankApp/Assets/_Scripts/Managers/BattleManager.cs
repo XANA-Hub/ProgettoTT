@@ -53,10 +53,10 @@ public class BattleManager : MonoBehaviour {
         enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
         
 
-        Debug.Log("HP BASE giocatore: " + player.data.baseHealth);
+        Debug.Log("HP BASE giocatore: " + player.data.baseHP);
         Debug.Log("HP ATTUALI giocatore: " + player.getActualHP());
         
-        Debug.Log("HP BASE mostro: " + monster.data.baseHealth);
+        Debug.Log("HP BASE mostro: " + monster.data.baseHP);
         Debug.Log("HP ATTUALI mostro: " + monster.getActualHP());
 
         Debug.Log("LIVELLO giocatore: " + player.getLevel());
@@ -245,7 +245,7 @@ public class BattleManager : MonoBehaviour {
 
     public void SetPlayerHP(int currentHP) {
 
-        float ratio = (float)currentHP / (float)MasterManager.instance.player.data.baseHealth;
+        float ratio = (float)currentHP / (float)MasterManager.instance.player.data.baseHP;
 
         // Modifico la barra degli HP
         playerHP.localScale = new Vector3(ratio, 1, 1);
@@ -255,7 +255,7 @@ public class BattleManager : MonoBehaviour {
 
     public void SetEnemyHP(int currentHP) {
 
-        float ratio = (float)currentHP / (float)monster.data.baseHealth;
+        float ratio = (float)currentHP / (float)monster.data.baseHP;
 
         // Modifico la barra degli HP
         enemyHP.localScale = new Vector3(ratio, 1, 1);

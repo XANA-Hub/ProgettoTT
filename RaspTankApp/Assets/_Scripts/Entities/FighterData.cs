@@ -10,6 +10,7 @@ public class FighterData {
     // Altri dati necessari per calcolare le statistiche effettive
     public int baseAttack;         // Punti di attacco di base
     public int baseDefense;        // Punti di difesa di base
-    public int baseHealth;         // Punti vita di base
+    public int baseHP;             // Punti vita di base
     public int baseHeal;           // Punti di cura base
+    public int baseSpeed;          // Punti di velocità base
 }

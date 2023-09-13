@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
         int levelMultiplier = level * 2;
         actualAttack = data.baseAttack + levelMultiplier;
         actualDefense = data.baseDefense + levelMultiplier;
-        actualHP  = data.baseHealth + (level * 10);
+        actualHP  = data.baseHP + (level * 10);
     }
 
     public bool takeDamage(int dmgAmount) {

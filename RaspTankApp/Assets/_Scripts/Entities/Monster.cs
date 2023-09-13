@@ -15,12 +15,9 @@ public class Monster : MonoBehaviour {
 
     // Metodo per inizializzare il mostro con un oggetto "MonsterData" e un livello calcolato
     public void Awake() {
-
         // Calcola il livello del mostro in base al livello del giocatore
         level = CalculateLevel(MasterManager.instance.player.getLevel(), 2);
-        Debug.Log("LIVELLO MOSTRO GENERATO: " + level);
         CalculateStats(); // Calcola le statistiche effettive in base al livello
-        Debug.Log("ACTUAL HPPP: " + actualHP);
     }
 
     // Metodo per calcolare le statistiche effettive in base al livello
@@ -28,7 +25,7 @@ public class Monster : MonoBehaviour {
         int levelMultiplier = level * 2;
         actualAttack = data.baseAttack + levelMultiplier;
         actualDefense = data.baseDefense + levelMultiplier;
-        actualHP  = data.baseHealth + (level * 10);
+        actualHP  = data.baseHP + (level * 10);
     }
     
     // Metodo per calcolare il livello del mostro in base al livello del giocatore
