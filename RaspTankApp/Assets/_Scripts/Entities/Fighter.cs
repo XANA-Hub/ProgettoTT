@@ -28,17 +28,37 @@ public class Fighter : MonoBehaviour {
 
     // Metodo per calcolare le statistiche effettive in base al livello
     // TODOOOOO
+    //
     protected void InitializeStats() {
 
         // Trovo il bonus natura del fighter
         currentNatureBonus = GetNatureBonus(this.data.preferredNatureBonus);
 
         // Calcolo le varie stat del fighter in base al bonus natura scelto
-        currentAttack = CalculateCurrentStatWithBonus(this.data.baseAttack, this.level, currentNatureBonus);
-        currentDefense = CalculateCurrentStatWithBonus(this.data.baseDefense, this.level, currentNatureBonus);
-        currentHP = CalculateCurrentStatWithBonus(this.data.baseHP, this.level, currentNatureBonus);
-        currentSpeed = CalculateCurrentStatWithBonus(this.data.baseSpeed, this.level, currentNatureBonus);
-        currentHeal = CalculateCurrentStatWithBonus(this.data.baseHeal, this.level, currentNatureBonus);
+        currentAttack = CalculateCurrentStatWithoutBonus(this.data.baseAttack, this.level);
+        currentDefense = CalculateCurrentStatWithoutBonus(this.data.baseDefense, this.level);
+        currentHP = CalculateCurrentStatWithoutBonus(this.data.baseHP, this.level);
+        currentSpeed = CalculateCurrentStatWithoutBonus(this.data.baseSpeed, this.level);
+        currentHeal = CalculateCurrentStatWithoutBonus(this.data.baseHeal, this.level);
+
+        // Aggiungo il nature bonus
+        switch(currentNatureBonus) {
+            case NatureBonus.HP:
+                currentHP += (int)System.Math.Ceiling(currentHP * data.natureBonusPercentage); // Arrotonda per eccesso
+                break;
+            case NatureBonus.ATTACK:
+                currentAttack += (int)System.Math.Ceiling(currentAttack * data.natureBonusPercentage); // Arrotonda per eccesso
+                break;
+            case NatureBonus.DEFENSE:
+                currentDefense += (int)System.Math.Ceiling(currentDefense * data.natureBonusPercentage); // Arrotonda per eccesso
+                break;
+            case NatureBonus.SPEED:
+                currentSpeed += (int)System.Math.Ceiling(currentSpeed * data.natureBonusPercentage); // Arrotonda per eccesso
+                break;
+            case NatureBonus.HEAL:
+                currentHeal += (int)System.Math.Ceiling(currentHeal * data.natureBonusPercentage); // Arrotonda per eccesso
+                break;
+        }
 
         // Imposto le stat massime
         maxCurrentAttack = currentAttack;
@@ -49,21 +69,9 @@ public class Fighter : MonoBehaviour {
 
     }
 
-
-
     // Calcola le statistiche senza il bonus natura
     private int CalculateCurrentStatWithoutBonus(int baseStat, int level) {
         return baseStat * (1 + (level - 1) / 100);
-    }
-
-    // Calcola le statistiche con il bonus natura
-    private int CalculateCurrentStatWithBonus(int baseStat, int level, NatureBonus chosenNatureBonus) {
-        
-        float natureBonusPercentage = this.data.natureBonusPercentage;
-
-        int currentStat = CalculateCurrentStatWithoutBonus(baseStat, level);
-        currentStat += (int)System.Math.Ceiling(currentStat * natureBonusPercentage); // Arrotonda per eccesso
-        return currentStat;
     }
 
     // Permette di dare il NatureBonus in base a quello preferito
