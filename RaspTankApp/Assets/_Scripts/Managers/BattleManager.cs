@@ -36,6 +36,8 @@ public class BattleManager : MonoBehaviour {
     [Range(1.0f, 2.0f)] public float criticalHitMultiplier = 1.5f; // 50% in più di danno
     [Range(0f, 1f)] public float fleeProbability = 0.5f; // 50%
     [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
+    [Range(0, 10)] public int monsterLevelVariation = 3; // I mostri possono apparire con una variazione del livello del giocatore
+    
 
 
     
@@ -116,6 +118,7 @@ public class BattleManager : MonoBehaviour {
 
         Debug.Log("++ CURRENT PLAYER STATS ++");
         Debug.Log("Nature: " + player.getCurrentNature());
+        Debug.Log("Level: " + player.getLevel());
         Debug.Log("HP: " + player.getCurrentHP());
         Debug.Log("Attack: " + player.getCurrentAttack());
         Debug.Log("Defense: " + player.getCurrentDefense());
@@ -123,10 +126,12 @@ public class BattleManager : MonoBehaviour {
 
         Debug.Log("++ CURRENT MONSTER STATS ++");
         Debug.Log("Nature: " + monster.getCurrentNature());
+        Debug.Log("Level: " + monster.getLevel());
         Debug.Log("HP: " + monster.getCurrentHP());
         Debug.Log("Attack: " + monster.getCurrentAttack());
         Debug.Log("Defense: " + monster.getCurrentDefense());
         Debug.Log("Speed: " + monster.getCurrentSpeed());
+
 
     }
 

@@ -6,9 +6,10 @@ public class Fighter : MonoBehaviour {
     [Header("Statistiche base del combattente")]
     public FighterData data;
 
-    // Statistiche effettive
-    protected int level = 1;
+    // Livello
+    protected int level = -1;
 
+    // Statistiche attuali
     protected int currentAttack;
     protected int currentDefense;
     protected int currentHP;
@@ -39,6 +40,7 @@ public class Fighter : MonoBehaviour {
         currentSpeed = CalculateCurrentStatWithBonus(this.data.baseSpeed, this.level, currentNatureBonus);
         currentHeal = CalculateCurrentStatWithBonus(this.data.baseHeal, this.level, currentNatureBonus);
 
+        // Imposto le stat massime
         maxCurrentAttack = currentAttack;
         maxCurrentDefense = currentDefense;
         maxCurrentHP = currentHP;
@@ -179,6 +181,74 @@ public class Fighter : MonoBehaviour {
         return this.maxCurrentSpeed;
     }
 
+
+    //
+    // Setters current stats
+    //
+
+    // Setter per currentAttack
+    public void SetCurrentAttack(int value)
+    {
+        currentAttack = value;
+    }
+
+    // Setter per currentDefense
+    public void SetCurrentDefense(int value)
+    {
+        currentDefense = value;
+    }
+
+    // Setter per currentHP
+    public void SetCurrentHP(int value)
+    {
+        currentHP = value;
+    }
+
+    // Setter per currentSpeed
+    public void SetCurrentSpeed(int value)
+    {
+        currentSpeed = value;
+    }
+
+    // Setter per currentHeal
+    public void SetCurrentHeal(int value)
+    {
+        currentHeal = value;
+    }
+
+    //
+    // Setter stat max
+    //
+
+    // Setter per maxCurrentAttack
+    public void SetMaxCurrentAttack(int value)
+    {
+        maxCurrentAttack = value;
+    }
+
+    // Setter per maxCurrentDefense
+    public void SetMaxCurrentDefense(int value)
+    {
+        maxCurrentDefense = value;
+    }
+
+    // Setter per maxCurrentHP
+    public void SetMaxCurrentHP(int value)
+    {
+        maxCurrentHP = value;
+    }
+
+    // Setter per maxCurrentSpeed
+    public void SetMaxCurrentSpeed(int value)
+    {
+        maxCurrentSpeed = value;
+    }
+
+    // Setter per maxCurrentHeal
+    public void SetMaxCurrentHeal(int value)
+    {
+        maxCurrentHeal = value;
+    }
 
  
 
