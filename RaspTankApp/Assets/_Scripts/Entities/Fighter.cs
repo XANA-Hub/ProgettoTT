@@ -7,7 +7,7 @@ public class Fighter : MonoBehaviour {
     public FighterData data;
 
     // Livello
-    protected int level = -1;
+    protected int level = 1;
 
     // Statistiche attuali
     protected int currentAttack;
@@ -78,22 +78,24 @@ public class Fighter : MonoBehaviour {
         float preferredNatureProbability = this.data.preferredNatureProbability;
 
         // Genera un numero casuale tra 0 e 1
-        float randomValue = Random.value;
+        float randomValue = Random.Range(0f, 1f);
 
         // Se il valore casuale è inferiore alla probabilità del bonus preferito, scegli il bonus preferito
         if (randomValue < preferredNatureProbability) {
             return preferredNatureBonus;
         }
         else {
-            // Altrimenti, scegli un bonus natura casuale diverso dal preferito e che non sia il RANDOM
-            NatureBonus[] allNatureBonuses = (NatureBonus[])System.Enum.GetValues(typeof(NatureBonus));
+
+            // Continuo a generare finché non viene scelto un valore diverso da "RANDOM" e da quello PREFERITO
+
             NatureBonus randomNatureBonus;
-
+            
             do {
-                randomNatureBonus = allNatureBonuses[Random.Range(0, allNatureBonuses.Length)];
+                randomNatureBonus = (NatureBonus)Random.Range(0, System.Enum.GetValues(typeof(NatureBonus)).Length);
             } while (randomNatureBonus == preferredNatureBonus || randomNatureBonus == NatureBonus.RANDOM);
-
+            
             return randomNatureBonus;
+
         }
     }
 
@@ -123,6 +125,17 @@ public class Fighter : MonoBehaviour {
             return true;
         else
             return false;
+    }
+
+    public void Heal(int healAmount) {
+
+        // Se gli HP sono maggiori di quelli massimi attuali
+        if(currentHP+healAmount > maxCurrentHP) { 
+            currentHP = maxCurrentHP;
+        }else{
+            currentHP += healAmount;
+        }
+
     }
 
     //

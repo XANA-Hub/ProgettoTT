@@ -46,12 +46,7 @@ public class BattleManager : MonoBehaviour {
         this.player = MasterManager.instance.player;
         this.monster = MasterManager.instance.monsterDatabase.GetRandomMonster();
 
-        playerNameText.SetText(player.data.name);
-        playerLevelText.SetText("Lvl: " + player.getLevel());
-        enemyNameText.SetText(monster.data.name);
-        enemyLevelText.SetText("Lvl: " + monster.getLevel());
-
-        enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
+        SetUpBattleHUD();
 
         // Inizia la battaglia
         battleState = BattleState.START;
@@ -64,13 +59,22 @@ public class BattleManager : MonoBehaviour {
     // Metodi
     //
 
+    private void SetUpBattleHUD() {
+        playerNameText.SetText(player.data.name);
+        playerLevelText.SetText("Lvl: " + player.getLevel());
+        enemyNameText.SetText(monster.data.name);
+        enemyLevelText.SetText("Lvl: " + monster.getLevel());
+
+        enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
+    }
+
     IEnumerator SetUpBattle() {
 
         Debug.Log("BATTAGLIA INIZIATA!");
         dialogueText.SetText("A wild " + monster.data.name + " appeared!");
 
-        SetPlayerHP(player.getCurrentHP());
-        SetEnemyHP(monster.getCurrentHP());
+        SetPlayerHPBar(player.getCurrentHP());
+        SetEnemyHPBar(monster.getCurrentHP());
 
         // Aspetto 2 secondi prima di mostrare il menù della battaglia
         yield return new WaitForSeconds(2f);
@@ -168,7 +172,7 @@ public class BattleManager : MonoBehaviour {
         // Il nemico è morto?
         if(isEnemyDead) {
             battleState = BattleState.WON;
-            SetEnemyHP(0);
+            SetEnemyHPBar(0);
             dialogueText.SetText("You defeated " + monster.data.name + "!");
 
             yield return new WaitForSeconds(2f);
@@ -176,7 +180,7 @@ public class BattleManager : MonoBehaviour {
         }
         else {
             battleState = BattleState.ENEMY_TURN;
-            SetEnemyHP(monster.getCurrentHP());
+            SetEnemyHPBar(monster.getCurrentHP());
 
             yield return new WaitForSeconds(2f);
             StartCoroutine(EnemyTurn());
@@ -201,9 +205,13 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator EnemyTurn() {
 
+        //
+        // TODO: Enemy AI, per ora attacca e basta
+        //
+
         yield return new WaitForSeconds(2f);
 
-        // Ottengo il danno fatto dal giocatore 
+        // Ottengo il danno fatto dal nemico 
         bool isCrit = isCriticalHit();
         int dmgAmount = CalculateDamage(isCrit);
         bool isPlayerDead = player.takeDamage(dmgAmount);
@@ -217,14 +225,14 @@ public class BattleManager : MonoBehaviour {
         // Il giocatore è morto?
         if(isPlayerDead) {
             battleState = BattleState.LOST;
-            SetPlayerHP(0);
+            SetPlayerHPBar(0);
             dialogueText.SetText("You were defeated by " + monster.data.name + "!");
 
             EndBattle();
         }
         else {
             battleState = BattleState.PLAYER_TURN;
-            SetPlayerHP(player.getCurrentHP());
+            SetPlayerHPBar(player.getCurrentHP());
 
             yield return new WaitForSeconds(2f);
             PlayerTurn();
@@ -235,15 +243,19 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerHeal() {
 
         battleState = BattleState.ENEMY_TURN;
+        
 
         if(isHealSuccesful()) {
+            
+            // Setto i dati interni del giocatore
+            player.Heal(player.data.baseHeal);
 
             // Se supero gli HP massimi del giocatore, li metto al max
             if(player.getCurrentHP() + player.data.baseHeal > player.getMaxCurrentHP()) {
-                SetPlayerHP(player.getMaxCurrentHP());
-                dialogueText.SetText ("You succesfully healed " + player.data.baseHeal + " HP! You are at full HP!");
+                SetPlayerHPBar(player.getMaxCurrentHP());
+                dialogueText.SetText ("You succesfully healed " + player.data.baseHeal + " HP! You are full HP!");
             }else {
-                SetPlayerHP(player.getCurrentHP() + player.data.baseHeal);
+                SetPlayerHPBar(player.getCurrentHP() + player.data.baseHeal);
                 dialogueText.SetText ("You succesfully healed " + player.data.baseHeal + " HP!");
             }
             
@@ -279,7 +291,7 @@ public class BattleManager : MonoBehaviour {
         
     }
 
-    public void SetPlayerHP(int currentHP) {
+    public void SetPlayerHPBar(int currentHP) {
 
         float ratio = (float)currentHP / (float)player.getMaxCurrentHP();
 
@@ -289,7 +301,7 @@ public class BattleManager : MonoBehaviour {
     }
 
 
-    public void SetEnemyHP(int currentHP) {
+    public void SetEnemyHPBar(int currentHP) {
 
         float ratio = (float)currentHP / (float)monster.getMaxCurrentHP();
 

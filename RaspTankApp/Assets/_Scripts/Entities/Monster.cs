@@ -3,7 +3,7 @@ using UnityEngine;
 public class Monster : Fighter {
 
     private void Awake() {
-        level = CalculateLevel(MasterManager.instance.player.getLevel(), 2);
+        level = CalculateLevel(MasterManager.instance.player.getLevel(), MasterManager.instance.battleManager.monsterLevelVariation);
     }
 
     private void Start() {
