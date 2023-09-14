@@ -11,6 +11,12 @@ public class MonsterDatabase : MonoBehaviour {
         int randomIndex = Random.Range(0, monsters.Length);
         return monsters[randomIndex];
     }
+
+    /*
+    public Player GetPlayer() {
+
+    } 
+    */
     
     public void Enable() {
         this.gameObject.SetActive(true);

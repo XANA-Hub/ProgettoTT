@@ -39,7 +39,7 @@ public class AudioManager: MonoBehaviour {
 	private void Start() {
 
 		// Musica menù principale, viene riprodotta subito
-		Debug.Log("MUSIC INIZIATAAA");
+		Debug.Log("MUSIC INIZIATA!");
 		PlayMusic(startingMusic);
 	}
 

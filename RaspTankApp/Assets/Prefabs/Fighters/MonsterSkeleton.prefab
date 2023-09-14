@@ -47,7 +47,11 @@ MonoBehaviour:
   data:
     name: Skeleton
     sprite: {fileID: 1169129682, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
-    baseAttack: 20
-    baseDefense: 10
-    baseHealth: 30
-    baseHeal: 4
+    preferredNatureBonus: 2
+    baseHP: 180
+    baseAttack: 80
+    baseDefense: 100
+    baseSpeed: 50
+    baseHeal: 25
+    natureBonusPercentage: 0.1
+    preferredNatureProbability: 0.7

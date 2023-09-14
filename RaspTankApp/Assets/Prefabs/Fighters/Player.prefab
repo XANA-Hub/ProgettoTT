@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3541987942493086438}
-  - component: {fileID: 4926191844051674340}
+  - component: {fileID: -2301659796955887943}
   m_Layer: 0
-  m_Name: MonsterAngel
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4926191844051674340
+--- !u!114 &-2301659796955887943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,13 +41,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1680054858322931122}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91c60f2a8124d4941bdb7fb61e6893fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 821163af4547abb4388e5a7afc74dbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    name: Angel
-    sprite: {fileID: -1727019330, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
-    baseAttack: 10
-    baseDefense: 20
-    baseHealth: 40
-    baseHeal: 5
+    name: Player
+    sprite: {fileID: 21300000, guid: c02fd5af35cfd8d43a1bd3bd415cc65a, type: 3}
+    preferredNatureBonus: 0
+    baseHP: 100
+    baseAttack: 100
+    baseDefense: 100
+    baseSpeed: 100
+    baseHeal: 50
+    natureBonusPercentage: 0.1
+    preferredNatureProbability: 0.7

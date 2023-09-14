@@ -10,35 +10,34 @@ public class BattleManager : MonoBehaviour {
     private Monster monster;
     private bool battleMenuIsUp = false;
 
-    [Header("State of battle")]
+    [Header("Starting battle state")]
     public BattleState battleState;
 
     [Header("Battle menu animator")]
     public Animator battleMenuAnimator;
 
-    [Header("Enemy sprite")]
-    public Image enemySprite;
-
-    [Header("HP Bars")]
-    public RectTransform playerHP;
-    public RectTransform enemyHP;
-
-    [Header("Player texts")]
-    public TMP_Text playerNameText;
-    public TMP_Text playerLevelText;
-
-    [Header("Enemy texts")]
-    public TMP_Text enemyNameText;
-    public TMP_Text enemyLevelText;
-
     [Header("Dialogue")]
     public TMP_Text dialogueText;
 
+    [Header("Player")]
+    public Image playerSprite;
+    public RectTransform playerHP;
+    public TMP_Text playerNameText;
+    public TMP_Text playerLevelText;
+
+    [Header("Enemy")]
+    public Image enemySprite;
+    public RectTransform enemyHP;
+    public TMP_Text enemyNameText;
+    public TMP_Text enemyLevelText;
+
     [Header("Battle parameters")]
-    public float criticalHitProbability = 0.125f; // 12.5% 
+    [Range(0f, 1f)] public float criticalHitProbability = 0.125f; // 12.5% 
     [Range(1.0f, 2.0f)] public float criticalHitMultiplier = 1.5f; // 50% in più di danno
-    [Range(0f, 1f)] public float fleeProbability = 0.3f; // 30%
-    [Range(0f, 1f)] public float healProbability = 0.4f; // 40%
+    [Range(0f, 1f)] public float fleeProbability = 0.5f; // 50%
+    [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
+
+
     
     private void Start() {
 
@@ -51,17 +50,6 @@ public class BattleManager : MonoBehaviour {
         enemyLevelText.SetText("Lvl: " + monster.getLevel());
 
         enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
-        
-
-        Debug.Log("HP BASE giocatore: " + player.data.baseHP);
-        Debug.Log("HP ATTUALI giocatore: " + player.getActualHP());
-        
-        Debug.Log("HP BASE mostro: " + monster.data.baseHP);
-        Debug.Log("HP ATTUALI mostro: " + monster.getActualHP());
-
-        Debug.Log("LIVELLO giocatore: " + player.getLevel());
-        Debug.Log("LIVELLO mostro: " + monster.getLevel());
-
 
         // Inizia la battaglia
         battleState = BattleState.START;
@@ -76,8 +64,11 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator SetUpBattle() {
 
-        Debug.Log("La battaglia è iniziata!");
+        Debug.Log("BATTAGLIA INIZIATA!");
         dialogueText.SetText("A wild " + monster.data.name + " appeared!");
+
+        SetPlayerHP(player.getCurrentHP());
+        SetEnemyHP(monster.getCurrentHP());
 
         // Aspetto 2 secondi prima di mostrare il menù della battaglia
         yield return new WaitForSeconds(2f);
@@ -120,6 +111,25 @@ public class BattleManager : MonoBehaviour {
         StartCoroutine(PlayerRun());
     }
 
+    // Per debug
+    public void OnBattleInfoButton() {
+
+        Debug.Log("++ CURRENT PLAYER STATS ++");
+        Debug.Log("Nature: " + player.getCurrentNature());
+        Debug.Log("HP: " + player.getCurrentHP());
+        Debug.Log("Attack: " + player.getCurrentAttack());
+        Debug.Log("Defense: " + player.getCurrentDefense());
+        Debug.Log("Speed: " + player.getCurrentSpeed());
+
+        Debug.Log("++ CURRENT MONSTER STATS ++");
+        Debug.Log("Nature: " + monster.getCurrentNature());
+        Debug.Log("HP: " + monster.getCurrentHP());
+        Debug.Log("Attack: " + monster.getCurrentAttack());
+        Debug.Log("Defense: " + monster.getCurrentDefense());
+        Debug.Log("Speed: " + monster.getCurrentSpeed());
+
+    }
+
     // Funzione che permette di individuare se il colpo sarà critico o meno
     private bool isCriticalHit() {
 
@@ -140,21 +150,29 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerAttack() {
 
         // Ottengo il danno fatto dal giocatore 
-        int dmgAmount = CalculateDamage(isCriticalHit());
+        bool isCrit = isCriticalHit();
+        int dmgAmount = CalculateDamage(isCrit);
         bool isEnemyDead = monster.takeDamage(dmgAmount);
         
-        Debug.Log("Il giocatore fa " + dmgAmount + " danni al nemico!");
+        if(isCrit) {
+            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". It was a critical hit!");
+        }else {
+            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name);
+        }
 
         // Il nemico è morto?
         if(isEnemyDead) {
             battleState = BattleState.WON;
             SetEnemyHP(0);
+            dialogueText.SetText("You defeated " + monster.data.name + "!");
+
+            yield return new WaitForSeconds(2f);
             EndBattle();
         }
         else {
             battleState = BattleState.ENEMY_TURN;
-            SetEnemyHP(monster.getActualHP());
-            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name);
+            SetEnemyHP(monster.getCurrentHP());
+
             yield return new WaitForSeconds(2f);
             StartCoroutine(EnemyTurn());
         }
@@ -178,25 +196,31 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator EnemyTurn() {
 
-        dialogueText.SetText(monster.data.name + " attacks!");
         yield return new WaitForSeconds(2f);
 
         // Ottengo il danno fatto dal giocatore 
-        int dmgAmount = CalculateDamage(isCriticalHit());
+        bool isCrit = isCriticalHit();
+        int dmgAmount = CalculateDamage(isCrit);
         bool isPlayerDead = player.takeDamage(dmgAmount);
 
-        Debug.Log("Il nemico fa " + dmgAmount + " danni al giocatore!");
+         if(isCrit) {
+            dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage! It was a critical hit!");
+        }else {
+            dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage!");
+        }
         
         // Il giocatore è morto?
         if(isPlayerDead) {
             battleState = BattleState.LOST;
             SetPlayerHP(0);
+            dialogueText.SetText("You were defeated by " + monster.data.name + "!");
+
             EndBattle();
         }
         else {
             battleState = BattleState.PLAYER_TURN;
-            SetPlayerHP(player.getActualHP());
-            dialogueText.SetText("You were dealt " + dmgAmount + " points of damage!");
+            SetPlayerHP(player.getCurrentHP());
+
             yield return new WaitForSeconds(2f);
             PlayerTurn();
         }
@@ -208,8 +232,16 @@ public class BattleManager : MonoBehaviour {
         battleState = BattleState.ENEMY_TURN;
 
         if(isHealSuccesful()) {
-            SetPlayerHP(player.getActualHP() + player.data.baseHeal);
-            dialogueText.SetText ("You healed " + player.data.baseHeal + " HP!");
+
+            // Se supero gli HP massimi del giocatore, li metto al max
+            if(player.getCurrentHP() + player.data.baseHeal > player.getMaxCurrentHP()) {
+                SetPlayerHP(player.getMaxCurrentHP());
+                dialogueText.SetText ("You succesfully healed " + player.data.baseHeal + " HP! You are at full HP!");
+            }else {
+                SetPlayerHP(player.getCurrentHP() + player.data.baseHeal);
+                dialogueText.SetText ("You succesfully healed " + player.data.baseHeal + " HP!");
+            }
+            
         }
         else {
             dialogueText.SetText ("You couldn't heal your wounds!");
@@ -230,12 +262,11 @@ public class BattleManager : MonoBehaviour {
 
     private int CalculateDamage(bool isCritic) {
         
-        // Danno
-        int dmgAmount = Random.Range(1, 20);
+        // Danno casuale
+        int dmgAmount = Random.Range(1, 10);
 
         // Danno aumentato in caso di critico
         if(isCritic) {
-            Debug.Log("Il danno è critico!");
             dmgAmount = Mathf.RoundToInt(dmgAmount * criticalHitMultiplier); // Esempio: aumenta del 50%
         }
 
@@ -245,7 +276,7 @@ public class BattleManager : MonoBehaviour {
 
     public void SetPlayerHP(int currentHP) {
 
-        float ratio = (float)currentHP / (float)MasterManager.instance.player.data.baseHP;
+        float ratio = (float)currentHP / (float)player.getMaxCurrentHP();
 
         // Modifico la barra degli HP
         playerHP.localScale = new Vector3(ratio, 1, 1);
@@ -255,12 +286,16 @@ public class BattleManager : MonoBehaviour {
 
     public void SetEnemyHP(int currentHP) {
 
-        float ratio = (float)currentHP / (float)monster.data.baseHP;
+        float ratio = (float)currentHP / (float)monster.getMaxCurrentHP();
 
         // Modifico la barra degli HP
         enemyHP.localScale = new Vector3(ratio, 1, 1);
         
     }
+
+
+
+
 
     public void Enable() {
         this.gameObject.SetActive(true);
