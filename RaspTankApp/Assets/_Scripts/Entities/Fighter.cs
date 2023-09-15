@@ -174,8 +174,11 @@ public class Fighter : MonoBehaviour {
         return this.currentSpeed;
     }
 
-    public string getCurrentNature() {
+    public string getCurrentNatureBonusAsString() {
         return System.Enum.GetName(typeof(NatureBonus), currentNatureBonus);
+    }
+    public NatureBonus getCurrentNatureBonus() {
+        return this.currentNatureBonus;
     }
 
 
