@@ -52,6 +52,7 @@ MonoBehaviour:
     baseAttack: 100
     baseDefense: 100
     baseSpeed: 100
-    baseHeal: 50
+    baseHeal: 10
+    baseAttackDamage: 10
     natureBonusPercentage: 0.1
     preferredNatureProbability: 0.7

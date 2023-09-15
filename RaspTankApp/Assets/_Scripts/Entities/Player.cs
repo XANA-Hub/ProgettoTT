@@ -1,7 +1,8 @@
 
 public class Player : Fighter {
 
-    private void Start() {
+    private void Awake() {
+        this.level = 5;
         InitializeStats();
     }
 

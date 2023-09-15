@@ -37,16 +37,15 @@ public class BattleManager : MonoBehaviour {
     [Range(0f, 1f)] public float fleeProbability = 0.5f; // 50%
     [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
     [Range(0, 10)] public int monsterLevelVariation = 3; // I mostri possono apparire con una variazione del livello del giocatore
+    [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
     
 
 
     
     private void Start() {
 
-        this.player = MasterManager.instance.player;
-        this.monster = MasterManager.instance.monsterDatabase.GetRandomMonster();
-
-        SetUpBattleHUD();
+        player = MasterManager.instance.player;
+        monster = Instantiate(MasterManager.instance.monsterDatabase.GetRandomMonster());
 
         // Inizia la battaglia
         battleState = BattleState.START;
@@ -60,21 +59,27 @@ public class BattleManager : MonoBehaviour {
     //
 
     private void SetUpBattleHUD() {
+
+        // Giocatore
         playerNameText.SetText(player.data.name);
         playerLevelText.SetText("Lvl: " + player.getLevel());
+        playerSprite.sprite = player.data.sprite; // Cambio lo sprite del giocatore
+        SetPlayerHPBar(player.getCurrentHP());
+
+        // Mostro
         enemyNameText.SetText(monster.data.name);
         enemyLevelText.SetText("Lvl: " + monster.getLevel());
-
         enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
+        SetEnemyHPBar(monster.getCurrentHP());
+
     }
 
     IEnumerator SetUpBattle() {
 
+        SetUpBattleHUD();
+
         Debug.Log("BATTAGLIA INIZIATA!");
         dialogueText.SetText("A wild " + monster.data.name + " appeared!");
-
-        SetPlayerHPBar(player.getCurrentHP());
-        SetEnemyHPBar(monster.getCurrentHP());
 
         // Aspetto 2 secondi prima di mostrare il menù della battaglia
         yield return new WaitForSeconds(2f);
@@ -136,7 +141,6 @@ public class BattleManager : MonoBehaviour {
         Debug.Log("Defense: " + monster.getCurrentDefense());
         Debug.Log("Speed: " + monster.getCurrentSpeed());
 
-
     }
 
     // Funzione che permette di individuare se il colpo sarà critico o meno
@@ -160,7 +164,8 @@ public class BattleManager : MonoBehaviour {
 
         // Ottengo il danno fatto dal giocatore 
         bool isCrit = isCriticalHit();
-        int dmgAmount = CalculateDamage(isCrit);
+        int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+        Debug.Log("Player DMG: " + dmgAmount);
         bool isEnemyDead = monster.takeDamage(dmgAmount);
         
         if(isCrit) {
@@ -188,6 +193,7 @@ public class BattleManager : MonoBehaviour {
 
     }
 
+    // Permette al giocatore di scappare dalla battaglia
     IEnumerator PlayerRun() {
 
         if(isFleeSuccesful()) {
@@ -209,11 +215,18 @@ public class BattleManager : MonoBehaviour {
         // TODO: Enemy AI, per ora attacca e basta
         //
 
-        yield return new WaitForSeconds(2f);
+        StartCoroutine(EnemyAttack());
 
+
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator EnemyAttack() {
+        
         // Ottengo il danno fatto dal nemico 
         bool isCrit = isCriticalHit();
-        int dmgAmount = CalculateDamage(isCrit);
+        int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+        Debug.Log("Monster DMG: " + dmgAmount);
         bool isPlayerDead = player.takeDamage(dmgAmount);
 
          if(isCrit) {
@@ -277,18 +290,32 @@ public class BattleManager : MonoBehaviour {
         }
     }
 
-    private int CalculateDamage(bool isCritic) {
+    private int CalculateDamage(bool isCritic, int baseDamage, int attackerAttack, int defenderDefense) {
         
-        // Danno casuale
-        int dmgAmount = Random.Range(1, 10);
+        // Calcolo del danno in base agli attributi
+        int damage = baseDamage;
 
-        // Danno aumentato in caso di critico
+        // Calcolo del danno in base all'attacco e alla difesa
+        float attackFactor = (float)attackerAttack / defenderDefense;
+        damage = Mathf.RoundToInt(damage * attackFactor);
+
+        // Calcolo del danno in base alla velocità
+        // float speedFactor = (float)attackerSpeed / defenderSpeed;
+        // damage = Mathf.RoundToInt(damage * speedFactor);
+
+        // Aggiungi una variazione random al danno (ad esempio, da -2 a +2)
+        int damageVariation = Random.Range(-attackDamageVariation, attackDamageVariation+1);
+        damage += damageVariation;
+
+        // Assicurati che il danno minimo sia almeno 1
+        damage = Mathf.Max(1, damage);
+
+        // Se è un colpo critico, aumenta il danno
         if(isCritic) {
-            dmgAmount = Mathf.RoundToInt(dmgAmount * criticalHitMultiplier); // Esempio: aumenta del 50%
+            damage = Mathf.RoundToInt(damage * criticalHitMultiplier); // Esempio: aumenta del 50%
         }
 
-        return dmgAmount;
-        
+        return damage;
     }
 
     public void SetPlayerHPBar(int currentHP) {
