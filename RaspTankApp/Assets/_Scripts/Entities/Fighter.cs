@@ -174,6 +174,10 @@ public class Fighter : MonoBehaviour {
         return this.currentSpeed;
     }
 
+    public int getCurrentHeal() {
+        return this.currentHeal;
+    }
+
     public string getCurrentNatureBonusAsString() {
         return System.Enum.GetName(typeof(NatureBonus), currentNatureBonus);
     }
@@ -211,32 +215,27 @@ public class Fighter : MonoBehaviour {
     //
 
     // Setter per currentAttack
-    public void SetCurrentAttack(int value)
-    {
+    public void SetCurrentAttack(int value) {
         currentAttack = value;
     }
 
     // Setter per currentDefense
-    public void SetCurrentDefense(int value)
-    {
+    public void SetCurrentDefense(int value) {
         currentDefense = value;
     }
 
     // Setter per currentHP
-    public void SetCurrentHP(int value)
-    {
+    public void SetCurrentHP(int value) {
         currentHP = value;
     }
 
     // Setter per currentSpeed
-    public void SetCurrentSpeed(int value)
-    {
+    public void SetCurrentSpeed(int value) {
         currentSpeed = value;
     }
 
     // Setter per currentHeal
-    public void SetCurrentHeal(int value)
-    {
+    public void SetCurrentHeal(int value) {
         currentHeal = value;
     }
 

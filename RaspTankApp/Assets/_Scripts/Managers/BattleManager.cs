@@ -38,7 +38,7 @@ public class BattleManager : MonoBehaviour {
     [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
     [Range(0, 10)] public int monsterLevelVariation = 3; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
-    
+    [Range(0, 10)] public int healingPointsVariation = 5; // Di quanto può variare la cura
 
     private void Start() {
 
@@ -164,7 +164,10 @@ public class BattleManager : MonoBehaviour {
         return randomValue < fleeProbability;
     }
 
-    private bool isHealSuccesful() {
+    private bool isHealSuccesful(bool isNatureHP) {
+        if(isNatureHP) {
+            Debug.Log($"TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOODOOOO");
+        }
         float randomValue = Random.Range(0f, 1f);
         return randomValue < healProbability;
     }
@@ -227,6 +230,7 @@ public class BattleManager : MonoBehaviour {
             else {
 
                 // Suddivido i due casi di comportamento normale in base alla temper del mostro
+                // Aggressivo
                 if(isAggressive) {
                     if (randomValue < 0.7f) {
                         StartCoroutine(Attack(monster, player));
@@ -235,7 +239,9 @@ public class BattleManager : MonoBehaviour {
                     } else if (randomValue < 0.15f) {
                         StartCoroutine(Heal(monster));
                     } 
-                }else {
+                }
+                // Difensivo
+                else {
                     if (randomValue < 0.5f) {
                         StartCoroutine(Defend(player, monster));
                     } else if (randomValue < 0.3f) {
@@ -259,19 +265,18 @@ public class BattleManager : MonoBehaviour {
         // Ottengo il danno fatto dall'attaccante
         bool isCrit = isCriticalHit();
         int dmgAmount = CalculateDamage(isCrit, attacker.data.baseAttackDamage, attacker.getCurrentAttack(), defender.getCurrentDefense());
-
+        bool isDefenderDead = defender.takeDamage(dmgAmount);
         dialogueText.SetText(attacker.data.name + " deals " + dmgAmount + " damage to " + defender.data.name);
         
         // Attendi
         yield return new WaitForSeconds(2f);
         if (isCrit) {
             dialogueText.SetText("It was a critical hit!");
-        } else {
-            dialogueText.SetText("It wasn't a critical hit!");
         }
 
         // Il difensore è morto?
-        if (defender.takeDamage(dmgAmount)) {
+        if (isDefenderDead) {
+
             if (isPlayerAttacker) {
                 battleState = BattleState.WON;
                 SetHPBar(defender, 0, enemyHP);
@@ -283,8 +288,10 @@ public class BattleManager : MonoBehaviour {
             }
 
             yield return new WaitForSeconds(2f);
+
             EndBattle();
         } else {
+
             if (isPlayerAttacker) {
                 battleState = BattleState.ENEMY_TURN;
                 SetHPBar(defender, defender.getCurrentHP(), enemyHP);
@@ -307,7 +314,6 @@ public class BattleManager : MonoBehaviour {
     IEnumerator Defend(Fighter attacker, Fighter defender) {
 
         bool isPlayerDefender = defender is Player;
-
         Debug.Log(defender.name + " VUOLE DIFENDERSI DA " + attacker.name);
 
         // Il difensore prende una posizione difensiva e perde il turno
@@ -347,27 +353,30 @@ public class BattleManager : MonoBehaviour {
     IEnumerator Heal(Fighter fighter) {
 
         battleState = fighter is Player ? BattleState.ENEMY_TURN : BattleState.PLAYER_TURN;
+        int healingAmount = CalculateHealingPoints(fighter.getCurrentHeal(), healingPointsVariation);
         Debug.Log(fighter.name + " VUOLE CURARSI!");
 
         if (isHealSuccesful()) {
-            fighter.Heal(fighter.data.baseHeal);
+            
+            fighter.Heal(healingAmount);
 
             // Se supero gli HP massimi del fighter, li metto al massimo
-            if (fighter.getCurrentHP() + fighter.data.baseHeal > fighter.getMaxCurrentHP()) {
+            if (fighter.getCurrentHP() + healingAmount > fighter.getMaxCurrentHP()) {
                 if (fighter is Player) {
                     SetHPBar(player, player.getMaxCurrentHP(), playerHP);
-                    dialogueText.SetText("You successfully healed " + fighter.data.baseHeal + " HP! You are at full HP!");
+                    dialogueText.SetText("You successfully healed " + healingAmount + " HP! You are at full HP!");
                 } else {
                     SetHPBar(monster, monster.getMaxCurrentHP(), enemyHP);
-                    dialogueText.SetText(fighter.data.name + " successfully healed " + fighter.data.baseHeal + " HP! It's now at full HP!");
+                    dialogueText.SetText(fighter.data.name + " successfully healed " + healingAmount + " HP! It's now at full HP!");
                 }
-            } else {
+            } 
+            else {
                 if (fighter is Player) {
-                    SetHPBar(player, player.getCurrentHP() + player.data.baseHeal, playerHP);
-                    dialogueText.SetText("You successfully healed " + fighter.data.baseHeal + " HP!");
+                    SetHPBar(player, player.getCurrentHP() + healingAmount, playerHP);
+                    dialogueText.SetText("You successfully healed " + healingAmount + " HP!");
                 } else {
-                    SetHPBar(monster, monster.getCurrentHP() + monster.data.baseHeal, enemyHP);
-                    dialogueText.SetText(fighter.data.name + " successfully healed " + fighter.data.baseHeal + " HP!");
+                    SetHPBar(monster, monster.getCurrentHP() + healingAmount, enemyHP);
+                    dialogueText.SetText(fighter.data.name + " successfully healed " + healingAmount + " HP!");
                 }
             }
         } else {
@@ -420,6 +429,21 @@ public class BattleManager : MonoBehaviour {
         }
 
         return damage;
+    }
+
+    private int CalculateHealingPoints(int baseHealing, int healingVariation) {
+
+        // Calcola il valore base di cura
+        int healing = baseHealing;
+
+        // Aggiungi una variazione random alla cura (ad esempio, da -2 a +2)
+        int healingVariationAmount = Random.Range(-healingVariation, healingVariation + 1);
+        healing += healingVariationAmount;
+
+        // Assicurati che l'HP recuperato sia sempre positivo
+        healing = Mathf.Max(0, healing);
+
+        return healing;
     }
 
 
