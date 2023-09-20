@@ -34,7 +34,9 @@ public class BattleManager : MonoBehaviour {
     [Header("Battle parameters")]
     [Range(0f, 1f)] public float criticalHitProbability = 0.125f; // 12.5% 
     [Range(1.0f, 2.0f)] public float criticalHitMultiplier = 1.5f; // 50% in più di danno
-    [Range(0f, 1f)] public float fleeProbability = 0.5f; // 50%
+    [Range(0f, 1f)] public float baseFleeProbability = 0.5f; // 50%
+    [Range(0f, 1f)] public float minFleeProbability = 0.2f; // Valore minimo della probabilità di fuga
+    [Range(0f, 1f)] public float maxFleeProbability = 0.8f; // Valore massimo della probabilità di fuga
     [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
     [Range(0, 10)] public int monsterLevelVariation = 3; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
@@ -62,13 +64,13 @@ public class BattleManager : MonoBehaviour {
         playerNameText.SetText(player.data.name);
         playerLevelText.SetText("Lvl: " + player.getLevel());
         playerSprite.sprite = player.data.sprite; // Cambio lo sprite del giocatore
-        SetHPBar(player, player.getMaxCurrentHP(), playerHP);
+        SetPlayerHPBar(player.getMaxCurrentHP());
 
         // Mostro
         enemyNameText.SetText(monster.data.name);
         enemyLevelText.SetText("Lvl: " + monster.getLevel());
         enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
-        SetHPBar(monster, monster.getMaxCurrentHP(), enemyHP);
+        SetMonsterHPBar(monster.getMaxCurrentHP());
 
     }
 
@@ -90,6 +92,11 @@ public class BattleManager : MonoBehaviour {
         dialogueText.SetText("Choose an action:");
     }
 
+    IEnumerator EnemyTurn() {
+        ChooseEnemyAction(monster.getCurrentTemper() == Temper.AGGRESSIVE);
+        yield return new WaitForSeconds(2f);
+    }
+
     public void OnAttackButton() {
 
         // Se non è il turno del giocatore
@@ -97,7 +104,7 @@ public class BattleManager : MonoBehaviour {
             return;
         }
 
-        StartCoroutine(Attack(player, monster));
+        StartCoroutine(PlayerAttack());
     }
 
     public void OnDefendButton() {
@@ -107,7 +114,7 @@ public class BattleManager : MonoBehaviour {
             return;
         }
 
-        StartCoroutine(Defend(monster, player));
+        StartCoroutine(PlayerDefend());
     }
 
     public void OnHealButton() {
@@ -117,7 +124,7 @@ public class BattleManager : MonoBehaviour {
             return;
         }
 
-        StartCoroutine(Heal(player));
+        StartCoroutine(PlayerHeal());
     }
 
     public void OnRunButton() {
@@ -152,46 +159,59 @@ public class BattleManager : MonoBehaviour {
 
     }
 
-    // Funzione che permette di individuare se il colpo sarà critico o meno
+    
+    //
+    // Funzioni per verificare se una certa azione è andata a buon fine
+    //
+
     private bool isCriticalHit() {
 
         float randomValue = Random.Range(0f, 1f);
         return randomValue < criticalHitProbability;
     }
 
+
     private bool isFleeSuccesful() {
-        float randomValue = Random.Range(0f, 1f);
-        return randomValue < fleeProbability;
-    }
 
-    private bool isHealSuccesful(bool isNatureHP) {
-        if(isNatureHP) {
-            Debug.Log($"TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOODOOOO");
+        float currentFleeProbability = baseFleeProbability;
+
+        // Calcola la differenza di velocità tra il giocatore e il mostro
+        int speedDifference = player.getCurrentSpeed() - monster.getCurrentSpeed();
+
+        // Aumenta la probabilità di fuga se il giocatore è più veloce del mostro
+        if (speedDifference > 0) {
+            currentFleeProbability  += currentFleeProbability * (speedDifference * 0.05f); // Aumenta del 5% per ogni punto di differenza
         }
-        float randomValue = Random.Range(0f, 1f);
-        return randomValue < healProbability;
-    }
-
-
-    // Permette al giocatore di scappare dalla battaglia
-    IEnumerator PlayerRun() {
-
-        if(isFleeSuccesful()) {
-            battleState = BattleState.ESCAPED;
-            yield return new WaitForSeconds(2f);
-            EndBattle();
-        } else{
-            battleState = BattleState.ENEMY_TURN;
-            dialogueText.SetText ("You can't escape!");
-            yield return new WaitForSeconds(2f);
-            StartCoroutine(EnemyTurn());
+        // Diminuisci la probabilità di fuga se il mostro è più veloce del giocatore
+        else if (speedDifference < 0) {
+            currentFleeProbability -= currentFleeProbability * (Mathf.Abs(speedDifference) * 0.05f); // Diminuisci del 5% per ogni punto di differenza
         }
-        
+
+        // Assicurati che fleeChance sia compreso tra i valori massimo e minimo
+        currentFleeProbability = Mathf.Clamp(currentFleeProbability, minFleeProbability, maxFleeProbability);
+
+        Debug.Log("CURRENT FLEE PROBABILITY: " + currentFleeProbability * 100 + "%");
+
+        float randomValue = Random.Range(0f, 1f);
+        return randomValue < currentFleeProbability;
     }
 
-    IEnumerator EnemyTurn() {
-        ChooseEnemyAction(monster.getCurrentTemper() == Temper.AGGRESSIVE);
-        yield return new WaitForSeconds(2f);
+
+
+    private bool isHealSuccesful(bool isNatureHeal) {
+
+        float currentHealProbability = healProbability;
+
+        // La aumento nel caso il fighter sia di natura "HEAL"
+        // Altrimenti rimane di base (0.45%)
+        if(isNatureHeal) {
+            currentHealProbability += 0.10f;
+        }
+
+        Debug.Log("CURRENT HEAL PROBABILITY: " + currentHealProbability);
+
+        float randomValue = Random.Range(0f, 1f);
+        return randomValue < currentHealProbability;
     }
 
 
@@ -204,11 +224,11 @@ public class BattleManager : MonoBehaviour {
         // Se il giocatore ha meno del 50% degli HP
         if (playerHPPercentage < 0.5f) { 
             if (randomValue < 0.7f) {
-                StartCoroutine(Attack(monster, player));
+                StartCoroutine(MonsterAttack());
             } else if (randomValue < 0.15f) {
-                StartCoroutine(Defend(player, monster));
-            } else if(randomValue < 0.15f) {
-                StartCoroutine(Heal(monster));
+                StartCoroutine(MonsterDefend());
+            } else {
+                StartCoroutine(MonsterHeal());
             }
         }
 
@@ -218,11 +238,11 @@ public class BattleManager : MonoBehaviour {
             // Se il mostro ha MENO del 50% degli HP
             if (monsterHPPercentage <= 0.5f) {
                 if (randomValue < 0.15f) {
-                    StartCoroutine(Heal(monster));
+                    StartCoroutine(MonsterHeal());
                 } else if (randomValue < 0.35f) {
-                    StartCoroutine(Defend(player, monster));
-                } else if (randomValue < 0.15f) {
-                    StartCoroutine(Attack(monster, player));
+                    StartCoroutine(MonsterDefend());
+                } else {
+                    StartCoroutine(MonsterAttack());
                 }
             } 
             
@@ -233,174 +253,27 @@ public class BattleManager : MonoBehaviour {
                 // Aggressivo
                 if(isAggressive) {
                     if (randomValue < 0.7f) {
-                        StartCoroutine(Attack(monster, player));
+                        StartCoroutine(MonsterAttack());
                     } else if (randomValue < 0.15f) {
-                        StartCoroutine(Defend(player, monster));
-                    } else if (randomValue < 0.15f) {
-                        StartCoroutine(Heal(monster));
+                        StartCoroutine(MonsterDefend());
+                    } else {
+                        StartCoroutine(MonsterHeal());
                     } 
                 }
                 // Difensivo
                 else {
                     if (randomValue < 0.5f) {
-                        StartCoroutine(Defend(player, monster));
+                        StartCoroutine(MonsterDefend());
                     } else if (randomValue < 0.3f) {
-                        StartCoroutine(Attack(monster,player));
-                    } else if (randomValue < 0.2f) {
-                        StartCoroutine(Heal(monster));
+                        StartCoroutine(MonsterAttack());
+                    } else {
+                        StartCoroutine(MonsterHeal());
                     } 
                 }
 
             }
         }
         
-    }
-
-
-    IEnumerator Attack(Fighter attacker, Fighter defender) {
-
-        bool isPlayerAttacker = attacker is Player;
-        Debug.Log(attacker.name + " VUOLE ATTACCARE " + defender.name);
-
-        // Ottengo il danno fatto dall'attaccante
-        bool isCrit = isCriticalHit();
-        int dmgAmount = CalculateDamage(isCrit, attacker.data.baseAttackDamage, attacker.getCurrentAttack(), defender.getCurrentDefense());
-        bool isDefenderDead = defender.takeDamage(dmgAmount);
-        dialogueText.SetText(attacker.data.name + " deals " + dmgAmount + " damage to " + defender.data.name);
-        
-        // Attendi
-        yield return new WaitForSeconds(2f);
-        if (isCrit) {
-            dialogueText.SetText("It was a critical hit!");
-        }
-
-        // Il difensore è morto?
-        if (isDefenderDead) {
-
-            if (isPlayerAttacker) {
-                battleState = BattleState.WON;
-                SetHPBar(defender, 0, enemyHP);
-                dialogueText.SetText("You defeated " + defender.data.name + "!");
-            } else {
-                battleState = BattleState.LOST;
-                SetHPBar(attacker, 0, playerHP);
-                dialogueText.SetText(attacker.data.name + " was defeated by " + defender.data.name + "!");
-            }
-
-            yield return new WaitForSeconds(2f);
-
-            EndBattle();
-        } else {
-
-            if (isPlayerAttacker) {
-                battleState = BattleState.ENEMY_TURN;
-                SetHPBar(defender, defender.getCurrentHP(), enemyHP);
-            } else {
-                battleState = BattleState.PLAYER_TURN;
-                SetHPBar(defender, defender.getCurrentHP(), playerHP);
-            }
-
-            yield return new WaitForSeconds(2f);
-
-            if (isPlayerAttacker) {
-                StartCoroutine(EnemyTurn());
-            } else {
-                PlayerTurn();
-            }
-        }
-    }
-
-
-    IEnumerator Defend(Fighter attacker, Fighter defender) {
-
-        bool isPlayerDefender = defender is Player;
-        Debug.Log(defender.name + " VUOLE DIFENDERSI DA " + attacker.name);
-
-        // Il difensore prende una posizione difensiva e perde il turno
-        if (isPlayerDefender) {
-            dialogueText.SetText(defender.data.name + " takes a defensive stance!");
-            battleState = BattleState.ENEMY_TURN;
-        } else {
-            dialogueText.SetText(defender.data.name + " defends itself!");
-            battleState = BattleState.PLAYER_TURN;
-        }
-
-        // Attendi per simulare la perdita del turno
-        yield return new WaitForSeconds(2f);
-
-        // Adesso il prossimo attacco dell'avversario farà meno danno
-        int mitigatedDamage = CalculateMitigatedDamage(attacker.data.baseAttackDamage, attacker.getCurrentAttack(), defender.getCurrentDefense());
-
-        // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
-        if (isPlayerDefender) {
-            dialogueText.SetText(defender.data.name + " mitigates the next attack!");
-        } else {
-            dialogueText.SetText(defender.data.name + " is in a defensive stance!");
-        }
-
-        // Attendere per un po' per mostrare il messaggio e quindi passare al prossimo turno
-        yield return new WaitForSeconds(2f);
-
-        // Se il turno appartiene all'avversario, inizia il suo turno
-        if (isPlayerDefender) {
-            StartCoroutine(EnemyTurn());
-        } else {
-            PlayerTurn();
-        }
-    }
-
-
-    IEnumerator Heal(Fighter fighter) {
-
-        battleState = fighter is Player ? BattleState.ENEMY_TURN : BattleState.PLAYER_TURN;
-        int healingAmount = CalculateHealingPoints(fighter.getCurrentHeal(), healingPointsVariation);
-        Debug.Log(fighter.name + " VUOLE CURARSI!");
-
-        if (isHealSuccesful()) {
-            
-            fighter.Heal(healingAmount);
-
-            // Se supero gli HP massimi del fighter, li metto al massimo
-            if (fighter.getCurrentHP() + healingAmount > fighter.getMaxCurrentHP()) {
-                if (fighter is Player) {
-                    SetHPBar(player, player.getMaxCurrentHP(), playerHP);
-                    dialogueText.SetText("You successfully healed " + healingAmount + " HP! You are at full HP!");
-                } else {
-                    SetHPBar(monster, monster.getMaxCurrentHP(), enemyHP);
-                    dialogueText.SetText(fighter.data.name + " successfully healed " + healingAmount + " HP! It's now at full HP!");
-                }
-            } 
-            else {
-                if (fighter is Player) {
-                    SetHPBar(player, player.getCurrentHP() + healingAmount, playerHP);
-                    dialogueText.SetText("You successfully healed " + healingAmount + " HP!");
-                } else {
-                    SetHPBar(monster, monster.getCurrentHP() + healingAmount, enemyHP);
-                    dialogueText.SetText(fighter.data.name + " successfully healed " + healingAmount + " HP!");
-                }
-            }
-        } else {
-            dialogueText.SetText(fighter.data.name + " couldn't heal their wounds!");
-        }
-
-        yield return new WaitForSeconds(2f);
-
-        if (fighter is Player) {
-            StartCoroutine(EnemyTurn());
-        } else {
-            PlayerTurn();
-        }
-    }
-
-    private void EndBattle() {
-
-        if(battleState == BattleState.WON) {
-            dialogueText.SetText("You won the battle!");
-        } else if(battleState == BattleState.LOST) {
-            dialogueText.SetText("You lost the battle!");
-        } else if(battleState == BattleState.ESCAPED) {
-            dialogueText.SetText ("You got away safely!");
-        }
     }
 
     private int CalculateDamage(bool isCritic, int baseDamage, int attackerAttack, int defenderDefense) {
@@ -459,11 +332,232 @@ public class BattleManager : MonoBehaviour {
         return mitigatedDamage;
     }
 
-    public void SetHPBar(Fighter fighter, int currentHP, RectTransform healthBar) {
-        float ratio = (float)currentHP / (float)fighter.getMaxCurrentHP();
-        healthBar.localScale = new Vector3(ratio, 1, 1);
+    //
+    // Azioni
+    //
+    	
+    
+    IEnumerator PlayerAttack() {
+
+        // Ottengo il danno fatto dal giocatore 
+        bool isCrit = isCriticalHit();
+        int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+        Debug.Log("Player DMG: " + dmgAmount);
+        bool isEnemyDead = monster.takeDamage(dmgAmount);
+        
+        if(isCrit) {
+            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". It was a critical hit!");
+        }else {
+            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name);
+        }
+
+        // Il nemico è morto?
+        if(isEnemyDead) {
+            battleState = BattleState.WON;
+            SetMonsterHPBar(0);
+            dialogueText.SetText("You defeated " + monster.data.name + "!");
+
+            yield return new WaitForSeconds(2f);
+            EndBattle();
+        }
+        else {
+            battleState = BattleState.ENEMY_TURN;
+            SetMonsterHPBar(monster.getCurrentHP());
+
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(EnemyTurn());
+        }
+
+    }
+	
+	
+	IEnumerator MonsterAttack() {
+        
+        // Ottengo il danno fatto dal nemico 
+        bool isCrit = isCriticalHit();
+        int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+        Debug.Log("Monster DMG: " + dmgAmount);
+        bool isPlayerDead = player.takeDamage(dmgAmount);
+
+         if(isCrit) {
+            dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage! It was a critical hit!");
+        }else {
+            dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage!");
+        }
+        
+        // Il giocatore è morto?
+        if(isPlayerDead) {
+            battleState = BattleState.LOST;
+            SetPlayerHPBar(0);
+            dialogueText.SetText("You were defeated by " + monster.data.name + "!");
+
+            yield return new WaitForSeconds(2f);
+            EndBattle();
+        }
+        else {
+            battleState = BattleState.PLAYER_TURN;
+            SetPlayerHPBar(player.getCurrentHP());
+
+            yield return new WaitForSeconds(2f);
+            PlayerTurn();
+        }
     }
 
+
+
+
+
+    IEnumerator PlayerDefend() {
+
+        battleState = BattleState.ENEMY_TURN;
+        dialogueText.SetText("You take a defensive stance!");
+
+        // Attendi per simulare la perdita del turno
+        yield return new WaitForSeconds(2f);
+
+        // Adesso il prossimo attacco dell'avversario farà meno danno
+        int mitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+
+        // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
+        dialogueText.SetText("You try to mitigate the next attack!");
+
+        // Attendere per un po' per mostrare il messaggio e quindi passare al prossimo turno
+        yield return new WaitForSeconds(2f);
+
+        StartCoroutine(EnemyTurn());
+        
+    }
+
+
+
+    IEnumerator MonsterDefend() {
+
+        battleState = BattleState.PLAYER_TURN;
+        dialogueText.SetText(monster.data.name + " takes a defensive stance!");
+
+        // Attendi per simulare la perdita del turno
+        yield return new WaitForSeconds(2f);
+
+        // Adesso il prossimo attacco dell'avversario farà meno danno
+        int mitigatedDamage = CalculateMitigatedDamage(player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+
+        // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
+        dialogueText.SetText(monster.data.name + " tries to mitigate the next attack!");
+
+        // Attendere per un po' per mostrare il messaggio e quindi passare al prossimo turno
+        yield return new WaitForSeconds(2f);
+
+        PlayerTurn();
+        
+    }
+
+	
+	 IEnumerator PlayerHeal() {
+
+        battleState = BattleState.ENEMY_TURN;
+        int healingAmount = CalculateHealingPoints(player.getCurrentHeal(), healingPointsVariation);
+        
+
+        if(isHealSuccesful(player.getCurrentNatureBonus() == NatureBonus.HEAL)) {
+            
+            // Setto i dati interni del giocatore
+            player.Heal(healingAmount);
+
+            // Se supero gli HP massimi del giocatore, li metto al max
+            if(player.getCurrentHP() + healingAmount > player.getMaxCurrentHP()) {
+                SetPlayerHPBar(player.getMaxCurrentHP());
+                dialogueText.SetText ("You succesfully healed " + healingAmount + " HP! You are full HP!");
+            }else {
+                SetPlayerHPBar(player.getCurrentHP() + healingAmount);
+                dialogueText.SetText ("You succesfully healed " + healingAmount + " HP!");
+            }
+            
+        }
+        else {
+            dialogueText.SetText ("You couldn't heal your wounds!");
+        }
+        
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(EnemyTurn());
+    }
+
+    	
+	 IEnumerator MonsterHeal() {
+
+        battleState = BattleState.PLAYER_TURN;
+         int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
+        
+
+        if(isHealSuccesful(monster.getCurrentNatureBonus() == NatureBonus.HEAL)) {
+            
+            // Setto i dati interni del mostro
+            monster.Heal(healingAmount);
+
+            // Se supero gli HP massimi del mostro, li metto al max
+            if(monster.getCurrentHP() + healingAmount > monster.getMaxCurrentHP()) {
+                SetMonsterHPBar(monster.getMaxCurrentHP());
+                dialogueText.SetText(monster.data.name + " succesfully healed " + healingAmount + " HP! It's now at full HP!");
+            }else {
+                SetMonsterHPBar(monster.getCurrentHP() + healingAmount);
+                dialogueText.SetText(monster.data.name + " succesfully healed " + healingAmount + " HP!");
+            }
+            
+        }
+        else {
+            dialogueText.SetText (monster.data.name + " couldn't heal their wounds!");
+        }
+        
+        yield return new WaitForSeconds(2f);
+        PlayerTurn();
+    }
+
+
+    IEnumerator PlayerRun() {
+
+        if(isFleeSuccesful()) {
+            battleState = BattleState.ESCAPED;
+            yield return new WaitForSeconds(2f);
+            EndBattle();
+        } else {
+            battleState = BattleState.ENEMY_TURN;
+            dialogueText.SetText ("You can't escape!");
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(EnemyTurn());
+        }
+        
+    }
+
+
+    private void EndBattle() {
+
+        if(battleState == BattleState.WON) {
+            dialogueText.SetText("You won the battle!");
+        } else if(battleState == BattleState.LOST) {
+            dialogueText.SetText("You lost the battle!");
+        } else if(battleState == BattleState.ESCAPED) {
+            dialogueText.SetText ("You got away safely!");
+        }
+
+    }
+
+    public void SetPlayerHPBar(int currentHP) {
+
+        float ratio = (float)currentHP / (float)player.getMaxCurrentHP();
+
+        // Modifico la barra degli HP
+        playerHP.localScale = new Vector3(ratio, 1, 1);
+        
+    }
+
+
+    public void SetMonsterHPBar(int currentHP) {
+
+        float ratio = (float)currentHP / (float)monster.getMaxCurrentHP();
+
+        // Modifico la barra degli HP
+        enemyHP.localScale = new Vector3(ratio, 1, 1);
+        
+    }
 
     public void Enable() {
         this.gameObject.SetActive(true);

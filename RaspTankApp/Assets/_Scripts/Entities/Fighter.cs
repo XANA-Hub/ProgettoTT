@@ -129,10 +129,13 @@ public class Fighter : MonoBehaviour {
         currentHP -= dmgAmount;
 
         // Morto
-        if(currentHP <= 0) 
+        if(currentHP <= 0) {
+            currentHP = 0;
             return true;
-        else
+        }
+        else {
             return false;
+        }
     }
 
     public void Heal(int healAmount) {
