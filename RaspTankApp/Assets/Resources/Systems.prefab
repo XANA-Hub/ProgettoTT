@@ -1690,10 +1690,13 @@ MonoBehaviour:
   enemyLevelText: {fileID: 128010807626529088}
   criticalHitProbability: 0.125
   criticalHitMultiplier: 1.5
-  fleeProbability: 0.5
+  baseFleeProbability: 0.5
+  minFleeProbability: 0.2
+  maxFleeProbability: 0.8
   healProbability: 0.45
   monsterLevelVariation: 3
   attackDamageVariation: 5
+  healingPointsVariation: 5
 --- !u!1 &2709348493991587955
 GameObject:
   m_ObjectHideFlags: 0

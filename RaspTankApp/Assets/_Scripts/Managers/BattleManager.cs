@@ -32,12 +32,9 @@ public class BattleManager : MonoBehaviour {
     public TMP_Text enemyLevelText;
 
     [Header("Battle parameters")]
-    [Range(0f, 1f)] public float criticalHitProbability = 0.125f; // 12.5% 
     [Range(1.0f, 2.0f)] public float criticalHitMultiplier = 1.5f; // 50% in più di danno
-    [Range(0f, 1f)] public float baseFleeProbability = 0.5f; // 50%
     [Range(0f, 1f)] public float minFleeProbability = 0.2f; // Valore minimo della probabilità di fuga
     [Range(0f, 1f)] public float maxFleeProbability = 0.8f; // Valore massimo della probabilità di fuga
-    [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
     [Range(0, 10)] public int monsterLevelVariation = 3; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int healingPointsVariation = 5; // Di quanto può variare la cura
@@ -164,25 +161,36 @@ public class BattleManager : MonoBehaviour {
     // Funzioni per verificare se una certa azione è andata a buon fine
     //
 
-    private bool isCriticalHit() {
 
+    private bool isMissedAttack(Fighter fighter) {
+        
         float randomValue = Random.Range(0f, 1f);
-        return randomValue < criticalHitProbability;
+        return randomValue < fighter.data.missProbability;
     }
 
+    private bool isCriticalHit(Fighter fighter) {
+        
+        float randomValue = Random.Range(0f, 1f);
+        return randomValue < fighter.data.criticalHitProbability;
+    }
 
-    private bool isFleeSuccesful() {
+    private bool isFleeSuccessful(Fighter fighter) {
 
-        float currentFleeProbability = baseFleeProbability;
+        float currentFleeProbability = fighter.data.baseFleeProbability;
+        int speedDifference = 0;
+        
+        // Calcola la differenza di velocità tra i due combattenti
+        if(fighter is Player) {
+            speedDifference = player.getCurrentSpeed() - monster.getCurrentSpeed();
+        } else {
+            speedDifference = monster.getCurrentSpeed() - player.getCurrentSpeed();
+        }
 
-        // Calcola la differenza di velocità tra il giocatore e il mostro
-        int speedDifference = player.getCurrentSpeed() - monster.getCurrentSpeed();
-
-        // Aumenta la probabilità di fuga se il giocatore è più veloce del mostro
+        // Aumenta la probabilità di fuga
         if (speedDifference > 0) {
             currentFleeProbability  += currentFleeProbability * (speedDifference * 0.05f); // Aumenta del 5% per ogni punto di differenza
         }
-        // Diminuisci la probabilità di fuga se il mostro è più veloce del giocatore
+        // Diminuisci la probabilità
         else if (speedDifference < 0) {
             currentFleeProbability -= currentFleeProbability * (Mathf.Abs(speedDifference) * 0.05f); // Diminuisci del 5% per ogni punto di differenza
         }
@@ -198,13 +206,13 @@ public class BattleManager : MonoBehaviour {
 
 
 
-    private bool isHealSuccesful(bool isNatureHeal) {
+    private bool isHealSuccessful(Fighter fighter) {
 
-        float currentHealProbability = healProbability;
+        float currentHealProbability = fighter.data.healProbability;
 
         // La aumento nel caso il fighter sia di natura "HEAL"
         // Altrimenti rimane di base (0.45%)
-        if(isNatureHeal) {
+        if(fighter.getCurrentNatureBonus() == NatureBonus.HEAL) {
             currentHealProbability += 0.10f;
         }
 
@@ -223,12 +231,12 @@ public class BattleManager : MonoBehaviour {
 
         // Se il giocatore ha meno del 50% degli HP
         if (playerHPPercentage < 0.5f) { 
-            if (randomValue < 0.7f) {
+            if (randomValue < 0.80f) {
                 StartCoroutine(MonsterAttack());
-            } else if (randomValue < 0.15f) {
-                StartCoroutine(MonsterDefend());
-            } else {
+            } else if (randomValue < 0.95f) {
                 StartCoroutine(MonsterHeal());
+            } else {
+                StartCoroutine(MonsterDefend());
             }
         }
 
@@ -237,13 +245,36 @@ public class BattleManager : MonoBehaviour {
 
             // Se il mostro ha MENO del 50% degli HP
             if (monsterHPPercentage <= 0.5f) {
-                if (randomValue < 0.15f) {
-                    StartCoroutine(MonsterHeal());
-                } else if (randomValue < 0.35f) {
-                    StartCoroutine(MonsterDefend());
-                } else {
-                    StartCoroutine(MonsterAttack());
+                
+                // Suddivido i due casi di comportamento normale in base alla temper del mostro
+                // Aggressivo
+                if(isAggressive) {
+                    if (randomValue < 0.30f) {
+                        StartCoroutine(MonsterHeal());
+                    } else if (randomValue < 0.60f) {
+                        StartCoroutine(MonsterRun());
+                    } else if (randomValue < 0.80f) {
+                        StartCoroutine(MonsterAttack());
+                    } else {
+                        StartCoroutine(MonsterDefend());
+                    }
                 }
+
+                // Difensivo
+                else {
+
+                    if (randomValue < 0.30f) {
+                        StartCoroutine(MonsterHeal());
+                    } else if (randomValue < 0.60f) {
+                        StartCoroutine(MonsterDefend());
+                    } else if (randomValue < 0.80f) {
+                        StartCoroutine(MonsterAttack());
+                    } else {
+                        StartCoroutine(MonsterRun());
+                    }
+
+                }
+
             } 
             
             // Se il mostro ha PIU' del 50% degli HP (situazione normale)
@@ -252,23 +283,24 @@ public class BattleManager : MonoBehaviour {
                 // Suddivido i due casi di comportamento normale in base alla temper del mostro
                 // Aggressivo
                 if(isAggressive) {
-                    if (randomValue < 0.7f) {
+                    if (randomValue < 0.70f) {
                         StartCoroutine(MonsterAttack());
-                    } else if (randomValue < 0.15f) {
-                        StartCoroutine(MonsterDefend());
-                    } else {
+                    } else if (randomValue < 0.90f) {
                         StartCoroutine(MonsterHeal());
-                    } 
+                    } else {
+                        StartCoroutine(MonsterDefend());
+                    }
                 }
                 // Difensivo
                 else {
-                    if (randomValue < 0.5f) {
+                    if (randomValue < 0.50f) {
                         StartCoroutine(MonsterDefend());
-                    } else if (randomValue < 0.3f) {
+                    } else if (randomValue < 0.80f) {
                         StartCoroutine(MonsterAttack());
                     } else {
                         StartCoroutine(MonsterHeal());
-                    } 
+                    }
+
                 }
 
             }
@@ -340,30 +372,42 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerAttack() {
 
         // Ottengo il danno fatto dal giocatore 
-        bool isCrit = isCriticalHit();
-        int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
-        Debug.Log("Player DMG: " + dmgAmount);
-        bool isEnemyDead = monster.takeDamage(dmgAmount);
+        bool isMissed = isMissedAttack(player);
+        bool isCrit = isCriticalHit(player);
         
-        if(isCrit) {
-            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". It was a critical hit!");
-        }else {
-            dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name);
-        }
+        if(!isMissed) {
+            Debug.Log("PLAYER ATTACK SUCCESSFUL!");
+            int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+            Debug.Log("Player DMG: " + dmgAmount);
+            bool isEnemyDead = monster.takeDamage(dmgAmount);
+            
+            if(isCrit) {
+                dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". Critical hit!");
+            }else {
+                dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name);
+            }
 
-        // Il nemico è morto?
-        if(isEnemyDead) {
-            battleState = BattleState.WON;
-            SetMonsterHPBar(0);
-            dialogueText.SetText("You defeated " + monster.data.name + "!");
+            // Il nemico è morto?
+            if(isEnemyDead) {
+                battleState = BattleState.WON;
+                SetMonsterHPBar(0);
+                dialogueText.SetText("You defeated " + monster.data.name + "!");
 
-            yield return new WaitForSeconds(2f);
-            EndBattle();
+                yield return new WaitForSeconds(2f);
+                EndBattle();
+            }
+            else {
+                battleState = BattleState.ENEMY_TURN;
+                SetMonsterHPBar(monster.getCurrentHP());
+
+                yield return new WaitForSeconds(2f);
+                StartCoroutine(EnemyTurn());
+            }
         }
         else {
+            Debug.Log("PLAYER ATTACK NOT SUCCESSFUL!");
+            dialogueText.SetText("You missed the attack!");
             battleState = BattleState.ENEMY_TURN;
-            SetMonsterHPBar(monster.getCurrentHP());
-
             yield return new WaitForSeconds(2f);
             StartCoroutine(EnemyTurn());
         }
@@ -374,33 +418,45 @@ public class BattleManager : MonoBehaviour {
 	IEnumerator MonsterAttack() {
         
         // Ottengo il danno fatto dal nemico 
-        bool isCrit = isCriticalHit();
-        int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
-        Debug.Log("Monster DMG: " + dmgAmount);
-        bool isPlayerDead = player.takeDamage(dmgAmount);
-
-         if(isCrit) {
-            dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage! It was a critical hit!");
-        }else {
-            dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage!");
-        }
+        bool isMissed = isMissedAttack(monster);
+        bool isCrit = isCriticalHit(monster);
         
-        // Il giocatore è morto?
-        if(isPlayerDead) {
-            battleState = BattleState.LOST;
-            SetPlayerHPBar(0);
-            dialogueText.SetText("You were defeated by " + monster.data.name + "!");
+        if(!isMissed) {
+            int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+            Debug.Log("Monster DMG: " + dmgAmount);
+            bool isPlayerDead = player.takeDamage(dmgAmount);
 
-            yield return new WaitForSeconds(2f);
-            EndBattle();
+            if(isCrit) {
+                dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage! Critical hit!");
+            }else {
+                dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage!");
+            }
+            
+            // Il giocatore è morto?
+            if(isPlayerDead) {
+                battleState = BattleState.LOST;
+                SetPlayerHPBar(0);
+                dialogueText.SetText("You were defeated by " + monster.data.name + "!");
+
+                yield return new WaitForSeconds(2f);
+                EndBattle();
+            }
+            else {
+                battleState = BattleState.PLAYER_TURN;
+                SetPlayerHPBar(player.getCurrentHP());
+
+                yield return new WaitForSeconds(2f);
+                PlayerTurn();
+            }
         }
         else {
+            dialogueText.SetText(this.monster.data.name + " missed the attack!");
             battleState = BattleState.PLAYER_TURN;
-            SetPlayerHPBar(player.getCurrentHP());
-
             yield return new WaitForSeconds(2f);
             PlayerTurn();
         }
+
+        
     }
 
 
@@ -417,9 +473,10 @@ public class BattleManager : MonoBehaviour {
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
         int mitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+        Debug.Log("MITIGATED DMG BY PLAYER: " + mitigatedDamage);
 
         // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
-        dialogueText.SetText("You try to mitigate the next attack!");
+        dialogueText.SetText("You'll mitigate the next attack!");
 
         // Attendere per un po' per mostrare il messaggio e quindi passare al prossimo turno
         yield return new WaitForSeconds(2f);
@@ -440,9 +497,10 @@ public class BattleManager : MonoBehaviour {
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
         int mitigatedDamage = CalculateMitigatedDamage(player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+        Debug.Log("MITIGATED DMG BY MOSTER: " + mitigatedDamage);
 
         // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
-        dialogueText.SetText(monster.data.name + " tries to mitigate the next attack!");
+        dialogueText.SetText(monster.data.name + " will mitigate the next attack!");
 
         // Attendere per un po' per mostrare il messaggio e quindi passare al prossimo turno
         yield return new WaitForSeconds(2f);
@@ -456,9 +514,8 @@ public class BattleManager : MonoBehaviour {
 
         battleState = BattleState.ENEMY_TURN;
         int healingAmount = CalculateHealingPoints(player.getCurrentHeal(), healingPointsVariation);
-        
 
-        if(isHealSuccesful(player.getCurrentNatureBonus() == NatureBonus.HEAL)) {
+        if(isHealSuccessful(player)) {
             
             // Setto i dati interni del giocatore
             player.Heal(healingAmount);
@@ -488,7 +545,7 @@ public class BattleManager : MonoBehaviour {
          int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
         
 
-        if(isHealSuccesful(monster.getCurrentNatureBonus() == NatureBonus.HEAL)) {
+        if(isHealSuccessful(monster)) {
             
             // Setto i dati interni del mostro
             monster.Heal(healingAmount);
@@ -514,8 +571,8 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator PlayerRun() {
 
-        if(isFleeSuccesful()) {
-            battleState = BattleState.ESCAPED;
+        if(isFleeSuccessful(player)) {
+            battleState = BattleState.PLAYER_ESCAPED;
             yield return new WaitForSeconds(2f);
             EndBattle();
         } else {
@@ -528,14 +585,34 @@ public class BattleManager : MonoBehaviour {
     }
 
 
+    IEnumerator MonsterRun() {
+
+        if(isFleeSuccessful(monster)) {
+            battleState = BattleState.MONSTER_ESCAPED;
+            yield return new WaitForSeconds(2f);
+            EndBattle();
+        } else {
+            battleState = BattleState.PLAYER_TURN;
+            dialogueText.SetText (monster.data.name + " tried to escape but couldn't!");
+            yield return new WaitForSeconds(2f);
+            PlayerTurn();
+        }
+        
+    }
+
+
     private void EndBattle() {
 
         if(battleState == BattleState.WON) {
             dialogueText.SetText("You won the battle!");
         } else if(battleState == BattleState.LOST) {
             dialogueText.SetText("You lost the battle!");
-        } else if(battleState == BattleState.ESCAPED) {
+        } else if(battleState == BattleState.PLAYER_ESCAPED) {
             dialogueText.SetText ("You got away safely!");
+        } else if(battleState == BattleState.MONSTER_ESCAPED) {
+            dialogueText.SetText (monster.data.name + " got away safely!");
+        } else {
+            dialogueText.SetText ("ERROR: Unknown battle state!");
         }
 
     }

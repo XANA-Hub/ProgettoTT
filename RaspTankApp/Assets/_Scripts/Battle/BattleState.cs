@@ -6,7 +6,8 @@ public enum BattleState {
     START, 
     PLAYER_TURN,
     ENEMY_TURN,
-    ESCAPED,
+    PLAYER_ESCAPED,
+    MONSTER_ESCAPED,
     WON,
     LOST
 }
