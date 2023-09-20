@@ -16,6 +16,12 @@ public class BattleManager : MonoBehaviour {
     [Header("Battle menu animator")]
     public Animator battleMenuAnimator;
 
+    [Header("Buttons")]
+    public Button attackButton;
+    public Button defendButton;
+    public Button healButton;
+    public Button runButton;
+
     [Header("Dialogue")]
     public TMP_Text dialogueText;
 
@@ -55,6 +61,20 @@ public class BattleManager : MonoBehaviour {
     // Metodi
     //
 
+    private void deactivateButtons() {
+        attackButton.interactable = false;
+        defendButton.interactable = false;
+        healButton.interactable = false;
+        runButton.interactable = false;
+    }
+
+    private void activateButtons() {
+        attackButton.interactable = true;
+        defendButton.interactable = true;
+        healButton.interactable = true;
+        runButton.interactable = true;
+    }
+
     private void SetUpBattleHUD() {
 
         // Giocatore
@@ -73,6 +93,7 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator SetUpBattle() {
 
+        deactivateButtons();
         SetUpBattleHUD();
 
         Debug.Log("BATTAGLIA INIZIATA!");
@@ -85,52 +106,34 @@ public class BattleManager : MonoBehaviour {
 
     }
 
-    public void PlayerTurn() {
+    private void PlayerTurn() {
+        activateButtons();
         dialogueText.SetText("Choose an action:");
     }
 
     IEnumerator EnemyTurn() {
+        
         ChooseEnemyAction(monster.getCurrentTemper() == Temper.AGGRESSIVE);
         yield return new WaitForSeconds(2f);
     }
 
     public void OnAttackButton() {
-
-        // Se non è il turno del giocatore
-        if(battleState != BattleState.PLAYER_TURN) {
-            return;
-        }
-
+        deactivateButtons();
         StartCoroutine(PlayerAttack());
     }
 
     public void OnDefendButton() {
-
-        // Se non è il turno del giocatore
-        if(battleState != BattleState.PLAYER_TURN) {
-            return;
-        }
-
+        deactivateButtons();
         StartCoroutine(PlayerDefend());
     }
 
     public void OnHealButton() {
-
-        // Se non è il turno del giocatore
-        if(battleState != BattleState.PLAYER_TURN) {
-            return;
-        }
-
+        deactivateButtons();
         StartCoroutine(PlayerHeal());
     }
 
     public void OnRunButton() {
-
-        // Se non è il turno del giocatore
-        if(battleState != BattleState.PLAYER_TURN) {
-            return;
-        }
-
+        deactivateButtons();
         StartCoroutine(PlayerRun());
     }
 

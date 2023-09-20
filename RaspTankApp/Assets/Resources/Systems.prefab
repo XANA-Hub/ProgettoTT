@@ -1679,6 +1679,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleState: 0
   battleMenuAnimator: {fileID: 1463197370977783777}
+  attackButton: {fileID: 1320273972892665468}
+  defendButton: {fileID: 1916503692136042729}
+  healButton: {fileID: 334668580529500199}
+  runButton: {fileID: 7556041277482079587}
   dialogueText: {fileID: 5092999976005279369}
   playerSprite: {fileID: 1907034747223493169}
   playerHP: {fileID: 4654941997685067747}
@@ -1688,12 +1692,9 @@ MonoBehaviour:
   enemyHP: {fileID: 7252488180897640567}
   enemyNameText: {fileID: 7012031154277500826}
   enemyLevelText: {fileID: 128010807626529088}
-  criticalHitProbability: 0.125
   criticalHitMultiplier: 1.5
-  baseFleeProbability: 0.5
   minFleeProbability: 0.2
   maxFleeProbability: 0.8
-  healProbability: 0.45
   monsterLevelVariation: 3
   attackDamageVariation: 5
   healingPointsVariation: 5
