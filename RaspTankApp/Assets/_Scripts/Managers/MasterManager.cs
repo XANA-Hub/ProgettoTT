@@ -12,7 +12,8 @@ public class MasterManager : MonoBehaviour {
     public AudioManager audioManager { get; private set; }
     public ClientTCPManager clientTCPManager { get; private set; }
     public VideoReceiverManager videoReceiverManager { get; private set; }
-    public GameObject hud { get; private set; }
+    public GameObject battleHUD { get; private set; }
+    public GameObject robotHUD {get; private set;}
     public Player player { get; private set; }
     public MonsterDatabase monsterDatabase { get; private set; }
     public BattleManager battleManager { get; private set; }
@@ -37,7 +38,8 @@ public class MasterManager : MonoBehaviour {
 
 
         // Ottengo i vari GameObject figli
-        hud = this.transform.GetChild(0).gameObject;
+        robotHUD = this.transform.GetChild(0).GetChild(0).gameObject;
+        battleHUD = this.transform.GetChild(0).GetChild(1).gameObject;
         videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         audioManager = GetComponentInChildren<AudioManager>();
         clientTCPManager = GetComponentInChildren<ClientTCPManager>();

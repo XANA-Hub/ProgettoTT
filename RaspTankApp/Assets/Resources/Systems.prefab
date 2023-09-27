@@ -820,7 +820,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44cc88e28d615604d8e4d7027dac95f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ipAddress: 192.168.1.16
   port: 25565
   maxRetries: 5
 --- !u!1 &1463197370977783707
@@ -1693,8 +1692,8 @@ MonoBehaviour:
   enemyNameText: {fileID: 7012031154277500826}
   enemyLevelText: {fileID: 128010807626529088}
   criticalHitMultiplier: 1.5
-  minFleeProbability: 0.2
-  maxFleeProbability: 0.8
+  minFleeProbability: 0.3
+  maxFleeProbability: 0.7
   monsterLevelVariation: 3
   attackDamageVariation: 5
   healingPointsVariation: 5
@@ -5419,7 +5418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1328809257316738676
 RectTransform:
   m_ObjectHideFlags: 0

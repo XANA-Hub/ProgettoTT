@@ -387,7 +387,7 @@ public class BattleManager : MonoBehaviour {
             if(isCrit) {
                 dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". Critical hit!");
             }else {
-                dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name);
+                dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name + "!");
             }
 
             // Il nemico è morto?

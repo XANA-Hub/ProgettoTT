@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovementParallax : MonoBehaviour {
 
-    public float cameraSpeed;
+    public float cameraSpeed = 0.32f;
 
     void Update() {
         

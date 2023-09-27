@@ -4,32 +4,47 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-public class VideoReceiverManager : MonoBehaviour
-{   
-    public int port = 25565;
+public class VideoReceiverManager : MonoBehaviour {   
+
+    public int port = -1;
     public RawImage rawImage;
     private Texture2D receivedTexture;
     private UdpClient udpClient;
     private bool isListening = true;
 
-    private void Start()
-    {
-        receivedTexture = new Texture2D(640, 480); // Initialize the Texture2D
+    private void Start() {
+
+        loadPort();
+
+        receivedTexture = new Texture2D(640, 480);
 
         // Create a UDP client and bind it to a specific port
-        udpClient = new UdpClient(port); // Change this port to the desired port number 
+        udpClient = new UdpClient(port); 
         
         Loom.RunAsync(() => {
             ReceiveData();
         });
     }
 
-    private void ReceiveData()
-    {
-        while (isListening)
-        {
-            try
-            {
+
+    
+    private void loadPort() {
+
+        if(PlayerPrefs.HasKey("masterPort")) {
+            string localPort = PlayerPrefs.GetString("masterPort");
+            int.TryParse(localPort, out port);
+
+            Debug.Log("UDPManager: porta caricata: " + port);
+        } else {
+            Debug.LogError("UDPManager: porta non caricata correttamente!");
+        }
+
+    }
+
+    private void ReceiveData() {
+
+        while (isListening) {
+            try {
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data = udpClient.Receive(ref anyIP);
 
@@ -43,8 +58,7 @@ public class VideoReceiverManager : MonoBehaviour
                 });
 
             }
-            catch(Exception)
-            {
+            catch(Exception) {
                 //Debug.LogError("Error receiving data: " + e.Message);
                 continue;
 
@@ -52,16 +66,12 @@ public class VideoReceiverManager : MonoBehaviour
         }
     }
 
-    private void convertBytesToTexture(byte[] byteArray)
-    {
-        try
-        {
+    private void convertBytesToTexture(byte[] byteArray) {
+        try {
             receivedTexture.LoadImage(byteArray);
             rawImage.texture = receivedTexture;
-        }
-        catch(Exception e)
-        {
-            Debug.LogError("Error converting bytes to texture: " + e.Message);
+        } catch(Exception e) {
+            Debug.LogError("Errore conversione da byte a texture: " + e.Message);
         }
     }
 
@@ -73,8 +83,7 @@ public class VideoReceiverManager : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    private void OnApplicationQuit()
-    {
+    private void OnApplicationQuit() {
         if (isListening) {
             udpClient.Close();
             isListening = false;

@@ -10,6 +10,9 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool clientTCPManagerEnabled = false;
     [SerializeField] private bool videoReceiverManagerEnabled = false;
     [SerializeField] private bool battleManagerEnabled = false;
+    [SerializeField] private bool battleHUDEnabled = false;
+    [SerializeField] private bool robotHUDEnabled = false;
+
 
 
     private void Awake() {
@@ -38,12 +41,17 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.battleManager.Disable();
         }
+        if(robotHUDEnabled) {
+            MasterManager.instance.robotHUD.SetActive(true);
+        } else {
+            MasterManager.instance.robotHUD.SetActive(false);
+        }
+        if(battleHUDEnabled) {
+            MasterManager.instance.battleHUD.SetActive(true);
+        } else {
+            MasterManager.instance.battleHUD.SetActive(false);
+        }
 
-
-        
-        //
-        // Others
-        //
 
        
     }

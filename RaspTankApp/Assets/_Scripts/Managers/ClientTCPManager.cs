@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ClientTCPManager : MonoBehaviour {
 	
-    public string ipAddress = "192.168.178.69";
-    public int port = 25565;
+    private string ipAddress = "";
+    public int port = -1;
     public int maxRetries = 5;
     private string serverMessage = "EMPTY";
     private bool isApplicationQuitting = false;
@@ -14,9 +14,34 @@ public class ClientTCPManager : MonoBehaviour {
     private TcpClient client;
 
     private void Start() {
+        
+        // Carico l'IP e la porta direttamente dalle PlayerPrefs
+        loadAddress();
 
         // Imposta l'indirizzo IP e la porta del server a cui connettersi   
         ConnectToServerWithRetry();
+    }
+
+    private void loadAddress() {
+
+        if(PlayerPrefs.HasKey("masterIP")) {
+            string localIP = PlayerPrefs.GetString("masterIP");
+            ipAddress = localIP;
+
+            Debug.Log("TCPManager: IP caricato: " + ipAddress);
+        } else {
+            Debug.LogError("TCPManager: IP non caricato correttamente!");
+        }
+
+        if(PlayerPrefs.HasKey("masterPort")) {
+            string localPort = PlayerPrefs.GetString("masterPort");
+            int.TryParse(localPort, out port);
+
+            Debug.Log("TCPManager: porta caricata: " + port);
+        } else {
+            Debug.LogError("TCPManager: porta non caricata correttamente!");
+        }
+
     }
 
     private void ConnectToServerWithRetry() {

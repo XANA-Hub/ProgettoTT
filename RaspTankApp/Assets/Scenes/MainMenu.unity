@@ -1477,8 +1477,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1585,7 +1585,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Pre-Alpha v1.1
+  m_text: Alpha v1.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: eb262e890ee4c5c4e8aa72a2b93bd7b8, type: 2}
   m_sharedMaterial: {fileID: 6231206385907189181, guid: eb262e890ee4c5c4e8aa72a2b93bd7b8, type: 2}
@@ -3669,7 +3669,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 51e06efaa6c2a8c4ea82c852dad21f3b, type: 3}
+  m_Sprite: {fileID: 466758444, guid: 1fb4ca0f0b3dc774f8b682c057d8357b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3800,51 +3800,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 852795229}
   m_CullTransparentMesh: 1
---- !u!1 &856744599
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 856744600}
-  - component: {fileID: 856744601}
-  m_Layer: 0
-  m_Name: BGMChanger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &856744600
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856744599}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.7483454, y: -207.15266, z: 2.1904244}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1494811386}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &856744601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856744599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc795d494727d604999764e6fa067147, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicName: Intro
 --- !u!1 &858320275
 GameObject:
   m_ObjectHideFlags: 0
@@ -4278,19 +4233,11 @@ MonoBehaviour:
   volumeTextValue: {fileID: 424337859}
   volumeSlider: {fileID: 1749641802}
   defaultVolume: 1
-  mouseSensitivityTextValue: {fileID: 0}
-  mouseSensitivitySlider: {fileID: 0}
-  defaultMouseSensitivity: 4
-  mainMouseSensitivity: 4
-  invertMouseToggle: {fileID: 0}
-  brightnessSlider: {fileID: 287160305}
-  brightnessTextValue: {fileID: 529299617}
-  defaultBrightness: 1
-  qualityDropDown: {fileID: 1375858706}
-  fullScreenToggle: {fileID: 2000068027}
-  resolutionDropdown: {fileID: 1373103137}
+  ipAddressInput: {fileID: 1742676416}
+  portInput: {fileID: 1433991608}
+  defaultIPAddress: 192.168.1.13
+  defaultPort: 25565
   confirmationPrompt: {fileID: 811178189}
-  noSavedGameDialog: {fileID: 0}
 --- !u!4 &927439950
 Transform:
   m_ObjectHideFlags: 0
@@ -4306,53 +4253,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &942765725
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 942765726}
-  - component: {fileID: 942765727}
-  m_Layer: 0
-  m_Name: CameraBackgroundChanger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &942765726
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942765725}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.648571, y: -207.12602, z: 2.1224468}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1494811386}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &942765727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942765725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acf01bc755f38d542b8e410a910448dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  r: 0
-  g: 0
-  b: 0
 --- !u!1 &946596146
 GameObject:
   m_ObjectHideFlags: 0
@@ -4711,8 +4611,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5177,6 +5077,7 @@ GameObject:
   - component: {fileID: 1061834930}
   - component: {fileID: 1061834929}
   - component: {fileID: 1061834928}
+  - component: {fileID: 1061834931}
   m_Layer: 0
   m_Name: MenuCamera
   m_TagString: MenuCamera
@@ -5250,6 +5151,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1061834931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061834927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d196a678287fcf74aaeb96465cc40075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSpeed: 0.32
 --- !u!1 &1095001461
 GameObject:
   m_ObjectHideFlags: 0
@@ -5347,7 +5261,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 927439949}
         m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
-        m_MethodName: NewGameDialog
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5404,8 +5318,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 90
+  m_fontSizeBase: 90
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7650,7 +7564,7 @@ GameObject:
   - component: {fileID: 1433991609}
   - component: {fileID: 1433991608}
   m_Layer: 5
-  m_Name: PortTextBox
+  m_Name: PortInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8141,8 +8055,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 942765726}
-  - {fileID: 856744600}
   - {fileID: 1955956367}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -8683,13 +8595,8 @@ MonoBehaviour:
   menuController: {fileID: 927439949}
   volumeTextValue: {fileID: 424337859}
   volumeSlider: {fileID: 1749641802}
-  brightnessSlider: {fileID: 287160305}
-  brightnessTextValue: {fileID: 529299617}
-  qualityDropDown: {fileID: 1375858706}
-  fullScreenToggle: {fileID: 2000068027}
-  mouseSensitivityTextValue: {fileID: 0}
-  mouseSensitivitySlider: {fileID: 0}
-  invertMouseToggle: {fileID: 0}
+  ipAddressInput: {fileID: 1742676416}
+  portInput: {fileID: 1433991608}
 --- !u!4 &1585263133
 Transform:
   m_ObjectHideFlags: 0
@@ -9042,7 +8949,7 @@ GameObject:
   - component: {fileID: 1742676417}
   - component: {fileID: 1742676416}
   m_Layer: 5
-  m_Name: IPAddressTextBox
+  m_Name: IPAddressInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9507,8 +9414,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d80f797eefabf9d4dbef043058f33c0f, type: 2}
+  m_sharedMaterial: {fileID: -4080596623129044189, guid: d80f797eefabf9d4dbef043058f33c0f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9532,14 +9439,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -9806,7 +9713,7 @@ GameObject:
   - component: {fileID: 1903038440}
   - component: {fileID: 1903038439}
   m_Layer: 5
-  m_Name: SettingsDialogBack
+  m_Name: ConnectionDialogBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9902,7 +9809,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 927439949}
         m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
-        m_MethodName: GameplayApply
+        m_MethodName: ConnectionApply
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10105,8 +10012,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d80f797eefabf9d4dbef043058f33c0f, type: 2}
+  m_sharedMaterial: {fileID: -4080596623129044189, guid: d80f797eefabf9d4dbef043058f33c0f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10130,14 +10037,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -10531,7 +10438,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1494811386}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1955956368
 MonoBehaviour:
@@ -10549,6 +10456,8 @@ MonoBehaviour:
   clientTCPManagerEnabled: 0
   videoReceiverManagerEnabled: 0
   battleManagerEnabled: 0
+  battleHUDEnabled: 0
+  robotHUDEnabled: 0
 --- !u!1 &1970848750
 GameObject:
   m_ObjectHideFlags: 0
@@ -11436,7 +11345,7 @@ GameObject:
   - component: {fileID: 2055700437}
   - component: {fileID: 2055700436}
   m_Layer: 5
-  m_Name: SettingsDialogApply
+  m_Name: ConnectionDialogApply
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11508,7 +11417,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 927439949}
         m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
-        m_MethodName: GameplayApply
+        m_MethodName: ConnectionApply
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11839,7 +11748,7 @@ GameObject:
   - component: {fileID: 2110031595}
   - component: {fileID: 2110031594}
   m_Layer: 5
-  m_Name: SettingsDialogReset
+  m_Name: ConnectionDialogReset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11918,7 +11827,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Gameplay
+          m_StringArgument: Connection
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2110031595
