@@ -82,24 +82,61 @@ public class MenuController : MonoBehaviour {
     //
 
     public void ConnectionApply() {
+
         // Salvo in PlayerPrefs il contenuto dell campo della connessione
 
-        if(string.IsNullOrWhiteSpace(ipAddressInput.text)) {
-            PlayerPrefs.SetString("masterIP", defaultIPAddress);
-        }
-        else if(string.IsNullOrWhiteSpace(portInput.text)) {
-            PlayerPrefs.SetString("masterPort", defaultPort);
-        }
-        else {
+        if(IsValidIP()) {
+            Debug.Log("IP inserito valido e salvato correttamente!");
             PlayerPrefs.SetString("masterIP", ipAddressInput.text);
-            PlayerPrefs.SetString("masterPort", portInput.text);
+            
+        } else {
+            Debug.LogError("Errore: IP inserito non valido, verrà usato quello di default!");
+            PlayerPrefs.SetString("masterIP", defaultIPAddress);
+            ipAddressInput.text = defaultIPAddress;
+
         }
+
+        if(IsValidPort()) {
+            Debug.Log("Porta inserita valida e salvata correttamente!");
+            PlayerPrefs.SetString("masterPort", portInput.text);
+        } else {
+            Debug.LogError("Errore: Porta inserita non valida, ne verrà usata una di default!");
+            PlayerPrefs.SetString("masterPort", defaultPort);
+            portInput.text = defaultPort;
+        }
+            
+            
 
         // Avvia il metodo ConfirmationBox
         StartCoroutine(ConfirmationBox());
     }
 
-    
+    private bool IsValidIP() {
+
+        if(string.IsNullOrWhiteSpace(ipAddressInput.text)) {
+            return false;
+        }
+
+        System.Net.IPAddress ipAddress = null;
+        return System.Net.IPAddress.TryParse(ipAddressInput.text, out ipAddress);
+    }
+
+    private bool IsValidPort() {
+
+        if(string.IsNullOrWhiteSpace(portInput.text)) {
+            return false;
+        }
+
+        if (int.TryParse(portInput.text, out int portNumber)) {
+
+            if (portNumber >= 1 && portNumber <= 65535) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
 
     public void ResetButton(string menuType) {
 
