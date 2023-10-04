@@ -8,7 +8,9 @@ public class BattleManager : MonoBehaviour {
     // Variabili private
     private Player player;
     private Monster monster;
-    private bool battleMenuIsUp = false;
+    //private bool battleMenuIsUp = false;
+    private int playerMitigatedDamage = 0;
+    private int monsterMitigatedDamage = 0;
 
     [Header("Starting battle state")]
     public BattleState battleState;
@@ -50,8 +52,9 @@ public class BattleManager : MonoBehaviour {
         player = MasterManager.instance.player;
         monster = Instantiate(MasterManager.instance.monsterDatabase.GetRandomMonster());
 
-        // Inizia la battaglia
+        // Inizia la battaglia (con la musica)
         battleState = BattleState.START;
+        MasterManager.instance.audioManager.PlayMusic("Battle");
 
         // Per inizializzare la battaglia
         StartCoroutine(SetUpBattle());
@@ -382,11 +385,19 @@ public class BattleManager : MonoBehaviour {
             Debug.Log("PLAYER ATTACK SUCCESSFUL!");
             int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
             Debug.Log("Player DMG: " + dmgAmount);
+            Debug.Log("Monster MITIGATED DMG: " + monsterMitigatedDamage);
+
+            dmgAmount -= monsterMitigatedDamage;
+            dmgAmount = Mathf.Max(1, dmgAmount); // Così è sempre minimo 1
+            monsterMitigatedDamage = 0;
+
             bool isEnemyDead = monster.takeDamage(dmgAmount);
             
             if(isCrit) {
+                MasterManager.instance.audioManager.PlaySound("PlayerPunch");
                 dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". Critical hit!");
             }else {
+                MasterManager.instance.audioManager.PlaySound("PlayerPunch");
                 dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name + "!");
             }
 
@@ -426,12 +437,21 @@ public class BattleManager : MonoBehaviour {
         
         if(!isMissed) {
             int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+            
             Debug.Log("Monster DMG: " + dmgAmount);
+            Debug.Log("Player MITIGATED DMG: " + monsterMitigatedDamage);
+
+            dmgAmount -= playerMitigatedDamage;
+            dmgAmount = Mathf.Max(1, dmgAmount); // Così è sempre minimo 1
+            playerMitigatedDamage = 0;
+
             bool isPlayerDead = player.takeDamage(dmgAmount);
 
             if(isCrit) {
+                MasterManager.instance.audioManager.PlaySound("EnemyPunch");
                 dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage! Critical hit!");
             }else {
+                MasterManager.instance.audioManager.PlaySound("EnemyPunch");
                 dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage!");
             }
             
@@ -475,8 +495,8 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
-        int mitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
-        Debug.Log("MITIGATED DMG BY PLAYER: " + mitigatedDamage);
+        playerMitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+        Debug.Log("MITIGATED DMG BY PLAYER: " + playerMitigatedDamage);
 
         // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
         dialogueText.SetText("You'll mitigate the next attack!");
@@ -499,8 +519,8 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
-        int mitigatedDamage = CalculateMitigatedDamage(player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
-        Debug.Log("MITIGATED DMG BY MOSTER: " + mitigatedDamage);
+        monsterMitigatedDamage = CalculateMitigatedDamage(player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+        Debug.Log("MITIGATED DMG BY MOSTER: " + monsterMitigatedDamage);
 
         // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
         dialogueText.SetText(monster.data.name + " will mitigate the next attack!");
@@ -522,6 +542,8 @@ public class BattleManager : MonoBehaviour {
             
             // Setto i dati interni del giocatore
             player.Heal(healingAmount);
+
+            MasterManager.instance.audioManager.PlaySound("Healing");
 
             // Se supero gli HP massimi del giocatore, li metto al max
             if(player.getCurrentHP() + healingAmount > player.getMaxCurrentHP()) {
@@ -552,6 +574,8 @@ public class BattleManager : MonoBehaviour {
             
             // Setto i dati interni del mostro
             monster.Heal(healingAmount);
+
+            MasterManager.instance.audioManager.PlaySound("Healing");
 
             // Se supero gli HP massimi del mostro, li metto al max
             if(monster.getCurrentHP() + healingAmount > monster.getMaxCurrentHP()) {
@@ -607,8 +631,10 @@ public class BattleManager : MonoBehaviour {
     private void EndBattle() {
 
         if(battleState == BattleState.WON) {
+            MasterManager.instance.audioManager.PlayMusic("Victory");
             dialogueText.SetText("You won the battle!");
         } else if(battleState == BattleState.LOST) {
+            MasterManager.instance.audioManager.PlayMusic("Defeat");
             dialogueText.SetText("You lost the battle!");
         } else if(battleState == BattleState.PLAYER_ESCAPED) {
             dialogueText.SetText ("You got away safely!");

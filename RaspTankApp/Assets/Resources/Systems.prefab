@@ -2808,7 +2808,56 @@ MonoBehaviour:
     isLoop: 1
     hasCooldown: 0
     source: {fileID: 0}
-  startingMusic: Intro
+  - name: Battle
+    clip: {fileID: 8300000, guid: 3120abfbdc8ff2d48af33f5db60a3e53, type: 3}
+    volume: 0.5
+    pitch: 1
+    isLoop: 1
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: MainMenu
+    clip: {fileID: 8300000, guid: c99d2cf0dcd7df9498c1069ee1116730, type: 3}
+    volume: 0.5
+    pitch: 1
+    isLoop: 1
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: PlayerPunch
+    clip: {fileID: 8300000, guid: 7609bcad6be6cf04ebaec5ceedefea31, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: EnemyPunch
+    clip: {fileID: 8300000, guid: c08f515c8fca5034e95f713d0335ed86, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: Healing
+    clip: {fileID: 8300000, guid: 8f64079c263f6f24b8eebe505918aa68, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: Victory
+    clip: {fileID: 8300000, guid: 61f9553b8b7c3e249b2f6c67b5173fbd, type: 3}
+    volume: 0.5
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: Defeat
+    clip: {fileID: 8300000, guid: 0436130663ce8fc48836728aca4e68de, type: 3}
+    volume: 0.5
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  startingMusic: MainMenu
 --- !u!1 &3769928382912130388
 GameObject:
   m_ObjectHideFlags: 0
