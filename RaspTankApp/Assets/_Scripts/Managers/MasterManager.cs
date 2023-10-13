@@ -17,6 +17,7 @@ public class MasterManager : MonoBehaviour {
     public Player player { get; private set; }
     public MonsterDatabase monsterDatabase { get; private set; }
     public BattleManager battleManager { get; private set; }
+    public BattleEffectsManager battleEffectsManager { get; private set; }
 
 
     //
@@ -46,6 +47,7 @@ public class MasterManager : MonoBehaviour {
         player = GetComponentInChildren<Player>();
         monsterDatabase = GetComponentInChildren<MonsterDatabase>();
         battleManager = GetComponentInChildren<BattleManager>();
+        battleEffectsManager = GetComponentInChildren<BattleEffectsManager>();
         //robotResponseManager = GetComponentInChildren<RobotResponseManager>();
 
     }

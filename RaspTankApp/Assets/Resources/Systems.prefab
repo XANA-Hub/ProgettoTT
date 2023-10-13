@@ -2857,6 +2857,34 @@ MonoBehaviour:
     isLoop: 0
     hasCooldown: 0
     source: {fileID: 0}
+  - name: AttackMiss
+    clip: {fileID: 8300000, guid: d92fd747f27b6e74599d20370ea374b0, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: HealingMiss
+    clip: {fileID: 8300000, guid: db7d8388226b9c74a806b5edae6e68b0, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: SuccessfulEscape
+    clip: {fileID: 8300000, guid: f0ce8337e6c8dfc4fa39441a6efc295f, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
+  - name: FailedEscape
+    clip: {fileID: 8300000, guid: a1bbe6542d2802b4bb394ed00774c677, type: 3}
+    volume: 1
+    pitch: 1
+    isLoop: 0
+    hasCooldown: 0
+    source: {fileID: 0}
   startingMusic: MainMenu
 --- !u!1 &3769928382912130388
 GameObject:
@@ -4785,6 +4813,7 @@ Transform:
   - {fileID: 1961649103042205139}
   - {fileID: 5253763284032389125}
   - {fileID: 3129107574144110306}
+  - {fileID: 3821909098602695467}
   - {fileID: 3917566410736028869}
   - {fileID: 9049361025776525396}
   m_Father: {fileID: 430689501750389410}
@@ -4993,7 +5022,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6302754698550137845}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7353245205091156999
 MonoBehaviour:
@@ -5662,6 +5691,50 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!1 &8910177981214817822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3821909098602695467}
+  - component: {fileID: 2358237045110643958}
+  m_Layer: 0
+  m_Name: BattleEffectsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3821909098602695467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8910177981214817822}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -288.53156, y: -470.57227, z: -4.238022}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6302754698550137845}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2358237045110643958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8910177981214817822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93b3c4b5400f88a48bb4af476a4aaf83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9018447936612367905
 GameObject:
   m_ObjectHideFlags: 0
@@ -5963,7 +6036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3541987942493086438, guid: fd92ad16af3661b498d16a4db8ad5b26, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3541987942493086438, guid: fd92ad16af3661b498d16a4db8ad5b26, type: 3}
       propertyPath: m_LocalPosition.x

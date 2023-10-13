@@ -12,6 +12,7 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool battleManagerEnabled = false;
     [SerializeField] private bool battleHUDEnabled = false;
     [SerializeField] private bool robotHUDEnabled = false;
+    [SerializeField] private bool battleEffectsManagerEnabled = false;
 
 
 
@@ -50,6 +51,12 @@ public class SceneInitialization : MonoBehaviour {
             MasterManager.instance.battleHUD.SetActive(true);
         } else {
             MasterManager.instance.battleHUD.SetActive(false);
+        }
+
+        if(battleEffectsManagerEnabled) {
+            MasterManager.instance.battleEffectsManager.Enable();
+        } else {
+            MasterManager.instance.battleEffectsManager.Disable();
         }
 
 

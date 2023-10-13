@@ -392,8 +392,10 @@ public class BattleManager : MonoBehaviour {
             monsterMitigatedDamage = 0;
 
             bool isEnemyDead = monster.takeDamage(dmgAmount);
+            MasterManager.instance.battleEffectsManager.ShakeGameObject(MasterManager.instance.battleHUD, 0.8f, 0.4f);
             
             if(isCrit) {
+                // TODO: mettere suono critico
                 MasterManager.instance.audioManager.PlaySound("PlayerPunch");
                 dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". Critical hit!");
             }else {
@@ -419,7 +421,7 @@ public class BattleManager : MonoBehaviour {
             }
         }
         else {
-            Debug.Log("PLAYER ATTACK NOT SUCCESSFUL!");
+            MasterManager.instance.audioManager.PlaySound("AttackMiss");
             dialogueText.SetText("You missed the attack!");
             battleState = BattleState.ENEMY_TURN;
             yield return new WaitForSeconds(2f);
@@ -446,6 +448,7 @@ public class BattleManager : MonoBehaviour {
             playerMitigatedDamage = 0;
 
             bool isPlayerDead = player.takeDamage(dmgAmount);
+            MasterManager.instance.battleEffectsManager.ShakeCamera(Camera.main, 0.5f, 0.1f);
 
             if(isCrit) {
                 MasterManager.instance.audioManager.PlaySound("EnemyPunch");
@@ -473,6 +476,7 @@ public class BattleManager : MonoBehaviour {
             }
         }
         else {
+            MasterManager.instance.audioManager.PlaySound("AttackMiss");
             dialogueText.SetText(this.monster.data.name + " missed the attack!");
             battleState = BattleState.PLAYER_TURN;
             yield return new WaitForSeconds(2f);
@@ -556,6 +560,7 @@ public class BattleManager : MonoBehaviour {
             
         }
         else {
+            MasterManager.instance.audioManager.PlaySound("HealingMiss");
             dialogueText.SetText ("You couldn't heal your wounds!");
         }
         
@@ -588,6 +593,7 @@ public class BattleManager : MonoBehaviour {
             
         }
         else {
+            MasterManager.instance.audioManager.PlaySound("HealingMiss");
             dialogueText.SetText (monster.data.name + " couldn't heal their wounds!");
         }
         
@@ -599,10 +605,12 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerRun() {
 
         if(isFleeSuccessful(player)) {
+            MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.PLAYER_ESCAPED;
             yield return new WaitForSeconds(2f);
             EndBattle();
         } else {
+            MasterManager.instance.audioManager.PlaySound("FailedEscape");
             battleState = BattleState.ENEMY_TURN;
             dialogueText.SetText ("You can't escape!");
             yield return new WaitForSeconds(2f);
@@ -615,10 +623,12 @@ public class BattleManager : MonoBehaviour {
     IEnumerator MonsterRun() {
 
         if(isFleeSuccessful(monster)) {
+            MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.MONSTER_ESCAPED;
             yield return new WaitForSeconds(2f);
             EndBattle();
         } else {
+            MasterManager.instance.audioManager.PlaySound("FailedEscape");
             battleState = BattleState.PLAYER_TURN;
             dialogueText.SetText (monster.data.name + " tried to escape but couldn't!");
             yield return new WaitForSeconds(2f);
