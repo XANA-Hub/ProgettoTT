@@ -1,5 +1,6 @@
 import pykka
 import RobotSocket as rs
+import RobotAIControl
 
 class Actor(pykka.ThreadingActor):
     def on_receive(self, message):
@@ -8,7 +9,6 @@ class Actor(pykka.ThreadingActor):
             print("--RobotAI-- terminating")
             self.stop()
         elif "Identify_Current" in message:
-            print("entrato nell'if")
             self.identify()
         else:
             print("--RobotAI ERROR-- malformed message: " + message)
@@ -16,5 +16,9 @@ class Actor(pykka.ThreadingActor):
 
 
     def identify(self):
+        result = RobotAIControl.detect()        #funzione di libreria che ritorna una stringa se sono sopra un certo livello di sicurezza altrimenti un messaggio di errore
         print("Actor AI sending...")
-        rs.sendAIresponse("test_string")
+        if isinstance(result, str):
+            rs.sendAIresponse(result)
+        else:
+            rs.sendAIresponse("Error 501: calculated result is not a string")

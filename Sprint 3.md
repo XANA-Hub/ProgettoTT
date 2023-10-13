@@ -1,0 +1,15 @@
+
+### Messaggi che può restituire l'AI
+- "White Pawn"
+- "White Knight"
+- "White Bishop"
+- "White Rook"
+- "White Queen"
+- "White King"
+- "Black Pawn"
+- "Black Knight"
+- "Black Bishop"
+- "Black Rook"
+- "Black Queen"
+- "Black King"
+- "Nothing Detected"
