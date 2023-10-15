@@ -54,5 +54,10 @@ MonoBehaviour:
     baseSpeed: 80
     baseHeal: 10
     baseAttackDamage: 10
+    healProbability: 0.45
+    baseFleeProbability: 0.5
+    criticalHitProbability: 0.125
+    missProbability: 0.05
     natureBonusPercentage: 0.1
     preferredNatureProbability: 0.7
+  baseExpGivenToPlayer: 35

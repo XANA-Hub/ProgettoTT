@@ -8,7 +8,6 @@ public class BattleManager : MonoBehaviour {
     // Variabili private
     private Player player;
     private Monster monster;
-    //private bool battleMenuIsUp = false;
     private int playerMitigatedDamage = 0;
     private int monsterMitigatedDamage = 0;
 
@@ -30,6 +29,7 @@ public class BattleManager : MonoBehaviour {
     [Header("Player")]
     public Image playerSprite;
     public RectTransform playerHP;
+    public RectTransform playerExp;
     public TMP_Text playerNameText;
     public TMP_Text playerLevelText;
 
@@ -78,13 +78,71 @@ public class BattleManager : MonoBehaviour {
         runButton.interactable = true;
     }
 
+    private void LoadOrInitializeData() {
+        
+        // CurrentLevel
+        if(PlayerPrefs.HasKey("playerCurrentLevel")) {
+            player.SetLevel(PlayerPrefs.GetInt("playerCurrentLevel"));
+        } else {
+            PlayerPrefs.SetInt("playerCurrentLevel", player.getLevel());
+        }
+
+        // CurrentHP
+        if(PlayerPrefs.HasKey("playerCurrentHP")) {
+            player.SetCurrentHP(PlayerPrefs.GetInt("playerCurrentHP"));
+        } else {
+            PlayerPrefs.SetInt("playerCurrentHP", player.getCurrentHP());
+        }
+
+        // MaxCurrentHP
+        if(PlayerPrefs.HasKey("playerMaxCurrentHP")) {
+            player.SetMaxCurrentHP(PlayerPrefs.GetInt("playerMaxCurrentHP"));
+        } else {
+            PlayerPrefs.SetInt("playerMaxCurrentHP", player.getMaxCurrentHP());
+        }
+
+        // CurrentExp
+        if(PlayerPrefs.HasKey("playerCurrentExp")) {
+            player.SetCurrentExp(PlayerPrefs.GetInt("playerCurrentExp"));
+        } else {
+            PlayerPrefs.SetInt("playerCurrentExp", player.getCurrentExp());
+        }
+
+        // ExpRequiredForNextLevel
+        if(PlayerPrefs.HasKey("playerExpRequiredForNextLevel")) {
+            player.SetExpRequiredForNextLevel(PlayerPrefs.GetInt("playerExpRequiredForNextLevel"));
+        } else {
+            PlayerPrefs.SetInt("playerExpRequiredForNextLevel", player.getExpRequiredForNextLevel());
+        }
+
+        PlayerPrefs.Save();
+
+    }
+
+    private void SaveData() {
+
+        // LEVEL
+        PlayerPrefs.SetInt("playerCurrentLevel", player.getLevel());
+
+        // HP
+        PlayerPrefs.SetInt("playerCurrentHP", player.getCurrentHP());
+        PlayerPrefs.SetInt("playerMaxCurrentHP", player.getMaxCurrentHP());
+
+        // EXP
+        PlayerPrefs.SetInt("playerCurrentExp", player.getCurrentExp());
+        PlayerPrefs.SetInt("playerExpRequiredForNextLevel", player.getExpRequiredForNextLevel());
+
+        PlayerPrefs.Save();
+    }
+    
     private void SetUpBattleHUD() {
 
         // Giocatore
         playerNameText.SetText(player.data.name);
         playerLevelText.SetText("Lvl: " + player.getLevel());
         playerSprite.sprite = player.data.sprite; // Cambio lo sprite del giocatore
-        SetPlayerHPBar(player.getMaxCurrentHP());
+        SetPlayerHPBar(player.getCurrentHP());
+        SetPlayerExpBar();
 
         // Mostro
         enemyNameText.SetText(monster.data.name);
@@ -95,6 +153,9 @@ public class BattleManager : MonoBehaviour {
     }
 
     IEnumerator SetUpBattle() {
+
+        // Saved data
+        LoadOrInitializeData();
 
         deactivateButtons();
         SetUpBattleHUD();
@@ -108,6 +169,11 @@ public class BattleManager : MonoBehaviour {
         PlayerTurn();
 
     }
+
+
+    //
+    // Turni
+    //
 
     private void PlayerTurn() {
         activateButtons();
@@ -409,7 +475,12 @@ public class BattleManager : MonoBehaviour {
                 SetMonsterHPBar(0);
                 dialogueText.SetText("You defeated " + monster.data.name + "!");
 
+                MasterManager.instance.audioManager.PlayMusic("VictorySound");
                 yield return new WaitForSeconds(2f);
+                
+                GivePlayerExp(true);
+                yield return new WaitForSeconds(2f);
+
                 EndBattle();
             }
             else {
@@ -452,10 +523,10 @@ public class BattleManager : MonoBehaviour {
 
             if(isCrit) {
                 MasterManager.instance.audioManager.PlaySound("EnemyPunch");
-                dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage! Critical hit!");
+                dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " damage! Critical hit!");
             }else {
                 MasterManager.instance.audioManager.PlaySound("EnemyPunch");
-                dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " points of damage!");
+                dialogueText.SetText(this.monster.data.name + " attacks! You were dealt " + dmgAmount + " damage!");
             }
             
             // Il giocatore è morto?
@@ -463,7 +534,8 @@ public class BattleManager : MonoBehaviour {
                 battleState = BattleState.LOST;
                 SetPlayerHPBar(0);
                 dialogueText.SetText("You were defeated by " + monster.data.name + "!");
-
+                
+                //MasterManager.instance.audioManager.PlayMusic("DefeatSound");
                 yield return new WaitForSeconds(2f);
                 EndBattle();
             }
@@ -485,9 +557,6 @@ public class BattleManager : MonoBehaviour {
 
         
     }
-
-
-
 
 
     IEnumerator PlayerDefend() {
@@ -572,7 +641,7 @@ public class BattleManager : MonoBehaviour {
 	 IEnumerator MonsterHeal() {
 
         battleState = BattleState.PLAYER_TURN;
-         int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
+        int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
         
 
         if(isHealSuccessful(monster)) {
@@ -608,6 +677,7 @@ public class BattleManager : MonoBehaviour {
             MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.PLAYER_ESCAPED;
             yield return new WaitForSeconds(2f);
+
             EndBattle();
         } else {
             MasterManager.instance.audioManager.PlaySound("FailedEscape");
@@ -626,6 +696,11 @@ public class BattleManager : MonoBehaviour {
             MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.MONSTER_ESCAPED;
             yield return new WaitForSeconds(2f);
+            
+            // Exp
+            GivePlayerExp(false);
+            yield return new WaitForSeconds(2f);
+
             EndBattle();
         } else {
             MasterManager.instance.audioManager.PlaySound("FailedEscape");
@@ -638,19 +713,52 @@ public class BattleManager : MonoBehaviour {
     }
 
 
+    IEnumerator GivePlayerExp(bool isMonsterDefeated) {
+
+        yield return new WaitForSeconds(2f);
+
+        // Ne do un quarto se il mostro è scappato o se il giocatore è scappato
+        if(isMonsterDefeated) {
+            player.GainExp(monster.GetPlayerExp());
+        } else {
+            player.GainExp(monster.GetPlayerExp() / 4);
+        }
+        SetPlayerExpBar();
+
+        dialogueText.SetText("You gained " + monster.GetPlayerExp() + " XP points!");
+
+        // Salvo i dati una volta che ho dato l'exp al giocatore
+        SaveData();
+
+        yield return new WaitForSeconds(2f);
+    }
+
+
     private void EndBattle() {
+        
+        // Per ora salvo solo se il giocatore non ha perso la partita
 
         if(battleState == BattleState.WON) {
-            MasterManager.instance.audioManager.PlayMusic("Victory");
+            MasterManager.instance.audioManager.PlayMusic("VictoryMusic");
+            StartCoroutine(GivePlayerExp(true));
             dialogueText.SetText("You won the battle!");
+
         } else if(battleState == BattleState.LOST) {
-            MasterManager.instance.audioManager.PlayMusic("Defeat");
+            MasterManager.instance.audioManager.PlayMusic("DefeatMusic");
             dialogueText.SetText("You lost the battle!");
+
         } else if(battleState == BattleState.PLAYER_ESCAPED) {
+            MasterManager.instance.audioManager.PlayMusic("Escaped");
+            StartCoroutine(GivePlayerExp(false));
             dialogueText.SetText ("You got away safely!");
+
         } else if(battleState == BattleState.MONSTER_ESCAPED) {
+            MasterManager.instance.audioManager.PlayMusic("Escaped");
+            StartCoroutine(GivePlayerExp(false));
             dialogueText.SetText (monster.data.name + " got away safely!");
+
         } else {
+            Debug.LogError("BattleManager error: Unknown battle state!");
             dialogueText.SetText ("ERROR: Unknown battle state!");
         }
 
@@ -664,7 +772,16 @@ public class BattleManager : MonoBehaviour {
         playerHP.localScale = new Vector3(ratio, 1, 1);
         
     }
+    
 
+    public void SetPlayerExpBar() {
+
+        float ratio = (float)player.getCurrentExp() / (float)player.getExpRequiredForNextLevel();
+
+        // Modifico la barra degli HP
+        playerExp.localScale = new Vector3(ratio, 1, 1);
+        
+    }
 
     public void SetMonsterHPBar(int currentHP) {
 
@@ -675,6 +792,7 @@ public class BattleManager : MonoBehaviour {
         
     }
 
+   
     public void Enable() {
         this.gameObject.SetActive(true);
     }

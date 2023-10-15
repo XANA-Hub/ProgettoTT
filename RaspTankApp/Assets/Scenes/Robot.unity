@@ -254,10 +254,10 @@ MonoBehaviour:
   audioManagerEnabled: 1
   clientTCPManagerEnabled: 1
   videoReceiverManagerEnabled: 1
-  battleManagerEnabled: 1
-  battleHUDEnabled: 1
-  robotHUDEnabled: 0
-  battleEffectsManagerEnabled: 1
+  battleManagerEnabled: 0
+  battleHUDEnabled: 0
+  robotHUDEnabled: 1
+  battleEffectsManagerEnabled: 0
 --- !u!1 &1107547126
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1623783850
 Transform:
   m_ObjectHideFlags: 0
@@ -383,4 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc795d494727d604999764e6fa067147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicName: Intro
+  musicNames:
+  - Adventure1
+  - Adventure2

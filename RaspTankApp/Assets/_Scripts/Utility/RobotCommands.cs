@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
+// Lista di tutti i comandi inviabili al robot
 public static class RobotCommands {
+
     public const string forwardStart = "ID:000;TYPE:Movement;BODY:Forward Start";
     public const string forwardStop = "ID:000;TYPE:Movement;BODY:Forward Stop";
     public const string backwardStart = "ID:000;TYPE:Movement;BODY:Backward Start";
@@ -17,7 +16,7 @@ public static class RobotCommands {
     public const string armRelease = "ID:000;TYPE:Robot_Arm;BODY:Release";
     public const string disconnect = "ID:000;TYPE:Disconnect;BODY:Disconnect";
     public const string start = "ID:000;TYPE:Start;BODY:192.168.1.13:25565";
-    public const string AIIdentifyCurrent = "ID:000;TYPE:AI_Recognition;BODY:Identify_Current";
+    public const string aiIdentifyCurrent = "ID:000;TYPE:AI_Recognition;BODY:Identify_Current";
     public const string readyResponse = "ready";
     public const string identifyResponse = "test_string";
 

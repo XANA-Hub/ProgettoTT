@@ -27,9 +27,7 @@ public class Fighter : MonoBehaviour {
     protected NatureBonus currentNatureBonus;
 
     // Metodo per calcolare le statistiche effettive in base al livello
-    // TODOOOOO
-    //
-    protected void InitializeStats() {
+    protected void CalculateStats() {
 
         // Trovo il bonus natura del fighter
         currentNatureBonus = GetNatureBonus(data.preferredNatureBonus);
@@ -148,6 +146,7 @@ public class Fighter : MonoBehaviour {
         }
 
     }
+
 
     //
     // Getters stat correnti
