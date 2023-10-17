@@ -1,0 +1,13 @@
+Per installare githubdesktop
+wget -qO - https://apt.packages.shiftkey.dev/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/shiftkey-packages.gpg > /dev/null
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/shiftkey-packages.gpg] https://apt.packages.shiftkey.dev/ubuntu/ any main" > /etc/apt/sources.list.d/shiftkey-packages.list'
+sudo apt update && sudo apt install github-desktop
+
+per pytorch
+sudo apt install libopenblas-dev libblas-dev m4 cmake cython python3-dev python3-yaml python3-setuptools
+git clone https://github.com/Kashu7100/pytorch-armv7l/blob/main/torch-1.7.0a0-cp37-cp37m-linux_armv7l.whl
+pip install torch-1.7.0a0-cp37-cp37m-linux_armv7l.whl
+
+per camera
+sudo raspi-config
+Interface Options -> Legacy Camera -> Disabled
