@@ -12,11 +12,19 @@ public class MonsterDatabase : MonoBehaviour {
         return monsters[randomIndex];
     }
 
-    /*
-    public Player GetPlayer() {
+    public Monster GetSpecificMonster(string monsterName) {
 
-    } 
-    */
+        // Trovo il mostro in base al nome
+        for(int i=0; i<monsterName.Length; i++) {
+            if (monsters[i].name == monsterName) {
+                return monsters[i];
+            }
+        }
+
+        // Se il mostro specificato non è stato trovato, ne restituisco uno a caso
+        return GetRandomMonster();
+    }
+
     
     public void Enable() {
         this.gameObject.SetActive(true);

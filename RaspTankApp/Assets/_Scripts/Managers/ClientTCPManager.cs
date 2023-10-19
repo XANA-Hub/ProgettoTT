@@ -96,18 +96,95 @@ public class ClientTCPManager : MonoBehaviour {
         return serverMessage;
     }
 
+    // Controllo il messaggio ricevuto dal robot
     private void checkMessage(string message) {
-        
-        // Avvio il flusso video
-        if(message ==  RobotCommands.readyResponse) {
-            Debug.Log("Ho ricevuto il comando READY - avvio il flusso video");
-            MasterManager.instance.clientTCPManager.SendData(RobotCommands.start);
+
+        // Inizialmente vuota
+        string battleMonster = "";
+
+        switch (message) {
+            case RobotCommands.readyResponse:
+                Debug.Log("Ho ricevuto il comando READY - avvio il flusso video");
+                MasterManager.instance.clientTCPManager.SendData(RobotCommands.start);
+                break;
+
+            case RobotCommands.identifyResponseWhiteKing:
+                battleMonster = "Skeleton";
+                break;
+            case RobotCommands.identifyResponseWhiteQueen:
+                battleMonster = "Witch";
+                break;
+            case RobotCommands.identifyResponseWhiteRook:
+                battleMonster = "WhiteRook";
+                break;
+            case RobotCommands.identifyResponseWhiteBishop:
+                battleMonster = "WhiteBishop";
+                break;
+            case RobotCommands.identifyResponseWhiteKnight:
+                battleMonster = "WhiteKnight";
+                break;
+            case RobotCommands.identifyResponseWhitePawn:
+                battleMonster = "WhitePawn";
+                break;
+            case RobotCommands.identifyResponseBlackKing:
+                battleMonster = "Angel";
+                break;
+            case RobotCommands.identifyResponseBlackQueen:
+                battleMonster = "BlackQueen";
+                break;
+            case RobotCommands.identifyResponseBlackRook:
+                battleMonster = "BlackRook";
+                break;
+            case RobotCommands.identifyResponseBlackBishop:
+                battleMonster = "BlackBishop";
+                break;
+            case RobotCommands.identifyResponseBlackKnight:
+                battleMonster = "BlackKnight";
+                break;
+            case RobotCommands.identifyResponseBlackPawn:
+                battleMonster = "BlackPawn";
+                break;
         }
 
-        // Ho trovato un pezzo degli scacchi, mostro la schermata della battaglia
-        else if(message == RobotCommands.identifyResponse) {
-            Debug.Log("Ho ricevuto il comando IDENTIFIED - avvio la battaglia");
-            // MasterManager.instance.battleManager.SetUpBattle();
+        if (!string.IsNullOrEmpty(battleMonster)) {
+            Debug.Log("Riconosciuto " + message + ": avvio la battaglia!");
+            PlayerPrefs.SetString("monsterToBattle", battleMonster);
+            SceneHelper.LoadScene("Battle");
+        }
+        
+    }
+
+
+    private string GetMonsterName(string pieceName) {
+        
+        // Mapping dei nomi delle pedine agli equivalenti nomi dei mostri
+        switch (pieceName) {
+            case "WhiteKing":
+                return "Skeleton";
+            case "WhiteQueen":
+                return "Witch";
+            case "WhiteRook":
+                return "WhiteRook";
+            case "WhiteBishop":
+                return "WhiteBishop";
+            case "WhiteKnight":
+                return "WhiteKnight";
+            case "WhitePawn":
+                return "WhitePawn";
+            case "BlackKing":
+                return "Angel";
+            case "BlackQueen":
+                return "BlackQueen";
+            case "BlackRook":
+                return "BlackRook";
+            case "BlackBishop":
+                return "BlackBishop";
+            case "BlackKnight":
+                return "BlackKnight";
+            case "BlackPawn":
+                return "BlackPawn";
+            default:
+                return "Unknown";
         }
     }
 

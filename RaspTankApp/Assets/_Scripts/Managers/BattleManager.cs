@@ -49,8 +49,9 @@ public class BattleManager : MonoBehaviour {
 
     private void Start() {
 
+
         player = MasterManager.instance.player;
-        monster = Instantiate(MasterManager.instance.monsterDatabase.GetRandomMonster());
+        ChooseMonster();
 
         // Inizia la battaglia (con la musica)
         battleState = BattleState.START;
@@ -63,6 +64,17 @@ public class BattleManager : MonoBehaviour {
     //
     // Metodi
     //
+
+
+    private void ChooseMonster() {
+        
+        if(PlayerPrefs.HasKey("monsterToBattle")) {
+            monster = Instantiate(MasterManager.instance.monsterDatabase.GetSpecificMonster(PlayerPrefs.GetString("monsterToBattle")));
+        } else {
+            monster = Instantiate(MasterManager.instance.monsterDatabase.GetRandomMonster());
+        } 
+    }
+
 
     private void deactivateButtons() {
         attackButton.interactable = false;
@@ -713,31 +725,43 @@ public class BattleManager : MonoBehaviour {
     }
 
 
-    IEnumerator GivePlayerExp(bool isMonsterDefeated) {
 
+    IEnumerator GivePlayerExp(bool isMonsterDefeated) {
         yield return new WaitForSeconds(2f);
 
+    
+        int playerLevelBefore = player.getLevel();
+
         // Ne do un quarto se il mostro è scappato o se il giocatore è scappato
-        if(isMonsterDefeated) {
+        if (isMonsterDefeated)
             player.GainExp(monster.GetPlayerExp());
-        } else {
+        else
             player.GainExp(monster.GetPlayerExp() / 4);
-        }
+
+        int playerLevelAfter = player.getLevel();
         SetPlayerExpBar();
 
         dialogueText.SetText("You gained " + monster.GetPlayerExp() + " XP points!");
+        yield return new WaitForSeconds(2f);
+
+        // Il giocatore è aumentato di livello
+        if (playerLevelAfter > playerLevelBefore) {
+            playerLevelText.SetText("Lvl: " + player.getLevel());
+            dialogueText.SetText("You are now level " + player.getLevel() + "!");
+        }
 
         // Salvo i dati una volta che ho dato l'exp al giocatore
         SaveData();
 
         yield return new WaitForSeconds(2f);
+        
     }
+
 
 
     private void EndBattle() {
         
         // Per ora salvo solo se il giocatore non ha perso la partita
-
         if(battleState == BattleState.WON) {
             MasterManager.instance.audioManager.PlayMusic("VictoryMusic");
             StartCoroutine(GivePlayerExp(true));

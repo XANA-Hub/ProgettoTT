@@ -7,7 +7,7 @@ public class Player : Fighter {
     private int currentExp = 0;
     private int expRequiredForNextLevel = 1;
 
-    [Header("Exp")]
+    [Header("Experience points")]
     [Range(1, 500)] public int baseExpRequiredForNextLevel = 200;
 
 
