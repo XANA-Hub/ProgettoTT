@@ -7,6 +7,7 @@ def initCamera():
     camera = picamera2.Picamera2()
     #POSSIBILI SIZE 640x480 - 400x300
     preview_config = camera.create_preview_configuration(main={"size": (1280, 720)},transform=libcamera.Transform(hflip=1,vflip=1))
+    #camera.awb_mode="off"
     camera.configure(preview_config)
     return camera
 
@@ -18,7 +19,7 @@ def killCamera(camera):
 
 def captureImage(camera, path):
     camera.start()
-    time.sleep(0) #SE 0 LUMINOSO SE >0 SI SCURISCE DEBOLMENTE - DEFAULT ERA 2 - DA FARE TEST IN MOVIMENTO
+    time.sleep(1) #SE 0 LUMINOSO SE >0 SI SCURISCE DEBOLMENTE - DEFAULT ERA 2 - DA FARE TEST IN MOVIMENTO
     metadata = camera.capture_file(path)
     print(metadata)
 
@@ -51,7 +52,7 @@ def test():
         camera = initCamera()
         print("Test fotocamera")
         captureImage(camera, "image.jpg")
-        stopVideo(camera)
+        #stopVideo(camera)
         '''print("Invio")
         while True:
             time.sleep(1/24)
