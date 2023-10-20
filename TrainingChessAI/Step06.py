@@ -1,4 +1,11 @@
+from PIL import Image
 import tflite_runtime.interpreter as tflite
+import tensorflow as tf
+import numpy as np
+
+# answers ordered
+classes = ["Bishop","King","Knight", "Pawn","Queen","Rook"]
+
 # Predicts num_top_pokemon from image_file, using a tflite model
 TFLITE_MODEL = "./model.tflite"
 interpreter = tf.lite.Interpreter(TFLITE_MODEL)
@@ -12,13 +19,13 @@ output_details = interpreter.get_output_details()
 pic = './test.jpg'
 pic = Image.open(pic)
 
-pic = pic.resize((224, 224), Image.ANTIALIAS)
-pic.show()
+pic = pic.resize((256, 256), Image.LANCZOS)
+#pic.show()
 pic = np.asarray(pic, dtype=np.float32)
 pic = np.expand_dims(pic, axis=0)
 pic /= 255 
-pic = (pic - train_mean) / train_std
-pic = np.transpose(pic, [0, 3, 1, 2])
+#pic = (pic - train_mean) / train_std
+#pic = np.transpose(pic, [0, 3, 1, 2])
 
 input_tensor = np.array(pic, dtype=np.float32)
 # Load the TFLite model and allocate tensors.
@@ -28,19 +35,17 @@ interpreter.invoke()
 # Get output
 output_data = interpreter.get_tensor(output_details[0]['index'])
 print(output_data)
+#output define the chance of the image being the corresponding piece
+#aka the first number in the array defines how likely the image is to be a Bishop
 
-'''
-results = np.squeeze(output_data, axis=0)
-top_k_idx = np.argsort(results)[-num_top_pokemon:][::-1]
-top_k_scores = results[top_k_idx]
-top_k_labels = label_encoder.inverse_transform(top_k_idx)
+#predict the image
+#resultArray = model.predict(imageForModel , batch_size=32 , verbose=1)
+answer = np.argmax(output_data , axis=1 )
 
-def softmax(x):
-    """Compute softmax values for each sets of scores in x."""
-    e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum()
+text = classes[answer[0]]
+print ('Predicted : '+ text)
 
-top_k_scores = softmax(top_k_scores)
 
-print("\n".join([f"{pred}: {score:.2%}" for (pred, score) in zip(top_k_labels, top_k_scores)]))
-'''
+
+
+
