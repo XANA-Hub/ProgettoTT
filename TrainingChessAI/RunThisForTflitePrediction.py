@@ -1,6 +1,6 @@
 from PIL import Image
 import tflite_runtime.interpreter as tflite
-import tensorflow as tf
+#import tensorflow as tf
 import numpy as np
 
 # answers ordered
@@ -8,7 +8,7 @@ classes = ["Bishop","King","Knight", "Pawn","Queen","Rook"]
 
 # Predicts num_top_pokemon from image_file, using a tflite model
 TFLITE_MODEL = "./model.tflite"
-interpreter = tf.lite.Interpreter(TFLITE_MODEL)
+interpreter = tflite.Interpreter(TFLITE_MODEL)
 interpreter.allocate_tensors()
 
 # Get input and output tensors
