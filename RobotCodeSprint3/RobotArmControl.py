@@ -2,7 +2,8 @@ import RPi.GPIO as GPIO
 import time
 import pigpio
 
-#pwm = None
+TEST = True
+
 #AVENDO UN PASSO DI 10 ALLA VOLTA E' PREFERIBILE UTILIZZARE MULTIPLI DI 10
 defaultVariation=10
 defaultArmPosition=400
@@ -101,7 +102,7 @@ def setServoArmPwm(pwm, pin, angle):
       else: variation=-defaultVariation
       for i in range(currentArmDutyCycle,angle,variation):
             pwm.set_PWM_dutycycle(pin, i)
-            #print("Il pin "+str(pin)+" si è spostato a "+str(i))
+            if TEST: print("Il pin "+str(pin)+" si è spostato a "+str(i))
             time.sleep(sAttesa)
       pwm.set_PWM_dutycycle(pin, angle)
       currentArmDutyCycle=angle
@@ -115,7 +116,7 @@ def setServoClawPwm(pwm, pin, angle):
       else: variation=-defaultVariation
       for i in range(currentClawDutyCycle,angle,variation):
             pwm.set_PWM_dutycycle(pin, i)
-            print("Il pin "+str(pin)+" si è spostato a "+str(i))
+            if TEST: print("Il pin "+str(pin)+" si è spostato a "+str(i))
             time.sleep(sAttesa)
       pwm.set_PWM_dutycycle(pin, angle)
       currentClawDutyCycle=angle
@@ -160,5 +161,5 @@ def test():
                   terminate(pwm)
               
 
-if __name__=='__main__':
+if __name__ == '__main__':
         test()

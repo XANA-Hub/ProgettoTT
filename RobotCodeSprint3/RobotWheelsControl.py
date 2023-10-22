@@ -2,7 +2,6 @@ import RPi.GPIO as GPIO
 import time
 import pigpio
 
-#pwm = None
 rangePWM=4000
 dutycyclePWM=4000
 

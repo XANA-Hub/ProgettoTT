@@ -46,6 +46,7 @@ class Actor(pykka.ThreadingActor):
 
 
     def clientCrash(self, message):
+        if TEST: print("--RobotCore-- Client crash detected")
         ActorsConfig.actorArmControl_ref.tell(message)                              #will reset the position of the arm
         ActorsConfig.actorMovementControl_ref.tell(message)                         #will stop the weels if left running by the client
 
@@ -53,7 +54,6 @@ class Actor(pykka.ThreadingActor):
 
 
     def terminating(self, messageToken):
-        
         #send "Terminate" message to all actors
         ActorsConfig.actorArmControl_ref.tell(messageToken)
         ActorsConfig.actorMovementControl_ref.tell(messageToken)
@@ -61,5 +61,5 @@ class Actor(pykka.ThreadingActor):
         ActorsConfig.actorAI_ref.tell(messageToken)
 
         #terminate himself
-        print("--RobotCore-- terminating")
+        if TEST: print("--RobotCore-- terminating")
         self.stop()

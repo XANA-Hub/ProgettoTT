@@ -3,6 +3,8 @@ import RobotSocket as rs
 import RobotAIControl
 import RobotCameraControl
 
+TEST = True
+
 class Actor(pykka.ThreadingActor):
     def __init__(self):
         super().__init__()
@@ -10,15 +12,14 @@ class Actor(pykka.ThreadingActor):
 
     def on_receive(self, message):
         #print("--RobotAI-- " + message)
-        if "Terminate" in message:
-            print("--RobotAI-- terminating")
-            self.stop()
         elif "Identify_Current" in message:
             self.identify()
+
+        if "Terminate" in message:
+            if TEST: print("--RobotAI-- terminating")
+            self.stop()
         else:
             print("--RobotAI ERROR-- malformed message: " + message)
-
-
 
     def identify(self):
         #prima devo fare la foto
@@ -27,7 +28,7 @@ class Actor(pykka.ThreadingActor):
 
         #poi devo fare la detect sulla foto
         result = RobotAIControl.detect(path)        #funzione di libreria che ritorna una stringa se sono sopra un certo livello di sicurezza altrimenti un messaggio di errore
-        print("Actor AI sending...")
+        if TEST: print("Actor AI sending...")
         if isinstance(result, str):
             rs.sendAIresponse(result)
         else:

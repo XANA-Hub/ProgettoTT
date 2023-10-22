@@ -27,7 +27,6 @@ class Actor(pykka.ThreadingActor):
         elif "Client Crashed" in message:
             if TEST: print("--RobotVideoHandler-- stopping video transmission")
             self.stopVideo()
-
         elif "Terminate" in message:
             if TEST: print("--RobotVideoHandler-- terminating")
             self.stopVideo()

@@ -28,7 +28,7 @@ class Actor(pykka.ThreadingActor):
             if TEST: print("--RobotControlArm-- client crashed")
             self.ResetPos()
         elif "Terminate" in message:            #turn off ActorControlArm
-            print("--RobotControlArm-- terminating")
+            if TEST: print("--RobotControlArm-- terminating")
             self.Terminate()
             self.stop()
         else:
