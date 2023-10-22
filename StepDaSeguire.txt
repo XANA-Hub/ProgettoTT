@@ -7,12 +7,7 @@ sudo apt install python3-venv
 python3 -m venv RaspTankEnv
 source RaspTankEnv/bin/activate
 
-#eseguire il setup.py
-pip3 install pykka
-pip3 install RPi.GPIO
-pip3 install pigpio
-sudo apt install libcap-dev
-pip3 install picamera2
+#Installare dipendenze tramite requirements.txt
 
 sudo pigpiod
 
@@ -26,7 +21,4 @@ Interface Options -> Legacy Camera -> Disabled
 per github desktop
 sudo wget https://github.com/shiftkey/desktop/releases/download/release-3.3.3-linux2/GitHubDesktop-linux-arm64-3.3.3-linux2.deb
 sudo apt install ./file.deb
-
-per pytorch
-pip3 install torch
 
