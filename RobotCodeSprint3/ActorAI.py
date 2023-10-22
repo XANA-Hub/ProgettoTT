@@ -11,8 +11,8 @@ class Actor(pykka.ThreadingActor):
         self.camera = RobotCameraControl.initCamera()
 
     def on_receive(self, message):
-        #print("--RobotAI-- " + message)
         elif "Identify_Current" in message:
+            print("--RobotAI-- detecting" + message)
             self.identify()
 
         if "Terminate" in message:
