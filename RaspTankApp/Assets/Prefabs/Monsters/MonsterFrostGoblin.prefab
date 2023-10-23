@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3541987942493086438}
   - component: {fileID: 4926191844051674340}
   m_Layer: 0
-  m_Name: MonsterSkeleton
+  m_Name: MonsterFrostGoblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,15 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    name: Skeleton
-    sprite: {fileID: 1169129682, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
-    preferredNatureBonus: 2
-    baseHP: 180
+    name: Frost Goblin
+    sprite: {fileID: 30657494, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
+    preferredNatureBonus: 1
+    baseHP: 70
     baseAttack: 90
     baseDefense: 110
-    baseSpeed: 80
-    baseHeal: 10
-    baseAttackDamage: 10
+    baseSpeed: 105
+    baseHeal: 15
+    baseAttackDamage: 15
     healProbability: 0.45
     baseFleeProbability: 0.5
     criticalHitProbability: 0.125

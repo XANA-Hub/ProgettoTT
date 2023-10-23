@@ -47,24 +47,27 @@ public class BattleManager : MonoBehaviour {
     [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int healingPointsVariation = 5; // Di quanto può variare la cura
 
+
     private void Start() {
 
-
+        
+        // Inizializzo il giocatore e il mostro
         player = MasterManager.instance.player;
         ChooseMonster();
 
-        // Inizia la battaglia (con la musica)
+        // Inizia la battaglia
         battleState = BattleState.START;
-        MasterManager.instance.audioManager.PlayMusic("Battle");
+
+        // Scelgo la musica
+        ChooseBattleMusic();
 
         // Per inizializzare la battaglia
         StartCoroutine(SetUpBattle());
     }
 
     //
-    // Metodi
+    // Scelta inizio battaglia
     //
-
 
     private void ChooseMonster() {
         
@@ -75,6 +78,23 @@ public class BattleManager : MonoBehaviour {
         } 
     }
 
+    private void ChooseBattleMusic() {
+        
+        if (monster.name.Equals("Primordial Blue Wizard") ||
+            monster.name.Equals("Primordial Red Wizard") ||
+            monster.name.Equals("Forgotten Evil") ||
+            monster.name.Equals("Vampire Lord") ||
+            monster.name.Equals("Archaic Minotaur")) {
+            MasterManager.instance.audioManager.PlayMusic("BossBattle");
+        } else {
+            MasterManager.instance.audioManager.PlayMusic("Battle");
+        }
+
+    }
+
+    //
+    // Bottoni
+    //
 
     private void deactivateButtons() {
         attackButton.interactable = false;
@@ -89,6 +109,71 @@ public class BattleManager : MonoBehaviour {
         healButton.interactable = true;
         runButton.interactable = true;
     }
+
+    public void OnAttackButton() {
+        deactivateButtons();
+        StartCoroutine(PlayerAttack());
+    }
+
+    public void OnDefendButton() {
+        deactivateButtons();
+        StartCoroutine(PlayerDefend());
+    }
+
+    public void OnHealButton() {
+        deactivateButtons();
+        StartCoroutine(PlayerHeal());
+    }
+
+    public void OnRunButton() {
+        deactivateButtons();
+        StartCoroutine(PlayerRun());
+    }
+
+
+    //
+    // Inizializzazione battaglia
+    //
+    
+    private void SetUpBattleHUD() {
+
+        // Giocatore
+        playerNameText.SetText(player.data.name);
+        playerLevelText.SetText("Lvl: " + player.getLevel());
+        playerSprite.sprite = player.data.sprite; // Cambio lo sprite del giocatore
+        SetPlayerHPBar(player.getCurrentHP());
+        SetPlayerExpBar();
+
+        // Mostro
+        enemyNameText.SetText(monster.data.name);
+        enemyLevelText.SetText("Lvl: " + monster.getLevel());
+        enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
+        SetMonsterHPBar(monster.getMaxCurrentHP());
+
+    }
+
+    IEnumerator SetUpBattle() {
+
+        // Saved data
+        LoadOrInitializeData();
+
+        deactivateButtons();
+        SetUpBattleHUD();
+
+        Debug.Log("BATTAGLIA INIZIATA!");
+        dialogueText.SetText("A wild " + monster.data.name + " appeared!");
+
+        // Aspetto 2 secondi prima di mostrare il menù della battaglia
+        yield return new WaitForSeconds(2f);
+        battleState = BattleState.PLAYER_TURN;
+        PlayerTurn();
+
+    }
+
+
+    //
+    // Salvataggio/caricamento dati
+    //
 
     private void LoadOrInitializeData() {
         
@@ -146,41 +231,6 @@ public class BattleManager : MonoBehaviour {
 
         PlayerPrefs.Save();
     }
-    
-    private void SetUpBattleHUD() {
-
-        // Giocatore
-        playerNameText.SetText(player.data.name);
-        playerLevelText.SetText("Lvl: " + player.getLevel());
-        playerSprite.sprite = player.data.sprite; // Cambio lo sprite del giocatore
-        SetPlayerHPBar(player.getCurrentHP());
-        SetPlayerExpBar();
-
-        // Mostro
-        enemyNameText.SetText(monster.data.name);
-        enemyLevelText.SetText("Lvl: " + monster.getLevel());
-        enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
-        SetMonsterHPBar(monster.getMaxCurrentHP());
-
-    }
-
-    IEnumerator SetUpBattle() {
-
-        // Saved data
-        LoadOrInitializeData();
-
-        deactivateButtons();
-        SetUpBattleHUD();
-
-        Debug.Log("BATTAGLIA INIZIATA!");
-        dialogueText.SetText("A wild " + monster.data.name + " appeared!");
-
-        // Aspetto 2 secondi prima di mostrare il menù della battaglia
-        yield return new WaitForSeconds(2f);
-        battleState = BattleState.PLAYER_TURN;
-        PlayerTurn();
-
-    }
 
 
     //
@@ -198,25 +248,7 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
     }
 
-    public void OnAttackButton() {
-        deactivateButtons();
-        StartCoroutine(PlayerAttack());
-    }
-
-    public void OnDefendButton() {
-        deactivateButtons();
-        StartCoroutine(PlayerDefend());
-    }
-
-    public void OnHealButton() {
-        deactivateButtons();
-        StartCoroutine(PlayerHeal());
-    }
-
-    public void OnRunButton() {
-        deactivateButtons();
-        StartCoroutine(PlayerRun());
-    }
+ 
 
     // Per debug
     public void OnBattleInfoButton() {
@@ -244,7 +276,6 @@ public class BattleManager : MonoBehaviour {
     //
     // Funzioni per verificare se una certa azione è andata a buon fine
     //
-
 
     private bool isMissedAttack(Fighter fighter) {
         
@@ -288,8 +319,6 @@ public class BattleManager : MonoBehaviour {
         return randomValue < currentFleeProbability;
     }
 
-
-
     private bool isHealSuccessful(Fighter fighter) {
 
         float currentHealProbability = fighter.data.healProbability;
@@ -306,6 +335,10 @@ public class BattleManager : MonoBehaviour {
         return randomValue < currentHealProbability;
     }
 
+
+    //
+    // AI dei nemici
+    //
 
     private void ChooseEnemyAction(bool isAggressive) {
 
@@ -392,6 +425,11 @@ public class BattleManager : MonoBehaviour {
         
     }
 
+
+    //
+    // Calcolo dei punti di danno ecc..
+    //
+
     private int CalculateDamage(bool isCritic, int baseDamage, int attackerAttack, int defenderDefense) {
         
         // Calcolo del danno in base agli attributi
@@ -448,11 +486,12 @@ public class BattleManager : MonoBehaviour {
         return mitigatedDamage;
     }
 
+
     //
     // Azioni
     //
     	
-    
+
     IEnumerator PlayerAttack() {
 
         // Ottengo il danno fatto dal giocatore 
@@ -469,8 +508,9 @@ public class BattleManager : MonoBehaviour {
             dmgAmount = Mathf.Max(1, dmgAmount); // Così è sempre minimo 1
             monsterMitigatedDamage = 0;
 
+            //MasterManager.instance.battleEffectsManager.ShakeGameObject(MasterManager.instance.battleHUD, 0.8f, 0.4f);
             bool isEnemyDead = monster.takeDamage(dmgAmount);
-            MasterManager.instance.battleEffectsManager.ShakeGameObject(MasterManager.instance.battleHUD, 0.8f, 0.4f);
+            
             
             if(isCrit) {
                 // TODO: mettere suono critico
@@ -530,8 +570,9 @@ public class BattleManager : MonoBehaviour {
             dmgAmount = Mathf.Max(1, dmgAmount); // Così è sempre minimo 1
             playerMitigatedDamage = 0;
 
+            MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.ENEMY_ATTACK);
             bool isPlayerDead = player.takeDamage(dmgAmount);
-            MasterManager.instance.battleEffectsManager.ShakeCamera(Camera.main, 0.5f, 0.1f);
+            
 
             if(isCrit) {
                 MasterManager.instance.audioManager.PlaySound("EnemyPunch");
@@ -574,10 +615,14 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerDefend() {
 
         battleState = BattleState.ENEMY_TURN;
+        MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_DEFEND);
         dialogueText.SetText("You take a defensive stance!");
 
         // Attendi per simulare la perdita del turno
         yield return new WaitForSeconds(2f);
+
+        // Mostro l'overlay
+        MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_DEFEND);
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
         playerMitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
@@ -625,6 +670,9 @@ public class BattleManager : MonoBehaviour {
 
         if(isHealSuccessful(player)) {
             
+            // Mostro l'overlay
+            MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_HEAL);
+
             // Setto i dati interni del giocatore
             player.Heal(healingAmount);
 
@@ -758,7 +806,6 @@ public class BattleManager : MonoBehaviour {
     }
 
 
-
     private void EndBattle() {
         
         // Per ora salvo solo se il giocatore non ha perso la partita
@@ -787,6 +834,10 @@ public class BattleManager : MonoBehaviour {
         }
 
     }
+
+    //
+    // Barre degli HP, XP, ecc...
+    //
 
     public void SetPlayerHPBar(int currentHP) {
 
@@ -817,6 +868,10 @@ public class BattleManager : MonoBehaviour {
     }
 
    
+    //
+    // Enable/Disable
+    //
+
     public void Enable() {
         this.gameObject.SetActive(true);
     }

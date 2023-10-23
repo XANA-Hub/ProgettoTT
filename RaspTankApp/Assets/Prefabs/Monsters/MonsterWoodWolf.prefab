@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1680054858322931122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3541987942493086438}
+  - component: {fileID: 4926191844051674340}
+  m_Layer: 0
+  m_Name: MonsterWoodWolf
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3541987942493086438
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680054858322931122}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4926191844051674340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680054858322931122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91c60f2a8124d4941bdb7fb61e6893fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    name: Wood Wolf
+    sprite: {fileID: -356732318, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
+    preferredNatureBonus: 1
+    baseHP: 115
+    baseAttack: 100
+    baseDefense: 95
+    baseSpeed: 130
+    baseHeal: 25
+    baseAttackDamage: 20
+    healProbability: 0.45
+    baseFleeProbability: 0.5
+    criticalHitProbability: 0.125
+    missProbability: 0.05
+    natureBonusPercentage: 0.1
+    preferredNatureProbability: 0.7
+  baseExpGivenToPlayer: 55

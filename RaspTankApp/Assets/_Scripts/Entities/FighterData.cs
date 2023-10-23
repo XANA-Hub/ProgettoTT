@@ -26,7 +26,7 @@ public class FighterData {
     [Range(0f, 1f)] public float healProbability = 0.45f; // 45%
     [Range(0f, 1f)] public float baseFleeProbability = 0.5f; // 50%
     [Range(0f, 1f)] public float criticalHitProbability = 0.125f; // Probabilità che faccia un colpo critico
-    [Range(0f, 1f)] public float missProbability = 0.05f; // Probabilità che missi l'attacco
+    [Range(0f, 1f)] public float missProbability = 0.05f; // Probabilità che fallisca l'attacco
     [Range(0f, 1f)] public float natureBonusPercentage = 0.1f; // Di quanto viene aumentata la statistica che fa riferimento alla natura scelta (10%)
     [Range(0f, 1f)] public float preferredNatureProbability = 0.7f; // Quanto è probabile che venga scelta la natura preferita (70%)
 

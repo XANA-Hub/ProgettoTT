@@ -1,7 +1,5 @@
 using UnityEngine;
 
-
-
 public class MonsterDatabase : MonoBehaviour {
 
     public Monster[] monsters;

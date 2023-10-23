@@ -109,10 +109,10 @@ public class ClientTCPManager : MonoBehaviour {
                 break;
 
             case RobotCommands.identifyResponseWhiteKing:
-                battleMonster = "Skeleton";
+                battleMonster = "King Skeleton";
                 break;
             case RobotCommands.identifyResponseWhiteQueen:
-                battleMonster = "Witch";
+                battleMonster = "Red-Eyes Witch";
                 break;
             case RobotCommands.identifyResponseWhiteRook:
                 battleMonster = "WhiteRook";
@@ -127,7 +127,7 @@ public class ClientTCPManager : MonoBehaviour {
                 battleMonster = "WhitePawn";
                 break;
             case RobotCommands.identifyResponseBlackKing:
-                battleMonster = "Angel";
+                battleMonster = "Shining Angel";
                 break;
             case RobotCommands.identifyResponseBlackQueen:
                 battleMonster = "BlackQueen";

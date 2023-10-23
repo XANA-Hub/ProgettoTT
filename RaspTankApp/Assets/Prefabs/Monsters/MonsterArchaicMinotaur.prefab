@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3541987942493086438}
   - component: {fileID: 4926191844051674340}
   m_Layer: 0
-  m_Name: MonsterWitch
+  m_Name: MonsterArchaicMinotaur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,19 +45,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    name: Witch
-    sprite: {fileID: 374762614, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
-    preferredNatureBonus: 4
+    name: Archaic Minotaur
+    sprite: {fileID: 198519904, guid: 4f3f01df5271cb448bd7b711e6430798, type: 3}
+    preferredNatureBonus: 2
     baseHP: 100
-    baseAttack: 125
-    baseDefense: 70
-    baseSpeed: 120
-    baseHeal: 20
-    baseAttackDamage: 20
+    baseAttack: 150
+    baseDefense: 115
+    baseSpeed: 110
+    baseHeal: 15
+    baseAttackDamage: 25
     healProbability: 0.45
     baseFleeProbability: 0.5
     criticalHitProbability: 0.125
     missProbability: 0.05
     natureBonusPercentage: 0.1
     preferredNatureProbability: 0.7
-  baseExpGivenToPlayer: 50
+  baseExpGivenToPlayer: 80
