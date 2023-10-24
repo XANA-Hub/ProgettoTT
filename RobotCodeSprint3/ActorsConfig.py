@@ -6,3 +6,5 @@ actorArmControl_ref = None
 actorMovementControl_ref = None
 actorAI_ref = None
 actorVideoHandler_ref = None
+
+camera = None

@@ -2,6 +2,8 @@ import socket
 from time import sleep
 import ActorsConfig
 import sys
+import fcntl
+import struct
 
 TEST = True
 
@@ -15,12 +17,12 @@ def get_ip_address(ifname):
     return socket.inet_ntoa(fcntl.ioctl(
         s.fileno(),
         0x8915,  # SIOCGIFADDR
-        struct.pack('256s', ifname[:15])
+        struct.pack('256s', bytes(ifname[:15], 'utf-8'))
     )[20:24])
 
 def startSocket(ip = HOST, port = PORT):
     global conn
-    #HOST = get_ip_address('wlan0') da testare!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    ip = get_ip_address('wlan0')
     try:
         print("Avvio del server TCP con indirizzo " + ip + ":" + str(port))
         socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)           #creazione della socket tcp

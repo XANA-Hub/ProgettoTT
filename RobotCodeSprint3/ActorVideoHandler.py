@@ -3,13 +3,16 @@ import pykka
 
 import RobotSocket as rs
 import RobotCameraControl
+import ActorsConfig
 
 TEST = True
 
 class Actor(pykka.ThreadingActor):
     def __init__(self):
         super().__init__()
-        self.camera = RobotCameraControl.initCamera()
+        if ActorsConfig.camera is None:
+            ActorsConfig.camera = RobotCameraControl.initCamera()
+        self.camera = ActorsConfig.camera
 
     def on_receive(self, message):
         if TEST: print("--RobotVideoHandler-- ricevuto messaggio: " + message) 

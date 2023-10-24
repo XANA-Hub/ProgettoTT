@@ -6,7 +6,7 @@ import libcamera
 def initCamera():
     camera = picamera2.Picamera2()
     #POSSIBILI SIZE 640x480 - 400x300
-    preview_config = camera.create_preview_configuration(main={"size": (1280, 720)},transform=libcamera.Transform(hflip=1,vflip=1))
+    preview_config = camera.create_preview_configuration(main={"size": (640, 480)},transform=libcamera.Transform(hflip=1,vflip=1))
     #camera.awb_mode="off"
     camera.configure(preview_config)
     return camera
@@ -62,7 +62,7 @@ def test():
         #Funziona
         
         print("Test flusso video")
-        stream = rs.startVideoSocket("192.168.1.13", 25565)
+        stream = rs.startVideoSocket("192.168.1.27", 25565)
         camera = initCamera()
         sendVideo(camera, stream)
         print("Flusso avviato")

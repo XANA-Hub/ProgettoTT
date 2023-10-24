@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import pigpio
 
-TEST = True
+TEST = False
 
 #AVENDO UN PASSO DI 10 ALLA VOLTA E' PREFERIBILE UTILIZZARE MULTIPLI DI 10
 defaultVariation=10

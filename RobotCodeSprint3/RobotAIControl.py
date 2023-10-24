@@ -7,7 +7,7 @@ TEST = True
 #Labels ordered
 classes = ["Bishop","King","Knight", "Pawn","Queen","Rook"]
 
-def detect(string imagePath):
+def detect(imagePath):
     TFLITE_MODEL = "./model.tflite"
     interpreter = tflite.Interpreter(TFLITE_MODEL)
     interpreter.allocate_tensors()
@@ -35,16 +35,14 @@ def detect(string imagePath):
     #predict the image
     answer = np.argmax(output_data , axis=1 )
 
-    if(output_data[answer[0]]>0,75){
-        text = classes[answer[0]]
-    }else{
-        text = "Nothing"
-    }
-    return text
+    if TEST: print ('class : '+ classes[answer[0]])
+    if TEST: print ('prob : '+ str(output_data[0][answer[0]]))
+    tuple = (classes[answer[0]], output_data[0][answer[0]])
+    if TEST: print ('Predicted : '+ str(tuple))
+    return tuple
 
 def test():
-    predicted = detect('./test.jpeg')
-    print ('Predicted : '+ predicted)
+    predicted = detect('./image.jpg')
 
 if __name__ == '__main__':
         test()
