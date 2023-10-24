@@ -1,0 +1,6 @@
+public enum ConnectionState {
+    CONNECTED,
+    NOT_CONNECTED,
+    CONNECTION_IN_PROGRESS,
+    CONNECTION_ABORTED
+}

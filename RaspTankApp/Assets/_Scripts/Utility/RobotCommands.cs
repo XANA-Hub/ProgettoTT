@@ -20,25 +20,19 @@ public static class RobotCommands {
 
     // Connessione
     public const string disconnect = "ID:000;TYPE:Disconnect;BODY:Disconnect";
-    public const string start = "ID:000;TYPE:Start;BODY:192.168.1.13:25565";
+    public const string start = "ID:000;TYPE:Start;BODY:";
     public const string readyResponse = "ready";
 
     // AI
     public const string aiIdentifyCurrent = "ID:000;TYPE:AI_Recognition;BODY:Identify_Current";
 
     // Risposte pezzi degli scacchi riconosciuti
-    public const string identifyResponseWhiteKing = "White King";
-    public const string identifyResponseWhiteQueen = "White Queen";
-    public const string identifyResponseWhiteRook = "White Rook";
-    public const string identifyResponseWhiteBishop = "White Bishop";
-    public const string identifyResponseWhiteKnight = "White Knight";
-    public const string identifyResponseWhitePawn = "White Pawn";
-    public const string identifyResponseBlackKing = "Black King";
-    public const string identifyResponseBlackQueen = "Black Queen";
-    public const string identifyResponseBlackRook = "Black Rook";
-    public const string identifyResponseBlackBishop = "Black Bishop";
-    public const string identifyResponseBlackKnight = "Black Knight";
-    public const string identifyResponseBlackPawn = "Black Pawn";
+    public const string identifyResponseKing = "King";
+    public const string identifyResponseQueen = "Queen";
+    public const string identifyResponseRook = "Rook";
+    public const string identifyResponseBishop = "Bishop";
+    public const string identifyResponseKnight = "Knight";
+    public const string identifyResponsePawn = "Pawn";
     public const string identifyResponseNothing = "Nd"; // Non ha trovato nulla
 
 

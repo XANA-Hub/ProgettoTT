@@ -1,7 +1,9 @@
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ClientTCPManager : MonoBehaviour {
 	
@@ -10,19 +12,22 @@ public class ClientTCPManager : MonoBehaviour {
     public int maxRetries = 5;
     private string serverMessage = "EMPTY";
     private bool isApplicationQuitting = false;
+    private ConnectionState connectionState = ConnectionState.NOT_CONNECTED; // Inizialmente non connesso
 
     private TcpClient client;
 
     private void Start() {
         
         // Carico l'IP e la porta direttamente dalle PlayerPrefs
-        loadAddress();
+        LoadIPAddress();
+        LoadPort();
 
         // Imposta l'indirizzo IP e la porta del server a cui connettersi   
         ConnectToServerWithRetry();
     }
 
-    private void loadAddress() {
+    // Carica IP e Porta del destinatario
+    private void LoadIPAddress() {
 
         if(PlayerPrefs.HasKey("masterIP")) {
             string localIP = PlayerPrefs.GetString("masterIP");
@@ -32,6 +37,10 @@ public class ClientTCPManager : MonoBehaviour {
         } else {
             Debug.LogError("TCPManager: IP non caricato correttamente!");
         }
+
+    }
+
+    private void LoadPort() {
 
         if(PlayerPrefs.HasKey("masterPort")) {
             string localPort = PlayerPrefs.GetString("masterPort");
@@ -44,7 +53,26 @@ public class ClientTCPManager : MonoBehaviour {
 
     }
 
+    private string GetMyIPAddress() {
+
+        string ipAddress = string.Empty;
+
+        IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+
+        foreach (IPAddress ip in localIPs) {
+            if (ip.AddressFamily == AddressFamily.InterNetwork) {
+                ipAddress = ip.ToString();
+                break;
+            }
+        }
+
+        return ipAddress;
+    }
+
     private void ConnectToServerWithRetry() {
+        
+        // Imposta lo stato sulla connessione in corso
+        connectionState = ConnectionState.CONNECTION_IN_PROGRESS;
         
         int currentRetry = 0;
 
@@ -58,14 +86,19 @@ public class ClientTCPManager : MonoBehaviour {
                 }
 
                 try {
+
                     client = new TcpClient(ipAddress, port);
                     ReceiveAndPrintData();
+                    connectionState = ConnectionState.CONNECTED;
                     break; // Esci dal ciclo se la connessione ha successo
                 }
                 catch (SocketException socketException) {
+
                     currentRetry++;
                     Debug.Log("TCP Socket Exception (tentativo numero " + currentRetry + "): " + socketException);
+
                     if (currentRetry >= maxRetries) {
+                        connectionState = ConnectionState.CONNECTION_ABORTED;
                         Debug.LogError("Connessione non riuscita dopo " + maxRetries + " tentativi. Smetto...");
                     }
                 }
@@ -81,112 +114,75 @@ public class ClientTCPManager : MonoBehaviour {
 
         Debug.Log("TCP: Sono dentro a ReceiveAndPrintData");
         using NetworkStream stream = client.GetStream();
+
         while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
             var incomingData = new byte[length];
             Array.Copy(bytes, 0, incomingData, 0, length);
             serverMessage = Encoding.ASCII.GetString(incomingData);
             Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
 
-            checkMessage(serverMessage);
+            CheckMessage(serverMessage);
         }
     }
 
     // Forse da togliere, serve nel caso voglia fare un RobotResponseManager
-    public string getLatestServerMessage() {
+    public string GetLastServerMessage() {
         return serverMessage;
     }
 
     // Controllo il messaggio ricevuto dal robot
-    private void checkMessage(string message) {
+    private void CheckMessage(string message) {
 
         // Inizialmente vuota
         string battleMonster = "";
 
         switch (message) {
+
             case RobotCommands.readyResponse:
                 Debug.Log("Ho ricevuto il comando READY - avvio il flusso video");
-                MasterManager.instance.clientTCPManager.SendData(RobotCommands.start);
+                Debug.Log("COMANDO START: " + RobotCommands.start + GetMyIPAddress() + ":" + port);
+                MasterManager.instance.clientTCPManager.SendData(RobotCommands.start + GetMyIPAddress() + ":" + port);
                 break;
 
-            case RobotCommands.identifyResponseWhiteKing:
-                battleMonster = "King Skeleton";
+            case RobotCommands.identifyResponseKing:
+                battleMonster = "Primordial Blue Wizard";
                 break;
-            case RobotCommands.identifyResponseWhiteQueen:
+            case RobotCommands.identifyResponseQueen:
+                battleMonster = "Forgotten Evil";
+                break;
+            case RobotCommands.identifyResponseRook:
+                battleMonster = "Archaic Minotaur";
+                break;
+            case RobotCommands.identifyResponseBishop:
+                battleMonster = "Vampire Lord";
+                break;
+            case RobotCommands.identifyResponseKnight:
+                battleMonster = "Shadow Dragons";
+                break;
+            case RobotCommands.identifyResponsePawn:
                 battleMonster = "Red-Eyes Witch";
                 break;
-            case RobotCommands.identifyResponseWhiteRook:
-                battleMonster = "WhiteRook";
-                break;
-            case RobotCommands.identifyResponseWhiteBishop:
-                battleMonster = "WhiteBishop";
-                break;
-            case RobotCommands.identifyResponseWhiteKnight:
-                battleMonster = "WhiteKnight";
-                break;
-            case RobotCommands.identifyResponseWhitePawn:
-                battleMonster = "WhitePawn";
-                break;
-            case RobotCommands.identifyResponseBlackKing:
-                battleMonster = "Shining Angel";
-                break;
-            case RobotCommands.identifyResponseBlackQueen:
-                battleMonster = "BlackQueen";
-                break;
-            case RobotCommands.identifyResponseBlackRook:
-                battleMonster = "BlackRook";
-                break;
-            case RobotCommands.identifyResponseBlackBishop:
-                battleMonster = "BlackBishop";
-                break;
-            case RobotCommands.identifyResponseBlackKnight:
-                battleMonster = "BlackKnight";
-                break;
-            case RobotCommands.identifyResponseBlackPawn:
-                battleMonster = "BlackPawn";
+            case RobotCommands.identifyResponseNothing:
+                Debug.LogWarning("Non è stato riconosciuto nulla!");
                 break;
         }
 
         if (!string.IsNullOrEmpty(battleMonster)) {
-            Debug.Log("Riconosciuto " + message + ": avvio la battaglia!");
+            Debug.LogWarning("Riconosciuto " + message + ": avvio la battaglia!");
+            Debug.LogWarning("Mostro da combattere: " + battleMonster);
             PlayerPrefs.SetString("monsterToBattle", battleMonster);
-            SceneHelper.LoadScene("Battle");
+
+            //SceneHelper.LoadScene("Battle");
+            Loom.QueueOnMainThread(() => {
+                SceneHelper.LoadScene("Battle");
+            });
+            
+            Debug.LogWarning("SCENA DOVREBBE ESSERE CAMBIATAAAA");
+            //SceneManager.LoadScene("Battle");
         }
         
     }
 
-
-    private string GetMonsterName(string pieceName) {
-        
-        // Mapping dei nomi delle pedine agli equivalenti nomi dei mostri
-        switch (pieceName) {
-            case "WhiteKing":
-                return "Skeleton";
-            case "WhiteQueen":
-                return "Witch";
-            case "WhiteRook":
-                return "WhiteRook";
-            case "WhiteBishop":
-                return "WhiteBishop";
-            case "WhiteKnight":
-                return "WhiteKnight";
-            case "WhitePawn":
-                return "WhitePawn";
-            case "BlackKing":
-                return "Angel";
-            case "BlackQueen":
-                return "BlackQueen";
-            case "BlackRook":
-                return "BlackRook";
-            case "BlackBishop":
-                return "BlackBishop";
-            case "BlackKnight":
-                return "BlackKnight";
-            case "BlackPawn":
-                return "BlackPawn";
-            default:
-                return "Unknown";
-        }
-    }
 
     /*
     private void ConnectToServer() {
@@ -246,6 +242,17 @@ public class ClientTCPManager : MonoBehaviour {
         }
     }
 
+    public ConnectionState GetConnectionStatus() {
+        return connectionState;
+    }
+
+    private void OnApplicationQuit() {
+        isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
+        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
+        client?.Close();
+    }
+
+
     public void Enable() {
         gameObject.SetActive(true);
     }
@@ -254,9 +261,5 @@ public class ClientTCPManager : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    private void OnApplicationQuit() {
-        isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
-        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
-        client?.Close();
-    }
+
 }

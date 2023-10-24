@@ -14,7 +14,7 @@ public class VideoReceiverManager : MonoBehaviour {
 
     private void Start() {
 
-        loadPort();
+        LoadPort();
 
         receivedTexture = new Texture2D(640, 480);
 
@@ -25,10 +25,8 @@ public class VideoReceiverManager : MonoBehaviour {
             ReceiveData();
         });
     }
-
-
     
-    private void loadPort() {
+    private void LoadPort() {
 
         if(PlayerPrefs.HasKey("masterPort")) {
             string localPort = PlayerPrefs.GetString("masterPort");
@@ -75,6 +73,14 @@ public class VideoReceiverManager : MonoBehaviour {
         }
     }
 
+    private void OnApplicationQuit() {
+        if (isListening) {
+            udpClient.Close();
+            isListening = false;
+        }
+    }
+
+
     public void Enable() {
         this.gameObject.SetActive(true);
     }
@@ -83,10 +89,4 @@ public class VideoReceiverManager : MonoBehaviour {
         this.gameObject.SetActive(false);
     }
 
-    private void OnApplicationQuit() {
-        if (isListening) {
-            udpClient.Close();
-            isListening = false;
-        }
-    }
 }
