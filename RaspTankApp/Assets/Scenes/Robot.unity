@@ -258,6 +258,7 @@ MonoBehaviour:
   battleHUDEnabled: 0
   robotHUDEnabled: 1
   battleEffectsManagerEnabled: 0
+  connectionStateEnabled: 1
 --- !u!1 &1107547126
 GameObject:
   m_ObjectHideFlags: 0

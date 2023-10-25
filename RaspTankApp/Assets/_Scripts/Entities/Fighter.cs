@@ -3,7 +3,7 @@ using UnityEngine;
 public class Fighter : MonoBehaviour {
 
     // Satistiche base
-    [Header("Statistiche base del combattente")]
+    [Header("Base fighter stats")]
     public FighterData data;
 
     // Livello
@@ -17,7 +17,7 @@ public class Fighter : MonoBehaviour {
     protected int currentHeal;
 
 
-    // Statistiche massime
+    // Statistiche massime (sempre attuali)
     protected int maxCurrentAttack;
     protected int maxCurrentDefense;
     protected int maxCurrentHP;
@@ -246,32 +246,27 @@ public class Fighter : MonoBehaviour {
     //
 
     // Setter per maxCurrentAttack
-    public void SetMaxCurrentAttack(int value)
-    {
+    public void SetMaxCurrentAttack(int value) {
         maxCurrentAttack = value;
     }
 
     // Setter per maxCurrentDefense
-    public void SetMaxCurrentDefense(int value)
-    {
+    public void SetMaxCurrentDefense(int value) {
         maxCurrentDefense = value;
     }
 
     // Setter per maxCurrentHP
-    public void SetMaxCurrentHP(int value)
-    {
+    public void SetMaxCurrentHP(int value) {
         maxCurrentHP = value;
     }
 
     // Setter per maxCurrentSpeed
-    public void SetMaxCurrentSpeed(int value)
-    {
+    public void SetMaxCurrentSpeed(int value) {
         maxCurrentSpeed = value;
     }
 
     // Setter per maxCurrentHeal
-    public void SetMaxCurrentHeal(int value)
-    {
+    public void SetMaxCurrentHeal(int value) {
         maxCurrentHeal = value;
     }
 

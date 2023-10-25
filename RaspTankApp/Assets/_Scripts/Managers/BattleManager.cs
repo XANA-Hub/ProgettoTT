@@ -5,17 +5,14 @@ using System.Collections;
 
 public class BattleManager : MonoBehaviour {   
 
-    // Variabili private
+    // Variabili private giocatore / mostro
     private Player player;
     private Monster monster;
+
+    // Danni mitigati dalla difesa del giocatore / mostro
     private int playerMitigatedDamage = 0;
     private int monsterMitigatedDamage = 0;
-
-    [Header("Starting battle state")]
-    public BattleState battleState;
-
-    [Header("Battle menu animator")]
-    public Animator battleMenuAnimator;
+    private BattleState battleState;
 
     [Header("Buttons")]
     public Button attackButton;
@@ -23,7 +20,7 @@ public class BattleManager : MonoBehaviour {
     public Button healButton;
     public Button runButton;
 
-    [Header("Dialogue")]
+    [Header("Dialogue box")]
     public TMP_Text dialogueText;
 
     [Header("Player")]
@@ -50,7 +47,6 @@ public class BattleManager : MonoBehaviour {
 
     private void Start() {
 
-        
         // Inizializzo il giocatore e il mostro
         player = MasterManager.instance.player;
         ChooseMonster();
@@ -243,7 +239,6 @@ public class BattleManager : MonoBehaviour {
     }
 
     IEnumerator EnemyTurn() {
-        
         ChooseEnemyAction(monster.getCurrentTemper() == Temper.AGGRESSIVE);
         yield return new WaitForSeconds(2f);
     }
@@ -253,7 +248,7 @@ public class BattleManager : MonoBehaviour {
     // Per debug
     public void OnBattleInfoButton() {
 
-        Debug.Log("++ CURRENT PLAYER STATS ++");
+        Debug.Log("++ _CURRENT PLAYER STATS_ ++");
         Debug.Log("Nature: " + player.getCurrentNatureBonusAsString());
         Debug.Log("Level: " + player.getLevel());
         Debug.Log("HP: " + player.getCurrentHP());
@@ -261,7 +256,7 @@ public class BattleManager : MonoBehaviour {
         Debug.Log("Defense: " + player.getCurrentDefense());
         Debug.Log("Speed: " + player.getCurrentSpeed());
 
-        Debug.Log("++ CURRENT MONSTER STATS ++");
+        Debug.Log("++ _CURRENT MONSTER STATS_ ++");
         Debug.Log("Nature: " + monster.getCurrentNatureBonusAsString());
         Debug.Log("Temper: " + monster.getCurrentTemperAsString());
         Debug.Log("Level: " + monster.getLevel());
@@ -839,7 +834,7 @@ public class BattleManager : MonoBehaviour {
     // Barre degli HP, XP, ecc...
     //
 
-    public void SetPlayerHPBar(int currentHP) {
+    private void SetPlayerHPBar(int currentHP) {
 
         float ratio = (float)currentHP / (float)player.getMaxCurrentHP();
 
@@ -849,7 +844,7 @@ public class BattleManager : MonoBehaviour {
     }
     
 
-    public void SetPlayerExpBar() {
+    private void SetPlayerExpBar() {
 
         float ratio = (float)player.getCurrentExp() / (float)player.getExpRequiredForNextLevel();
 
@@ -858,7 +853,7 @@ public class BattleManager : MonoBehaviour {
         
     }
 
-    public void SetMonsterHPBar(int currentHP) {
+    private void SetMonsterHPBar(int currentHP) {
 
         float ratio = (float)currentHP / (float)monster.getMaxCurrentHP();
 

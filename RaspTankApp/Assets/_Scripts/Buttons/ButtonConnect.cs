@@ -2,15 +2,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonCraneGrab : Button {
+public class ButtonConnect : Button {
     
-    
- public override void OnPointerUp(PointerEventData eventData) {
+    public override void OnPointerUp(PointerEventData eventData) {
 
         base.OnPointerUp(eventData);
 
         if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED)
-            MasterManager.instance.clientTCPManager.SendData(RobotCommands.armGrab);
+            MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
     }
 
 

@@ -2,22 +2,29 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ClientTCPManager : MonoBehaviour {
 	
-    private string ipAddress = "";
-    public int port = -1;
+    [Header("Number of retries before aborting connection")]
     public int maxRetries = 5;
+
+    private string ipAddress = "";
+    private string port = "";
     private string serverMessage = "EMPTY";
     private bool isApplicationQuitting = false;
-    private ConnectionState connectionState = ConnectionState.NOT_CONNECTED; // Inizialmente non connesso
+    private ConnectionState connectionState;
 
     private TcpClient client;
 
     private void Start() {
         
+        connectionState = ConnectionState.NOT_CONNECTED;
+        ChangeConnectionState(Color.red, "NOT CONNECTED");
+
         // Carico l'IP e la porta direttamente dalle PlayerPrefs
         LoadIPAddress();
         LoadPort();
@@ -30,9 +37,7 @@ public class ClientTCPManager : MonoBehaviour {
     private void LoadIPAddress() {
 
         if(PlayerPrefs.HasKey("masterIP")) {
-            string localIP = PlayerPrefs.GetString("masterIP");
-            ipAddress = localIP;
-
+            ipAddress = PlayerPrefs.GetString("masterIP");
             Debug.Log("TCPManager: IP caricato: " + ipAddress);
         } else {
             Debug.LogError("TCPManager: IP non caricato correttamente!");
@@ -43,9 +48,7 @@ public class ClientTCPManager : MonoBehaviour {
     private void LoadPort() {
 
         if(PlayerPrefs.HasKey("masterPort")) {
-            string localPort = PlayerPrefs.GetString("masterPort");
-            int.TryParse(localPort, out port);
-
+            port = PlayerPrefs.GetString("masterPort");
             Debug.Log("TCPManager: porta caricata: " + port);
         } else {
             Debug.LogError("TCPManager: porta non caricata correttamente!");
@@ -69,15 +72,29 @@ public class ClientTCPManager : MonoBehaviour {
         return ipAddress;
     }
 
+    private void ChangeConnectionState(Color newColor, string newText) {
+
+        // 0 = IconState
+        // 1 = TextState
+        MasterManager.instance.connectionState.transform.GetChild(0).gameObject.GetComponent<Image>().color = newColor;
+        MasterManager.instance.connectionState.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().SetText(newText);
+    }
+
     private void ConnectToServerWithRetry() {
-        
-        // Imposta lo stato sulla connessione in corso
-        connectionState = ConnectionState.CONNECTION_IN_PROGRESS;
         
         int currentRetry = 0;
 
+        // Imposta lo stato sulla connessione in corso
+        connectionState = ConnectionState.CONNECTION_IN_PROGRESS;
+        
+    
         Loom.RunAsync(() => {
             while (currentRetry < maxRetries) {
+
+                Loom.QueueOnMainThread(() => {
+                    ChangeConnectionState(Color.yellow, "CONNECTING Retry: " + currentRetry);
+                });
+                
 
                 // Esci dal ciclo se l'applicazione sta terminando
                 if (isApplicationQuitting) {
@@ -86,10 +103,14 @@ public class ClientTCPManager : MonoBehaviour {
                 }
 
                 try {
-
-                    client = new TcpClient(ipAddress, port);
+                    client = new TcpClient(ipAddress, int.Parse(port));
                     ReceiveAndPrintData();
+
                     connectionState = ConnectionState.CONNECTED;
+                    Loom.QueueOnMainThread(() => {
+                        ChangeConnectionState(Color.green, "CONNECTED");
+                    });
+
                     break; // Esci dal ciclo se la connessione ha successo
                 }
                 catch (SocketException socketException) {
@@ -98,7 +119,12 @@ public class ClientTCPManager : MonoBehaviour {
                     Debug.Log("TCP Socket Exception (tentativo numero " + currentRetry + "): " + socketException);
 
                     if (currentRetry >= maxRetries) {
+
                         connectionState = ConnectionState.CONNECTION_ABORTED;
+                        Loom.QueueOnMainThread(() => {
+                            ChangeConnectionState(Color.red, "CONNECTION FAILED");
+                        });
+       
                         Debug.LogError("Connessione non riuscita dopo " + maxRetries + " tentativi. Smetto...");
                     }
                 }
@@ -172,56 +198,14 @@ public class ClientTCPManager : MonoBehaviour {
             Debug.LogWarning("Mostro da combattere: " + battleMonster);
             PlayerPrefs.SetString("monsterToBattle", battleMonster);
 
-            //SceneHelper.LoadScene("Battle");
+            // TODO: da fixare, il LoadScene si può fare soltanto sul Main Thread
             Loom.QueueOnMainThread(() => {
                 SceneHelper.LoadScene("Battle");
             });
             
-            Debug.LogWarning("SCENA DOVREBBE ESSERE CAMBIATAAAA");
-            //SceneManager.LoadScene("Battle");
         }
         
     }
-
-
-    /*
-    private void ConnectToServer() {
-
-        Loom.RunAsync(() => {
-            try {
-                client = new TcpClient(ipAddress, port);
-                ReceiveAndPrintData();
-            }
-            catch (SocketException socketException) {
-                Debug.Log("TCp Socket exception: " + socketException);
-            }
-        });
-    }
-    */
-    
-    // --------------------
-
-    /*
-    private void ReceiveAndPrintDataMultiple() {
-       
-        Byte[] bytes = new Byte[1024];
-
-        while (true) {
-            using (NetworkStream stream = client.GetStream()) {
-                int length;
-
-                while ((length = stream.Read(bytes, 0, bytes.Length)) != 0) {
-                    var incommingData = new byte[length];
-                    Array.Copy(bytes, 0, incommingData, 0, length);
-
-                    string serverMessage = Encoding.ASCII.GetString(incommingData);
-                    Debug.Log("TCP: Server message received as: " + serverMessage);
-                }
-            }
-        }
-            
-    }
-    */
 
     public void SendData(string clientMessage) {
 
@@ -242,7 +226,7 @@ public class ClientTCPManager : MonoBehaviour {
         }
     }
 
-    public ConnectionState GetConnectionStatus() {
+    public ConnectionState GetConnectionState() {
         return connectionState;
     }
 

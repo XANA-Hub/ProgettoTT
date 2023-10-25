@@ -10458,6 +10458,8 @@ MonoBehaviour:
   battleManagerEnabled: 0
   battleHUDEnabled: 0
   robotHUDEnabled: 0
+  battleEffectsManagerEnabled: 0
+  connectionStateEnabled: 0
 --- !u!1 &1970848750
 GameObject:
   m_ObjectHideFlags: 0

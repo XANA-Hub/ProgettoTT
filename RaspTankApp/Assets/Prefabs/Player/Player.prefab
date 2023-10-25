@@ -52,7 +52,7 @@ MonoBehaviour:
     baseAttack: 115
     baseDefense: 115
     baseSpeed: 115
-    baseHeal: 50
+    baseHeal: 20
     baseAttackDamage: 15
     healProbability: 0.45
     baseFleeProbability: 0.5

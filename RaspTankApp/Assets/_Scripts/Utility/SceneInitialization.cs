@@ -13,6 +13,7 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool battleHUDEnabled = false;
     [SerializeField] private bool robotHUDEnabled = false;
     [SerializeField] private bool battleEffectsManagerEnabled = false;
+    [SerializeField] private bool connectionStateEnabled = false;
 
 
 
@@ -52,11 +53,15 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.battleHUD.SetActive(false);
         }
-
         if(battleEffectsManagerEnabled) {
             MasterManager.instance.battleEffectsManager.Enable();
         } else {
             MasterManager.instance.battleEffectsManager.Disable();
+        }
+        if(connectionStateEnabled) {
+            MasterManager.instance.connectionState.SetActive(true);
+        } else {
+            MasterManager.instance.connectionState.SetActive(false);
         }
 
 

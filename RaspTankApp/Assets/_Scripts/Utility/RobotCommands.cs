@@ -20,7 +20,7 @@ public static class RobotCommands {
 
     // Connessione
     public const string disconnect = "ID:000;TYPE:Disconnect;BODY:Disconnect";
-    public const string start = "ID:000;TYPE:Start;BODY:";
+    public const string start = "ID:000;TYPE:Start;BODY:"; // Da aggiungere l'indirizzo IP del client e la porta
     public const string readyResponse = "ready";
 
     // AI
