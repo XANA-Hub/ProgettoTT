@@ -8,9 +8,7 @@ public class ButtonDisconnect : Button {
     public override void OnPointerUp(PointerEventData eventData) {
 
         base.OnPointerUp(eventData);
-
-        if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED)
-            MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
+        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
             
     }
 

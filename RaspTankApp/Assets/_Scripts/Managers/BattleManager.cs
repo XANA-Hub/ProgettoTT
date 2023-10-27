@@ -92,14 +92,14 @@ public class BattleManager : MonoBehaviour {
     // Bottoni
     //
 
-    private void deactivateButtons() {
+    private void DeactivateButtons() {
         attackButton.interactable = false;
         defendButton.interactable = false;
         healButton.interactable = false;
         runButton.interactable = false;
     }
 
-    private void activateButtons() {
+    private void ActivateButtons() {
         attackButton.interactable = true;
         defendButton.interactable = true;
         healButton.interactable = true;
@@ -107,22 +107,22 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void OnAttackButton() {
-        deactivateButtons();
+        DeactivateButtons();
         StartCoroutine(PlayerAttack());
     }
 
     public void OnDefendButton() {
-        deactivateButtons();
+        DeactivateButtons();
         StartCoroutine(PlayerDefend());
     }
 
     public void OnHealButton() {
-        deactivateButtons();
+        DeactivateButtons();
         StartCoroutine(PlayerHeal());
     }
 
     public void OnRunButton() {
-        deactivateButtons();
+        DeactivateButtons();
         StartCoroutine(PlayerRun());
     }
 
@@ -153,7 +153,7 @@ public class BattleManager : MonoBehaviour {
         // Saved data
         LoadOrInitializeData();
 
-        deactivateButtons();
+        DeactivateButtons();
         SetUpBattleHUD();
 
         Debug.Log("BATTAGLIA INIZIATA!");
@@ -234,7 +234,7 @@ public class BattleManager : MonoBehaviour {
     //
 
     private void PlayerTurn() {
-        activateButtons();
+        ActivateButtons();
         dialogueText.SetText("Choose an action:");
     }
 

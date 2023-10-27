@@ -7748,7 +7748,7 @@ GameObject:
   - component: {fileID: 6955070804184768905}
   - component: {fileID: 5687487556746941203}
   m_Layer: 0
-  m_Name: LoadPlayerStats
+  m_Name: SetRobotHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7785,6 +7785,17 @@ MonoBehaviour:
   playerExp: {fileID: 5428425387410348564}
   playerNameText: {fileID: 6089776307569713134}
   playerLevelText: {fileID: 3446512464039059643}
+  moveUpButton: {fileID: 4785146115818906571}
+  moveDownButton: {fileID: 12649856594997691}
+  moveLeftButton: {fileID: 7408863485357602670}
+  moveRightButton: {fileID: 8253578562392958058}
+  craneUpButton: {fileID: 5678141651310615645}
+  craneDownButton: {fileID: 4662804752969600430}
+  craneGrabButton: {fileID: 7596091712057033381}
+  craneReleaseButton: {fileID: 391853292376735098}
+  recognitionButton: {fileID: 4091736606190861462}
+  connectButton: {fileID: 2476865924725449464}
+  disconnectButton: {fileID: 3069371575428821472}
 --- !u!1 &9139745075994339091
 GameObject:
   m_ObjectHideFlags: 0
