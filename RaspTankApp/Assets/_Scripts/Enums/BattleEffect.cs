@@ -5,5 +5,6 @@ using UnityEngine;
 public enum BattleEffect {  
     ENEMY_ATTACK,
     PLAYER_DEFEND,
-    PLAYER_HEAL
+    PLAYER_HEAL,
+    PLAYER_DEFEAT
 }

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SetRobotHUD : MonoBehaviour {
+public class RobotHUDSetter : MonoBehaviour {
 
     // Player
     private Player player;
@@ -40,6 +40,8 @@ public class SetRobotHUD : MonoBehaviour {
     private Color originalButtonColor;
 
 
+
+
     // Carico i dati all'inizio
     private void Start() {
 
@@ -48,9 +50,14 @@ public class SetRobotHUD : MonoBehaviour {
 
         LoadData();
         SetPlayerHUD();
+
     }
 
     private void Update() {
+        
+        //
+        // Attivazione / Disattivazione dei bottoni
+        //
 
         if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) {
             ActivateButtons();    
@@ -59,7 +66,6 @@ public class SetRobotHUD : MonoBehaviour {
 
             disconnectButton.interactable = true;
             disconnectButton.image.color = originalButtonColor;
-
         }
         else {
             DeactivateButtons();
@@ -68,12 +74,11 @@ public class SetRobotHUD : MonoBehaviour {
 
             disconnectButton.interactable = false;
             disconnectButton.image.color = new Color(0.5f, 0.5f, 0.5f); // Grigio scuro
-
         }
-        
     }
 
     public void ActivateButtons() {
+
         // Riattiva l'interattività dei bottoni
         moveUpButton.interactable = true;
         moveUpButton.image.color = originalButtonColor;
@@ -106,6 +111,7 @@ public class SetRobotHUD : MonoBehaviour {
 
     public void DeactivateButtons() {
 
+        // Disattiva l'interrattività dei bottoni
         moveUpButton.interactable = false;
         moveUpButton.image.color = new Color(0.5f, 0.5f, 0.5f); // Grigio scuro
 

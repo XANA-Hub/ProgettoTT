@@ -11,9 +11,9 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool videoReceiverManagerEnabled = false;
     [SerializeField] private bool battleManagerEnabled = false;
     [SerializeField] private bool battleHUDEnabled = false;
-    [SerializeField] private bool robotHUDEnabled = false;
     [SerializeField] private bool battleEffectsManagerEnabled = false;
-    [SerializeField] private bool connectionStateEnabled = false;
+    [SerializeField] private bool robotHUDEnabled = false;
+    [SerializeField] private bool connectionStateManagerEnabled = false;
 
 
 
@@ -58,12 +58,11 @@ public class SceneInitialization : MonoBehaviour {
         } else {
             MasterManager.instance.battleEffectsManager.Disable();
         }
-        if(connectionStateEnabled) {
-            MasterManager.instance.connectionState.SetActive(true);
+        if(connectionStateManagerEnabled) {
+            MasterManager.instance.connectionStateManager.Enable();
         } else {
-            MasterManager.instance.connectionState.SetActive(false);
+            MasterManager.instance.connectionStateManager.Disable();
         }
-
 
        
     }

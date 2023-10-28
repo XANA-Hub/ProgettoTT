@@ -15,26 +15,26 @@ public class BattleManager : MonoBehaviour {
     private BattleState battleState;
 
     [Header("Buttons")]
-    public Button attackButton;
-    public Button defendButton;
-    public Button healButton;
-    public Button runButton;
+    [SerializeField] private Button attackButton;
+    [SerializeField] private  Button defendButton;
+    [SerializeField] private  Button healButton;
+    [SerializeField] private  Button runButton;
 
     [Header("Dialogue box")]
-    public TMP_Text dialogueText;
+    [SerializeField] private  TMP_Text dialogueText;
 
     [Header("Player")]
-    public Image playerSprite;
-    public RectTransform playerHP;
-    public RectTransform playerExp;
-    public TMP_Text playerNameText;
-    public TMP_Text playerLevelText;
+    [SerializeField] private  Image playerSprite;
+    [SerializeField] private  RectTransform playerHP;
+    [SerializeField] private  RectTransform playerExp;
+    [SerializeField] private  TMP_Text playerNameText;
+    [SerializeField] private  TMP_Text playerLevelText;
 
     [Header("Enemy")]
-    public Image enemySprite;
-    public RectTransform enemyHP;
-    public TMP_Text enemyNameText;
-    public TMP_Text enemyLevelText;
+    [SerializeField] private  Image enemySprite;
+    [SerializeField] private  RectTransform enemyHP;
+    [SerializeField] private  TMP_Text enemyNameText;
+    [SerializeField] private  TMP_Text enemyLevelText;
 
     [Header("Battle parameters")]
     [Range(1.0f, 2.0f)] public float criticalHitMultiplier = 1.5f; // 50% in più di danno
@@ -248,7 +248,7 @@ public class BattleManager : MonoBehaviour {
     // Per debug
     public void OnBattleInfoButton() {
 
-        Debug.Log("++ _CURRENT PLAYER STATS_ ++");
+        Debug.Log("++ CURRENT PLAYER STATS ++");
         Debug.Log("Nature: " + player.getCurrentNatureBonusAsString());
         Debug.Log("Level: " + player.getLevel());
         Debug.Log("HP: " + player.getCurrentHP());
@@ -256,7 +256,7 @@ public class BattleManager : MonoBehaviour {
         Debug.Log("Defense: " + player.getCurrentDefense());
         Debug.Log("Speed: " + player.getCurrentSpeed());
 
-        Debug.Log("++ _CURRENT MONSTER STATS_ ++");
+        Debug.Log("++ CURRENT MONSTER STATS ++");
         Debug.Log("Nature: " + monster.getCurrentNatureBonusAsString());
         Debug.Log("Temper: " + monster.getCurrentTemperAsString());
         Debug.Log("Level: " + monster.getLevel());
@@ -287,10 +287,10 @@ public class BattleManager : MonoBehaviour {
     private bool isFleeSuccessful(Fighter fighter) {
 
         float currentFleeProbability = fighter.data.baseFleeProbability;
-        int speedDifference = 0;
-        
+        int speedDifference;
+
         // Calcola la differenza di velocità tra i due combattenti
-        if(fighter is Player) {
+        if (fighter is Player) {
             speedDifference = player.getCurrentSpeed() - monster.getCurrentSpeed();
         } else {
             speedDifference = monster.getCurrentSpeed() - player.getCurrentSpeed();
@@ -812,7 +812,8 @@ public class BattleManager : MonoBehaviour {
         } else if(battleState == BattleState.LOST) {
             MasterManager.instance.audioManager.PlayMusic("DefeatMusic");
             dialogueText.SetText("You lost the battle!");
-
+            MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_DEFEAT);
+            
         } else if(battleState == BattleState.PLAYER_ESCAPED) {
             MasterManager.instance.audioManager.PlayMusic("Escaped");
             StartCoroutine(GivePlayerExp(false));

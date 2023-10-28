@@ -9,6 +9,7 @@ public class BattleEffectsManager : MonoBehaviour {
     public Image gotHitOverlay;
     public Image healOverlay;
     public Image defendOverlay;
+    public Image defeatOverlay;
 
 
     private Color gotHitOverlayOriginalColor;
@@ -28,7 +29,11 @@ public class BattleEffectsManager : MonoBehaviour {
 
     public void ShowOverlay(BattleEffect effect) {
         
-        StartCoroutine(ShowAndHideOverlay(effect));
+        if(effect == BattleEffect.PLAYER_DEFEAT) {
+            StartCoroutine(ShowDefeatOverlay());
+        } else {
+            StartCoroutine(ShowAndHideOverlay(effect));
+        }
 
     }
 
@@ -75,7 +80,6 @@ public class BattleEffectsManager : MonoBehaviour {
             overlayImage = defendOverlay;
             originalColor = defendOverlayOriginalColor;
         }
-
         else {
             // Ritorna immediatamente se l'effetto non è gestito
             Debug.LogError("BattleEffectsManager: Effetto non trovato!");
@@ -108,6 +112,23 @@ public class BattleEffectsManager : MonoBehaviour {
         // Assicurati che l'overlay sia completamente nascosto
         overlayImage.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
     }
+
+    
+    private IEnumerator ShowDefeatOverlay() {
+
+        float fadeDuration = 2.0f;
+        float elapsedTime = 0f;
+
+        // Show the overlay
+        while (elapsedTime < fadeDuration) {
+            float alpha = Mathf.Lerp(0f, 1.0f, elapsedTime / fadeDuration);
+            defeatOverlay.color = new Color(defeatOverlay.color.r, defeatOverlay.color.g, defeatOverlay.color.b, alpha);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+    }
+    
 
     
     public void Enable() {

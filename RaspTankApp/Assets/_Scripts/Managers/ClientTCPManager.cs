@@ -2,15 +2,14 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 
 public class ClientTCPManager : MonoBehaviour {
 	
     [Header("Number of retries before aborting connection")]
-    public int maxRetries = 5;
+    [SerializeField] private int maxRetries = 5;
+    private int currentRetry = 0;
 
     private string ipAddress = "";
     private string port = "";
@@ -23,8 +22,7 @@ public class ClientTCPManager : MonoBehaviour {
     private void Start() {
         
         connectionState = ConnectionState.NOT_CONNECTED;
-        ChangeConnectionState(Color.red, "NOT CONNECTED");
-
+        
         // Carico l'IP e la porta direttamente dalle PlayerPrefs
         LoadIPAddress();
         LoadPort();
@@ -72,29 +70,12 @@ public class ClientTCPManager : MonoBehaviour {
         return ipAddress;
     }
 
-    private void ChangeConnectionState(Color newColor, string newText) {
-
-        // 0 = IconState
-        // 1 = TextState
-        MasterManager.instance.connectionState.transform.GetChild(0).gameObject.GetComponent<Image>().color = newColor;
-        MasterManager.instance.connectionState.transform.GetChild(1).gameObject.GetComponent<TMP_Text>().SetText(newText);
-    }
-
     private void ConnectToServerWithRetry() {
-        
-        int currentRetry = 0;
-
-        // Imposta lo stato sulla connessione in corso
-        connectionState = ConnectionState.CONNECTION_IN_PROGRESS;
-        
     
         Loom.RunAsync(() => {
             while (currentRetry < maxRetries) {
 
-                Loom.QueueOnMainThread(() => {
-                    ChangeConnectionState(Color.yellow, "CONNECTING Retry: " + currentRetry);
-                });
-                
+                connectionState = ConnectionState.CONNECTION_IN_PROGRESS;
 
                 // Esci dal ciclo se l'applicazione sta terminando
                 if (isApplicationQuitting) {
@@ -105,26 +86,15 @@ public class ClientTCPManager : MonoBehaviour {
                 try {
                     client = new TcpClient(ipAddress, int.Parse(port));
                     ReceiveAndPrintData();
-
                     connectionState = ConnectionState.CONNECTED;
-                    Loom.QueueOnMainThread(() => {
-                        ChangeConnectionState(Color.green, "CONNECTED");
-                    });
-
                     break; // Esci dal ciclo se la connessione ha successo
-                }
-                catch (SocketException socketException) {
+                } catch (SocketException socketException) {
 
                     currentRetry++;
                     Debug.Log("TCP Socket Exception (tentativo numero " + currentRetry + "): " + socketException);
 
                     if (currentRetry >= maxRetries) {
-
                         connectionState = ConnectionState.CONNECTION_ABORTED;
-                        Loom.QueueOnMainThread(() => {
-                            ChangeConnectionState(Color.red, "CONNECTION FAILED");
-                        });
-       
                         Debug.LogError("Connessione non riuscita dopo " + maxRetries + " tentativi. Smetto...");
                     }
                 }
@@ -151,10 +121,6 @@ public class ClientTCPManager : MonoBehaviour {
         }
     }
 
-    // Forse da togliere, serve nel caso voglia fare un RobotResponseManager
-    public string GetLastServerMessage() {
-        return serverMessage;
-    }
 
     // Controllo il messaggio ricevuto dal robot
     private void CheckMessage(string message) {
@@ -193,16 +159,11 @@ public class ClientTCPManager : MonoBehaviour {
                 break;
         }
 
+        // Se la stringa non è vuota
         if (!string.IsNullOrEmpty(battleMonster)) {
             Debug.LogWarning("Riconosciuto " + message + ": avvio la battaglia!");
             Debug.LogWarning("Mostro da combattere: " + battleMonster);
             PlayerPrefs.SetString("monsterToBattle", battleMonster);
-
-            // TODO: da fixare, il LoadScene si può fare soltanto sul Main Thread
-            Loom.QueueOnMainThread(() => {
-                SceneHelper.LoadScene("Battle");
-            });
-            
         }
         
     }
@@ -226,14 +187,23 @@ public class ClientTCPManager : MonoBehaviour {
         }
     }
 
-    public ConnectionState GetConnectionState() {
-        return connectionState;
-    }
-
     private void OnApplicationQuit() {
         isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
         MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
         client?.Close();
+    }
+
+    
+    public ConnectionState GetConnectionState() {
+        return connectionState;
+    }
+    
+    public int GetCurrentRetry() {
+        return currentRetry;
+    }
+
+    public int GetMaxConnectionRetries() {
+        return maxRetries;
     }
 
 

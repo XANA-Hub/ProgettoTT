@@ -4,9 +4,7 @@ using UnityEngine.UI;
 
 public class ButtonCraneGrab : Button {
     
-    
- public override void OnPointerUp(PointerEventData eventData) {
-
+    public override void OnPointerUp(PointerEventData eventData) {
         base.OnPointerUp(eventData);
         MasterManager.instance.clientTCPManager.SendData(RobotCommands.armGrab);
     }

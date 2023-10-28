@@ -2,13 +2,17 @@ using UnityEngine;
 
 public class MasterManager : MonoBehaviour {
 
-
+    //
     // Istanza principale
+    //
+
     public static MasterManager instance { get; private set; }
+
 
     //
     // Manager
     //
+
     public AudioManager audioManager { get; private set; }
     public ClientTCPManager clientTCPManager { get; private set; }
     public VideoReceiverManager videoReceiverManager { get; private set; }
@@ -19,6 +23,7 @@ public class MasterManager : MonoBehaviour {
     public MonsterDatabase monsterDatabase { get; private set; }
     public BattleManager battleManager { get; private set; }
     public BattleEffectsManager battleEffectsManager { get; private set; }
+    public ConnectionStateManager connectionStateManager { get; private set; }
 
 
     //
@@ -31,27 +36,23 @@ public class MasterManager : MonoBehaviour {
         if(instance != null) {
 
             Destroy(this.gameObject);
-            
-
             return;
         }
 
         instance = this;
 
-
         // Ottengo i vari GameObject figli
         robotHUD = this.transform.GetChild(0).GetChild(0).gameObject;
         battleHUD = this.transform.GetChild(0).GetChild(1).gameObject;
         connectionState = this.transform.GetChild(0).GetChild(2).gameObject;
+        clientTCPManager = GetComponentInChildren<ClientTCPManager>();
         videoReceiverManager = GetComponentInChildren<VideoReceiverManager>();
         audioManager = GetComponentInChildren<AudioManager>();
-        clientTCPManager = GetComponentInChildren<ClientTCPManager>();
-        player = GetComponentInChildren<Player>();
         monsterDatabase = GetComponentInChildren<MonsterDatabase>();
         battleManager = GetComponentInChildren<BattleManager>();
-        battleEffectsManager = GetComponentInChildren<BattleEffectsManager>();
-        
-
+        battleEffectsManager = battleHUD.GetComponentInChildren<BattleEffectsManager>();
+        connectionStateManager = GetComponentInChildren<ConnectionStateManager>();
+        player = GetComponentInChildren<Player>();
     }
     
 
