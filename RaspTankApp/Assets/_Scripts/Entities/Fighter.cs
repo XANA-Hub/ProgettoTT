@@ -130,8 +130,7 @@ public class Fighter : MonoBehaviour {
         if(currentHP <= 0) {
             currentHP = 0;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -141,10 +140,16 @@ public class Fighter : MonoBehaviour {
         // Se gli HP sono maggiori di quelli massimi attuali
         if(currentHP+healAmount > maxCurrentHP) { 
             currentHP = maxCurrentHP;
-        }else{
+        } else {
             currentHP += healAmount;
         }
 
+    }
+
+
+    // Se voglio curare totalmente il fighter, viene usato soltanto quando si vince la battaglia per ora
+    public void HealMax() {
+        currentHP = maxCurrentHP;
     }
 
 

@@ -19,9 +19,14 @@ public class BattleManager : MonoBehaviour {
     [SerializeField] private  Button defendButton;
     [SerializeField] private  Button healButton;
     [SerializeField] private  Button runButton;
+    [SerializeField] private  Button endBattleButton;
 
     [Header("Dialogue box")]
     [SerializeField] private  TMP_Text dialogueText;
+
+    [Header("UI objects to activate/deactivate")]
+    [SerializeField] private GameObject EndBattleDialogue;
+
 
     [Header("Player")]
     [SerializeField] private  Image playerSprite;
@@ -47,6 +52,9 @@ public class BattleManager : MonoBehaviour {
 
     private void Start() {
 
+        // Inizialmente disattivato
+        EndBattleDialogue.SetActive(false);
+        
         // Inizializzo il giocatore e il mostro
         player = MasterManager.instance.player;
         ChooseMonster();
@@ -124,6 +132,34 @@ public class BattleManager : MonoBehaviour {
     public void OnRunButton() {
         DeactivateButtons();
         StartCoroutine(PlayerRun());
+    }
+    public void OnContinueButton() {
+
+        DeactivateButtons();
+        
+        // Se il giocatore è morto
+        if(player.getCurrentHP() <= 0) {
+
+            // Carico la nuova scena e basta
+            // Tengo così i vecchi dati salvati dal giocatore
+            SceneHelper.LoadScene("Robot");
+        } 
+        else if(monster.getCurrentHP() <= 0) { // Se il mostro è morto
+            
+            // Curo di metà dei suoi HP massimi nel caso in cui vinca la battaglia
+            player.Heal(player.getMaxCurrentHP() / 2);
+            SaveData();
+            SceneHelper.LoadScene("Robot");
+
+        } 
+        else { // Il mostro o il giocatore è scappato
+
+            // Curo solo di 1/4
+            player.Heal(player.getMaxCurrentHP() / 4);
+            SaveData();
+            SceneHelper.LoadScene("Robot");
+        }
+        
     }
 
 
@@ -272,19 +308,19 @@ public class BattleManager : MonoBehaviour {
     // Funzioni per verificare se una certa azione è andata a buon fine
     //
 
-    private bool isMissedAttack(Fighter fighter) {
+    private bool IsMissedAttack(Fighter fighter) {
         
         float randomValue = Random.Range(0f, 1f);
         return randomValue < fighter.data.missProbability;
     }
 
-    private bool isCriticalHit(Fighter fighter) {
+    private bool IsCriticalHit(Fighter fighter) {
         
         float randomValue = Random.Range(0f, 1f);
         return randomValue < fighter.data.criticalHitProbability;
     }
 
-    private bool isFleeSuccessful(Fighter fighter) {
+    private bool IsFleeSuccessful(Fighter fighter) {
 
         float currentFleeProbability = fighter.data.baseFleeProbability;
         int speedDifference;
@@ -314,7 +350,7 @@ public class BattleManager : MonoBehaviour {
         return randomValue < currentFleeProbability;
     }
 
-    private bool isHealSuccessful(Fighter fighter) {
+    private bool IsHealSuccessful(Fighter fighter) {
 
         float currentHealProbability = fighter.data.healProbability;
 
@@ -490,8 +526,8 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerAttack() {
 
         // Ottengo il danno fatto dal giocatore 
-        bool isMissed = isMissedAttack(player);
-        bool isCrit = isCriticalHit(player);
+        bool isMissed = IsMissedAttack(player);
+        bool isCrit = IsCriticalHit(player);
         
         if(!isMissed) {
             Debug.Log("PLAYER ATTACK SUCCESSFUL!");
@@ -552,8 +588,8 @@ public class BattleManager : MonoBehaviour {
 	IEnumerator MonsterAttack() {
         
         // Ottengo il danno fatto dal nemico 
-        bool isMissed = isMissedAttack(monster);
-        bool isCrit = isCriticalHit(monster);
+        bool isMissed = IsMissedAttack(monster);
+        bool isCrit = IsCriticalHit(monster);
         
         if(!isMissed) {
             int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
@@ -663,7 +699,7 @@ public class BattleManager : MonoBehaviour {
         battleState = BattleState.ENEMY_TURN;
         int healingAmount = CalculateHealingPoints(player.getCurrentHeal(), healingPointsVariation);
 
-        if(isHealSuccessful(player)) {
+        if(IsHealSuccessful(player)) {
             
             // Mostro l'overlay
             MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_HEAL);
@@ -699,7 +735,7 @@ public class BattleManager : MonoBehaviour {
         int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
         
 
-        if(isHealSuccessful(monster)) {
+        if(IsHealSuccessful(monster)) {
             
             // Setto i dati interni del mostro
             monster.Heal(healingAmount);
@@ -728,7 +764,7 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator PlayerRun() {
 
-        if(isFleeSuccessful(player)) {
+        if(IsFleeSuccessful(player)) {
             MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.PLAYER_ESCAPED;
             yield return new WaitForSeconds(2f);
@@ -747,7 +783,7 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator MonsterRun() {
 
-        if(isFleeSuccessful(monster)) {
+        if(IsFleeSuccessful(monster)) {
             MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.MONSTER_ESCAPED;
             yield return new WaitForSeconds(2f);
@@ -793,11 +829,15 @@ public class BattleManager : MonoBehaviour {
             dialogueText.SetText("You are now level " + player.getLevel() + "!");
         }
 
-        // Salvo i dati una volta che ho dato l'exp al giocatore
-        SaveData();
-
         yield return new WaitForSeconds(2f);
         
+    }
+
+    IEnumerator ShowEndBattleDialogue() {
+        
+        yield return new WaitForSeconds(6f);
+        EndBattleDialogue.SetActive(true);
+
     }
 
 
@@ -829,6 +869,7 @@ public class BattleManager : MonoBehaviour {
             dialogueText.SetText ("ERROR: Unknown battle state!");
         }
 
+        StartCoroutine(ShowEndBattleDialogue());
     }
 
     //

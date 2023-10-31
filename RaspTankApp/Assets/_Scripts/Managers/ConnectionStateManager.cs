@@ -24,9 +24,12 @@ public class ConnectionStateManager : MonoBehaviour {
             ChangeConnectionState(Color.yellow, "CONNECTING Retry: " + MasterManager.instance.clientTCPManager.GetCurrentRetry() + "/" + MasterManager.instance.clientTCPManager.GetMaxConnectionRetries());
         } else if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) {
             ChangeConnectionState(Color.green, "CONNECTED");
-
-            // Inizia la battaglia!
-            SceneHelper.LoadScene("Battle"); 
+            
+            // Inizia la battaglia solo se sono nella scena del Robot!
+            if(SceneHelper.GetCurrentSceneName() == "Robot") {
+                SceneHelper.LoadScene("Battle"); 
+            }
+            
         } else if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTION_ABORTED) {
             ChangeConnectionState(Color.red, "CONNECTION FAILED");
         } else {
