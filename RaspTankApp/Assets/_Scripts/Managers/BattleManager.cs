@@ -138,13 +138,13 @@ public class BattleManager : MonoBehaviour {
         DeactivateButtons();
         
         // Se il giocatore è morto
-        if(player.getCurrentHP() <= 0) {
+        if(battleState == BattleState.LOST) {
 
             // Carico la nuova scena e basta
             // Tengo così i vecchi dati salvati dal giocatore
             SceneHelper.LoadScene("Robot");
         } 
-        else if(monster.getCurrentHP() <= 0) { // Se il mostro è morto
+        else if(battleState == BattleState.WON) { // Se il mostro è morto
             
             // Curo di metà dei suoi HP massimi nel caso in cui vinca la battaglia
             player.Heal(player.getMaxCurrentHP() / 2);
@@ -152,13 +152,21 @@ public class BattleManager : MonoBehaviour {
             SceneHelper.LoadScene("Robot");
 
         } 
-        else { // Il mostro o il giocatore è scappato
+        else if(battleState == BattleState.MONSTER_ESCAPED) { // Il mostro è scappato
+
+            // Curo solo di 1/3
+            player.Heal(player.getMaxCurrentHP() / 3);
+            SaveData();
+            SceneHelper.LoadScene("Robot");
+        }
+        else if(battleState == BattleState.PLAYER_ESCAPED) {
 
             // Curo solo di 1/4
             player.Heal(player.getMaxCurrentHP() / 4);
             SaveData();
             SceneHelper.LoadScene("Robot");
         }
+
         
     }
 
