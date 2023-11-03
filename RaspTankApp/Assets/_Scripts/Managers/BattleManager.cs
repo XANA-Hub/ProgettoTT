@@ -538,6 +538,10 @@ public class BattleManager : MonoBehaviour {
         bool isCrit = IsCriticalHit(player);
         
         if(!isMissed) {
+
+            // Animazione robot
+            StartCoroutine(RobotBattleAnimations.PlayerAttackRobotAnimation());
+
             Debug.Log("PLAYER ATTACK SUCCESSFUL!");
             int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
             Debug.Log("Player DMG: " + dmgAmount);
@@ -550,12 +554,11 @@ public class BattleManager : MonoBehaviour {
             //MasterManager.instance.battleEffectsManager.ShakeGameObject(MasterManager.instance.battleHUD, 0.8f, 0.4f);
             bool isEnemyDead = monster.takeDamage(dmgAmount);
             
-            
             if(isCrit) {
                 // TODO: mettere suono critico
                 MasterManager.instance.audioManager.PlaySound("PlayerPunch");
                 dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name +". Critical hit!");
-            }else {
+            } else {
                 MasterManager.instance.audioManager.PlaySound("PlayerPunch");
                 dialogueText.SetText("You deal " + dmgAmount + " damage to " + monster.data.name + "!");
             }
@@ -600,6 +603,10 @@ public class BattleManager : MonoBehaviour {
         bool isCrit = IsCriticalHit(monster);
         
         if(!isMissed) {
+
+            // Animazione robot
+            StartCoroutine(RobotBattleAnimations.PlayerDamagedRobotAnimation());
+
             int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
             
             Debug.Log("Monster DMG: " + dmgAmount);
@@ -653,6 +660,9 @@ public class BattleManager : MonoBehaviour {
 
     IEnumerator PlayerDefend() {
 
+        // Animazione robot
+        StartCoroutine(RobotBattleAnimations.PlayerDefendRobotAnimation());
+
         battleState = BattleState.ENEMY_TURN;
         MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_DEFEND);
         dialogueText.SetText("You take a defensive stance!");
@@ -704,6 +714,9 @@ public class BattleManager : MonoBehaviour {
 	
 	 IEnumerator PlayerHeal() {
 
+        // Animazione robot
+        StartCoroutine(RobotBattleAnimations.PlayerAttackRobotAnimation());
+
         battleState = BattleState.ENEMY_TURN;
         int healingAmount = CalculateHealingPoints(player.getCurrentHeal(), healingPointsVariation);
 
@@ -741,7 +754,6 @@ public class BattleManager : MonoBehaviour {
 
         battleState = BattleState.PLAYER_TURN;
         int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
-        
 
         if(IsHealSuccessful(monster)) {
             
@@ -773,6 +785,10 @@ public class BattleManager : MonoBehaviour {
     IEnumerator PlayerRun() {
 
         if(IsFleeSuccessful(player)) {
+
+            // Animazione robot
+            StartCoroutine(RobotBattleAnimations.PlayerDefendRobotAnimation());
+            
             MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
             battleState = BattleState.PLAYER_ESCAPED;
             yield return new WaitForSeconds(2f);
@@ -814,9 +830,9 @@ public class BattleManager : MonoBehaviour {
 
 
     IEnumerator GivePlayerExp(bool isMonsterDefeated) {
+
         yield return new WaitForSeconds(2f);
 
-    
         int playerLevelBefore = player.getLevel();
 
         // Ne do un quarto se il mostro è scappato o se il giocatore è scappato

@@ -59,21 +59,32 @@ public class RobotHUDSetter : MonoBehaviour {
         // Attivazione / Disattivazione dei bottoni
         //
 
-        if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) {
-            ActivateButtons();    
+        // Se è connesso
+        if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) { 
+
+            ActivateButtons();
+
             connectButton.interactable = false;
             connectButton.image.color = new Color(0.5f, 0.5f, 0.5f);
 
             disconnectButton.interactable = true;
             disconnectButton.image.color = originalButtonColor;
         }
-        else {
+        else { // Se non è connesso
+
             DeactivateButtons();
-            connectButton.interactable = true;
-            connectButton.image.color = originalButtonColor;
 
             disconnectButton.interactable = false;
             disconnectButton.image.color = new Color(0.5f, 0.5f, 0.5f); // Grigio scuro
+
+            if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTION_ABORTED) {
+                connectButton.interactable = true;
+                connectButton.image.color = originalButtonColor;
+            } else {
+                connectButton.interactable = false;
+                connectButton.image.color = new Color(0.5f, 0.5f, 0.5f);
+            }
+            
         }
     }
 
@@ -139,7 +150,6 @@ public class RobotHUDSetter : MonoBehaviour {
         recognitionButton.interactable = false;
         recognitionButton.image.color = new Color(0.5f, 0.5f, 0.5f); // Grigio scuro
     }
-
 
 
     private void SetPlayerHUD() {

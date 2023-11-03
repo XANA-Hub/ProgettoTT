@@ -19,9 +19,9 @@ public static class RobotCommands {
     public const string armRelease = "ID:000;TYPE:Robot_Arm;BODY:Release";
 
     // Connessione
-    public const string disconnect = "ID:000;TYPE:Disconnect;BODY:Disconnect";
     public const string start = "ID:000;TYPE:Start;BODY:"; // Da aggiungere l'indirizzo IP del client e la porta
-    public const string readyResponse = "ready";
+    public const string readyResponse = "ready"; // Per avviare flusso video
+    public const string disconnect = "ID:000;TYPE:Disconnect;BODY:Disconnect";
 
     // AI
     public const string aiIdentifyCurrent = "ID:000;TYPE:AI_Recognition;BODY:Identify_Current";

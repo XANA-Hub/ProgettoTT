@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 
@@ -115,7 +116,6 @@ public class ClientTCPManager : MonoBehaviour {
             var incomingData = new byte[length];
             Array.Copy(bytes, 0, incomingData, 0, length);
             serverMessage = Encoding.ASCII.GetString(incomingData);
-            Debug.Log("TCP: Messaggio ricevuto: " + serverMessage);
 
             CheckMessage(serverMessage);
         }
@@ -124,6 +124,8 @@ public class ClientTCPManager : MonoBehaviour {
 
     // Controllo il messaggio ricevuto dal robot
     private void CheckMessage(string message) {
+
+        Debug.Log("TCP: messaggio ricevuto: " + message);
 
         // Inizialmente vuota
         string battleMonster = "";
@@ -187,13 +189,31 @@ public class ClientTCPManager : MonoBehaviour {
         }
     }
 
-    private void OnApplicationQuit() {
-        isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
-        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
-        client?.Close();
+    //
+    // Per i bottoni "Connect" e "Disconnect"
+    //
+
+    public void RetryConnectionAfterFailure() {
+        currentRetry = 0;
+        ConnectToServerWithRetry();
     }
 
+    public void DisconnectFromServer() {
+        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
+        client?.Close();
+        connectionState = ConnectionState.NOT_CONNECTED;
+    }
+
+    private void OnApplicationQuit() {
+        isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
+        DisconnectFromServer();
+    }
     
+
+    //
+    // Getters
+    //
+
     public ConnectionState GetConnectionState() {
         return connectionState;
     }

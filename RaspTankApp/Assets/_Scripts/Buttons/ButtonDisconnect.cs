@@ -8,7 +8,7 @@ public class ButtonDisconnect : Button {
     public override void OnPointerUp(PointerEventData eventData) {
 
         base.OnPointerUp(eventData);
-        MasterManager.instance.clientTCPManager.SendData(RobotCommands.disconnect);
+        MasterManager.instance.clientTCPManager.DisconnectFromServer();
             
     }
 
