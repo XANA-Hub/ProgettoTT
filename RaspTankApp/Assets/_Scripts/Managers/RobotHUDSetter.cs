@@ -36,7 +36,7 @@ public class RobotHUDSetter : MonoBehaviour {
 
     public Button connectButton;
     public Button disconnectButton;
-
+    
     private Color originalButtonColor;
 
 
@@ -107,7 +107,7 @@ public class RobotHUDSetter : MonoBehaviour {
         craneUpButton.image.color = originalButtonColor;
 
         craneDownButton.interactable = true;
-        moveUpButton.image.color = originalButtonColor;
+        craneDownButton.image.color = originalButtonColor;
 
         craneGrabButton.interactable = true;
         craneGrabButton.image.color = originalButtonColor;

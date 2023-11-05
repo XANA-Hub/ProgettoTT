@@ -84,8 +84,8 @@ public class BattleManager : MonoBehaviour {
 
     private void ChooseBattleMusic() {
         
-        if (monster.name.Equals("Primordial Blue Wizard") ||
-            monster.name.Equals("Primordial Red Wizard") ||
+        if (monster.name.Equals("Primordial Sorcerer") ||
+            monster.name.Equals("Primordial Wizard") ||
             monster.name.Equals("Forgotten Evil") ||
             monster.name.Equals("Vampire Lord") ||
             monster.name.Equals("Archaic Minotaur")) {

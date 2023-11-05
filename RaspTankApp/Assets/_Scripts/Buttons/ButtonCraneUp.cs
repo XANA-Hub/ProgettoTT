@@ -7,8 +7,13 @@ public class ButtonCraneUp : Button {
     
     public override void OnPointerUp(PointerEventData eventData) {
 
-        base.OnPointerUp(eventData);
-        MasterManager.instance.clientTCPManager.SendData(RobotCommands.armUp);
+        if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) {
+            Debug.Log("ButtonCraneUp: premuto");
+            base.OnPointerUp(eventData);
+            MasterManager.instance.clientTCPManager.SendData(RobotCommands.armUp);
+        } else {
+            Debug.Log("ButtonCraneUp: premuto ma non connesso!");
+        }
     }
 
 

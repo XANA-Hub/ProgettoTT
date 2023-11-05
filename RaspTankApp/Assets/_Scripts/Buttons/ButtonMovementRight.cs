@@ -4,16 +4,27 @@ using UnityEngine.UI;
 
 public class ButtonMovementRight : Button {
     
-    
     public override void OnPointerUp(PointerEventData eventData) {
-        base.OnPointerUp(eventData);
-        MasterManager.instance.clientTCPManager.SendData(RobotCommands.rotateRightStop);
+
+        if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) {
+            Debug.Log("ButtonMovementRight: rilasciato");
+            base.OnPointerUp(eventData);
+            MasterManager.instance.clientTCPManager.SendData(RobotCommands.rotateRightStop);
+        } else {
+            Debug.Log("ButtonMovementRight: rilasciato ma non connesso!");
+        }
     }
 
 
     public override void OnPointerDown(PointerEventData eventData) {
-        base.OnPointerDown(eventData);
-        MasterManager.instance.clientTCPManager.SendData(RobotCommands.rotateRightStart);
+        
+        if(MasterManager.instance.clientTCPManager.GetConnectionState() == ConnectionState.CONNECTED) {
+            Debug.Log("ButtonMovementRight: premuto");
+            base.OnPointerDown(eventData);
+            MasterManager.instance.clientTCPManager.SendData(RobotCommands.rotateRightStart);
+        } else {
+            Debug.Log("ButtonMovemenRight: premuto ma non connesso!");
+        }
     }
 
 
