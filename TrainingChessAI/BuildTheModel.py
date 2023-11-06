@@ -1,5 +1,3 @@
-# Create the CNN model
-
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Conv2D , MaxPooling2D , Flatten, Dense, Dropout
 from tensorflow.keras.models import Sequential
@@ -15,12 +13,11 @@ numOfEpochs = 100
 
 TRAINING_DIR = "./Chessman-image-dataset/train"
 
-NumOfClasses = len(glob('./Chessman-image-dataset/train/*')) # dont forget the '  /*  '
-print (NumOfClasses) # 6 classes
+NumOfClasses = len(glob('./Chessman-image-dataset/train/*'))
+print (NumOfClasses)
 
-# data augmentation to increase the train data
-
-train_datagen = ImageDataGenerator(rescale = 1/255.0, #normalize between 0 - 1
+#data augmentation
+train_datagen = ImageDataGenerator(rescale = 1/255.0,
                                     rotation_range = 30 ,
                                     zoom_range = 0.4 ,
                                     horizontal_flip=True,
@@ -42,18 +39,14 @@ val_generator = val_datagen.flow_from_directory(validation_DIR,
                                                 target_size = (imgHeight, imgWidth))
 
 
-# early stopping
-
+#early stopping
 callBack = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='auto')
 
 
-# if we will find a better model we will save it here :
 bestModelFileName = "./Chessman-image-dataset/chess_best_model.h5"
-
 bestModel = ModelCheckpoint(bestModelFileName, monitor='val_accuracy', verbose=1, save_best_only=True)
 
-# the model :
-
+#struttura rete
 model = Sequential([ 
     Conv2D(32, (3,3) , activation='relu' , input_shape=(imgHeight, imgWidth, 3) ) ,
     MaxPooling2D(2,2),
@@ -75,13 +68,10 @@ model = Sequential([
     Dense(512 , activation='relu'),
     Dense(512 , activation='relu'),
 
-    Dense(NumOfClasses , activation='softmax') # softmax -> 0 to 1 
+    Dense(NumOfClasses , activation='softmax')
 ])
 
 print (model.summary() )
-
-
-# compile the model with Adam optimizer
 
 model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
@@ -91,19 +81,15 @@ history = model.fit(train_generator,
                     validation_data = val_generator,
                     callbacks = [bestModel])
 
-
-# display the result using pyplot
-
+#stampa risultati ottenuti
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
 loss = history.history['loss']
 val_loss = history.history['val_loss']
 
-epochs = range(len(acc)) # for the max value in the diagram
+epochs = range(len(acc))
 
-
-# accuracy chart
-
+#accuracy
 fig = plt.figure(figsize=(14,7))
 plt.plot(epochs, acc , 'r', label="Train accuracy")
 plt.plot(epochs, val_acc , 'b', label="Validation accuracy")
@@ -113,7 +99,7 @@ plt.title('Train and validation accuracy')
 plt.legend(loc='lower right')
 plt.show()
 
-#loss chart
+#loss
 fig2 = plt.figure(figsize=(14,7))
 plt.plot(epochs, loss , 'r', label="Train loss")
 plt.plot(epochs, val_loss , 'b', label="Validation loss")

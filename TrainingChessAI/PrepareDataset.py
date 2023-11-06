@@ -3,14 +3,7 @@ import os
 import random
 import shutil
 
-splitSize = .85
-
-# show the list of folders
-dataDirList = os.listdir("./Chessman-image-dataset/Chess")
-print(dataDirList)
-
-# lest vuild a function that will split the data between train and validation
-
+#Funzione per dividere il dataset in train e validation
 def split_data(SOURCE , TRAINING , VALIDATION , SPLIT_SIZE):
 
     files = []
@@ -43,6 +36,52 @@ def split_data(SOURCE , TRAINING , VALIDATION , SPLIT_SIZE):
         thisfile = SOURCE + filename
         destination = VALIDATION + filename
         shutil.copyfile(thisfile, destination)
+
+dataDirList = os.listdir("./Chessman-image-dataset/Chess")
+print(dataDirList)
+
+baseDir = "./Chessman-image-dataset"
+
+trainData = os.path.join(baseDir,'train')
+os.mkdir(trainData)
+
+validationData = os.path.join(baseDir,'validation')
+os.mkdir(validationData)
+
+#Cartelle per il training
+trainBishopData = os.path.join(trainData,'Bishop')
+os.mkdir(trainBishopData)
+trainKingData = os.path.join(trainData,'King')
+os.mkdir(trainKingData)
+trainKnightData = os.path.join(trainData,'Knight')
+os.mkdir(trainKnightData)
+trainPawnData = os.path.join(trainData,'Pawn')
+os.mkdir(trainPawnData)
+trainQueenData = os.path.join(trainData,'Queen')
+os.mkdir(trainQueenData)
+trainRookData = os.path.join(trainData,'Rook')
+os.mkdir(trainRookData)
+
+
+#Cartelle per la validazione
+valBishopData = os.path.join(validationData,'Bishop')
+os.mkdir(valBishopData)
+valKingData = os.path.join(validationData,'King')
+os.mkdir(valKingData)
+valKnightData = os.path.join(validationData,'Knight')
+os.mkdir(valKnightData)
+valPawnData = os.path.join(validationData,'Pawn')
+os.mkdir(valPawnData)
+valQueenData = os.path.join(validationData,'Queen')
+os.mkdir(valQueenData)
+valRookData = os.path.join(validationData,'Rook')
+os.mkdir(valRookData)
+
+splitSize = .85
+
+# show the list of folders
+dataDirList = os.listdir("./Chessman-image-dataset/Chess")
+print(dataDirList)
 
 BishopSourceDir = "./Chessman-image-dataset/Chess/Bishop/" #dont forget the last "/"
 BishopTrainDir = "./Chessman-image-dataset/train/Bishop/" #dont forget the last "/"
