@@ -55,7 +55,7 @@ public class MenuController : MonoBehaviour {
     //
 
     
-    public void setVolume(float volume) {
+    public void SetVolume(float volume) {
 
         // Cambio il volume
         AudioListener.volume = volume;
@@ -160,7 +160,7 @@ public class MenuController : MonoBehaviour {
     }
 
 
-    public IEnumerator ConfirmationBox() {
+    private IEnumerator ConfirmationBox() {
 
         confirmationPrompt.SetActive(true); // Mostro sullo schermo il box di conferma
         yield return new WaitForSeconds(2); // Rimane attivo per 2 secondi

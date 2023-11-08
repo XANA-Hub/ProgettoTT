@@ -9207,7 +9207,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 927439949}
         m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
-        m_MethodName: setVolume
+        m_MethodName: SetVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

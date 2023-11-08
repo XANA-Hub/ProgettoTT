@@ -54,12 +54,12 @@ public class Player : Fighter {
     //
     
 
-    public int getCurrentExp() {
+    public int GetCurrentExp() {
         return currentExp;
     }
 
 
-    public int getExpRequiredForNextLevel() {
+    public int GetExpRequiredForNextLevel() {
         return expRequiredForNextLevel;
     }
 

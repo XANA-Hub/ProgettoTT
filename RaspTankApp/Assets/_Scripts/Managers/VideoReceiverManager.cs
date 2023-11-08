@@ -52,7 +52,7 @@ public class VideoReceiverManager : MonoBehaviour {
                 // Debug.Log("Messaggio ricevuto: " + message);
                 
                 Loom.QueueOnMainThread(() => {
-                    convertBytesToTexture(data);
+                    ConvertBytesToTexture(data);
                 });
 
             }
@@ -64,7 +64,7 @@ public class VideoReceiverManager : MonoBehaviour {
         }
     }
 
-    private void convertBytesToTexture(byte[] byteArray) {
+    private void ConvertBytesToTexture(byte[] byteArray) {
         try {
             receivedTexture.LoadImage(byteArray);
             rawImage.texture = receivedTexture;

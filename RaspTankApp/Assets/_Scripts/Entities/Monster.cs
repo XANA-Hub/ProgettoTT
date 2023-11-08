@@ -16,7 +16,7 @@ public class Monster : Fighter {
         if(PlayerPrefs.HasKey("playerCurrentLevel")) {
             level = CalculateLevel(PlayerPrefs.GetInt("playerCurrentLevel"), MasterManager.instance.battleManager.monsterLevelVariation);
         } else {
-            level = CalculateLevel(MasterManager.instance.player.getLevel(), MasterManager.instance.battleManager.monsterLevelVariation);
+            level = CalculateLevel(MasterManager.instance.player.GetLevel(), MasterManager.instance.battleManager.monsterLevelVariation);
             Debug.LogWarning("Monster: verrà usato un livello di default perché non è stato salvato il livello del giocatore!");
         }
 

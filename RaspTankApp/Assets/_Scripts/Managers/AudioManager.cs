@@ -164,7 +164,7 @@ public class AudioManager: MonoBehaviour {
 	// Fade-In e Fade-Out
 	//
 
-	public static IEnumerator FadeOut(Sound sound, float fadingTime, Func<float, float, float, float> Interpolate) {
+	private static IEnumerator FadeOut(Sound sound, float fadingTime, Func<float, float, float, float> Interpolate) {
         float startVolume = sound.source.volume;
         float frameCount = fadingTime / Time.deltaTime;
         float framesPassed = 0;
@@ -178,7 +178,7 @@ public class AudioManager: MonoBehaviour {
         sound.source.volume = 0;
         sound.source.Pause();
     }
-    public static IEnumerator FadeIn(Sound sound, float fadingTime, Func<float, float, float, float> Interpolate) {
+    private static IEnumerator FadeIn(Sound sound, float fadingTime, Func<float, float, float, float> Interpolate) {
         
 		sound.source.Play();
         sound.source.volume = 0;

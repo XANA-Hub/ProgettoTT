@@ -10,18 +10,18 @@ public class Fighter : MonoBehaviour {
     protected int level = 1;
 
     // Statistiche attuali
-    protected int currentAttack;
-    protected int currentDefense;
-    protected int currentHP;
-    protected int currentSpeed;
-    protected int currentHeal;
+    private int currentAttack;
+    private int currentDefense;
+    private int currentHP;
+    private int currentSpeed;
+    private int currentHeal;
 
 
     // Statistiche massime (sempre attuali)
-    protected int maxCurrentAttack;
-    protected int maxCurrentDefense;
-    protected int maxCurrentHP;
-    protected int maxCurrentSpeed;
+    private int maxCurrentAttack;
+    private int maxCurrentDefense;
+    private int maxCurrentHP;
+    private int maxCurrentSpeed;
     protected int maxCurrentHeal;
 
     protected NatureBonus currentNatureBonus;
@@ -158,37 +158,37 @@ public class Fighter : MonoBehaviour {
     //
 
     // Metodo per ottenere il livello del combattente
-    public int getLevel() {
+    public int GetLevel() {
         return this.level;
     }
 
     // Metodo per ottenere l'attacco corrente del combattente
-    public int getCurrentAttack() {
+    public int GetCurrentAttack() {
         return this.currentAttack;
     }
 
     // Metodo per ottenere la difesa corrente del combattente
-    public int getCurrentDefense() {
+    public int GetCurrentDefense() {
         return this.currentDefense;
     }
 
     // Metodo per ottenere gli HP correnti del combattente
-    public int getCurrentHP() {
+    public int GetCurrentHP() {
         return this.currentHP;
     }
 
-    public int getCurrentSpeed() {
+    public int GetCurrentSpeed() {
         return this.currentSpeed;
     }
 
-    public int getCurrentHeal() {
+    public int GetCurrentHeal() {
         return this.currentHeal;
     }
 
-    public string getCurrentNatureBonusAsString() {
+    public string GetCurrentNatureBonusAsString() {
         return System.Enum.GetName(typeof(NatureBonus), currentNatureBonus);
     }
-    public NatureBonus getCurrentNatureBonus() {
+    public NatureBonus GetCurrentNatureBonus() {
         return this.currentNatureBonus;
     }
 
@@ -198,21 +198,21 @@ public class Fighter : MonoBehaviour {
     //
 
     // Metodo per ottenere l'attacco corrente del combattente
-    public int getMaxCurrentAttack() {
+    public int GetMaxCurrentAttack() {
         return this.maxCurrentAttack;
     }
 
     // Metodo per ottenere la difesa corrente del combattente
-    public int getMaxCurrentDefense() {
+    public int GetMaxCurrentDefense() {
         return this.maxCurrentDefense;
     }
 
     // Metodo per ottenere gli HP correnti del combattente
-    public int getMaxCurrentHP() {
+    public int GetMaxCurrentHP() {
         return this.maxCurrentHP;
     }
 
-    public int getMaxCurrentSpeed() {
+    public int GetMaxCurrentSpeed() {
         return this.maxCurrentSpeed;
     }
 

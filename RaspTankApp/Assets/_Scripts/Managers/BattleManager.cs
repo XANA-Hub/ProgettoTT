@@ -147,7 +147,7 @@ public class BattleManager : MonoBehaviour {
         else if(battleState == BattleState.WON) { // Se il mostro è morto
             
             // Curo di metà dei suoi HP massimi nel caso in cui vinca la battaglia
-            player.Heal(player.getMaxCurrentHP() / 2);
+            player.Heal(player.GetMaxCurrentHP() / 2);
             SaveData();
             SceneHelper.LoadScene("Robot");
 
@@ -155,14 +155,14 @@ public class BattleManager : MonoBehaviour {
         else if(battleState == BattleState.MONSTER_ESCAPED) { // Il mostro è scappato
 
             // Curo solo di 1/3
-            player.Heal(player.getMaxCurrentHP() / 3);
+            player.Heal(player.GetMaxCurrentHP() / 3);
             SaveData();
             SceneHelper.LoadScene("Robot");
         }
         else if(battleState == BattleState.PLAYER_ESCAPED) {
 
             // Curo solo di 1/4
-            player.Heal(player.getMaxCurrentHP() / 4);
+            player.Heal(player.GetMaxCurrentHP() / 4);
             SaveData();
             SceneHelper.LoadScene("Robot");
         }
@@ -179,16 +179,16 @@ public class BattleManager : MonoBehaviour {
 
         // Giocatore
         playerNameText.SetText(player.data.name);
-        playerLevelText.SetText("Lvl: " + player.getLevel());
+        playerLevelText.SetText("Lvl: " + player.GetLevel());
         playerSprite.sprite = player.data.sprite; // Cambio lo sprite del giocatore
-        SetPlayerHPBar(player.getCurrentHP());
+        SetPlayerHPBar(player.GetCurrentHP());
         SetPlayerExpBar();
 
         // Mostro
         enemyNameText.SetText(monster.data.name);
-        enemyLevelText.SetText("Lvl: " + monster.getLevel());
+        enemyLevelText.SetText("Lvl: " + monster.GetLevel());
         enemySprite.sprite = monster.data.sprite; // Cambio lo sprite in base al mostro scelto
-        SetMonsterHPBar(monster.getMaxCurrentHP());
+        SetMonsterHPBar(monster.GetMaxCurrentHP());
 
     }
 
@@ -221,35 +221,35 @@ public class BattleManager : MonoBehaviour {
         if(PlayerPrefs.HasKey("playerCurrentLevel")) {
             player.SetLevel(PlayerPrefs.GetInt("playerCurrentLevel"));
         } else {
-            PlayerPrefs.SetInt("playerCurrentLevel", player.getLevel());
+            PlayerPrefs.SetInt("playerCurrentLevel", player.GetLevel());
         }
 
         // CurrentHP
         if(PlayerPrefs.HasKey("playerCurrentHP")) {
             player.SetCurrentHP(PlayerPrefs.GetInt("playerCurrentHP"));
         } else {
-            PlayerPrefs.SetInt("playerCurrentHP", player.getCurrentHP());
+            PlayerPrefs.SetInt("playerCurrentHP", player.GetCurrentHP());
         }
 
         // MaxCurrentHP
         if(PlayerPrefs.HasKey("playerMaxCurrentHP")) {
             player.SetMaxCurrentHP(PlayerPrefs.GetInt("playerMaxCurrentHP"));
         } else {
-            PlayerPrefs.SetInt("playerMaxCurrentHP", player.getMaxCurrentHP());
+            PlayerPrefs.SetInt("playerMaxCurrentHP", player.GetMaxCurrentHP());
         }
 
         // CurrentExp
         if(PlayerPrefs.HasKey("playerCurrentExp")) {
             player.SetCurrentExp(PlayerPrefs.GetInt("playerCurrentExp"));
         } else {
-            PlayerPrefs.SetInt("playerCurrentExp", player.getCurrentExp());
+            PlayerPrefs.SetInt("playerCurrentExp", player.GetCurrentExp());
         }
 
         // ExpRequiredForNextLevel
         if(PlayerPrefs.HasKey("playerExpRequiredForNextLevel")) {
             player.SetExpRequiredForNextLevel(PlayerPrefs.GetInt("playerExpRequiredForNextLevel"));
         } else {
-            PlayerPrefs.SetInt("playerExpRequiredForNextLevel", player.getExpRequiredForNextLevel());
+            PlayerPrefs.SetInt("playerExpRequiredForNextLevel", player.GetExpRequiredForNextLevel());
         }
 
         PlayerPrefs.Save();
@@ -259,15 +259,15 @@ public class BattleManager : MonoBehaviour {
     private void SaveData() {
 
         // LEVEL
-        PlayerPrefs.SetInt("playerCurrentLevel", player.getLevel());
+        PlayerPrefs.SetInt("playerCurrentLevel", player.GetLevel());
 
         // HP
-        PlayerPrefs.SetInt("playerCurrentHP", player.getCurrentHP());
-        PlayerPrefs.SetInt("playerMaxCurrentHP", player.getMaxCurrentHP());
+        PlayerPrefs.SetInt("playerCurrentHP", player.GetCurrentHP());
+        PlayerPrefs.SetInt("playerMaxCurrentHP", player.GetMaxCurrentHP());
 
         // EXP
-        PlayerPrefs.SetInt("playerCurrentExp", player.getCurrentExp());
-        PlayerPrefs.SetInt("playerExpRequiredForNextLevel", player.getExpRequiredForNextLevel());
+        PlayerPrefs.SetInt("playerCurrentExp", player.GetCurrentExp());
+        PlayerPrefs.SetInt("playerExpRequiredForNextLevel", player.GetExpRequiredForNextLevel());
 
         PlayerPrefs.Save();
     }
@@ -293,21 +293,21 @@ public class BattleManager : MonoBehaviour {
     public void OnBattleInfoButton() {
 
         Debug.Log("++ CURRENT PLAYER STATS ++");
-        Debug.Log("Nature: " + player.getCurrentNatureBonusAsString());
-        Debug.Log("Level: " + player.getLevel());
-        Debug.Log("HP: " + player.getCurrentHP());
-        Debug.Log("Attack: " + player.getCurrentAttack());
-        Debug.Log("Defense: " + player.getCurrentDefense());
-        Debug.Log("Speed: " + player.getCurrentSpeed());
+        Debug.Log("Nature: " + player.GetCurrentNatureBonusAsString());
+        Debug.Log("Level: " + player.GetLevel());
+        Debug.Log("HP: " + player.GetCurrentHP());
+        Debug.Log("Attack: " + player.GetCurrentAttack());
+        Debug.Log("Defense: " + player.GetCurrentDefense());
+        Debug.Log("Speed: " + player.GetCurrentSpeed());
 
         Debug.Log("++ CURRENT MONSTER STATS ++");
-        Debug.Log("Nature: " + monster.getCurrentNatureBonusAsString());
+        Debug.Log("Nature: " + monster.GetCurrentNatureBonusAsString());
         Debug.Log("Temper: " + monster.getCurrentTemperAsString());
-        Debug.Log("Level: " + monster.getLevel());
-        Debug.Log("HP: " + monster.getCurrentHP());
-        Debug.Log("Attack: " + monster.getCurrentAttack());
-        Debug.Log("Defense: " + monster.getCurrentDefense());
-        Debug.Log("Speed: " + monster.getCurrentSpeed());
+        Debug.Log("Level: " + monster.GetLevel());
+        Debug.Log("HP: " + monster.GetCurrentHP());
+        Debug.Log("Attack: " + monster.GetCurrentAttack());
+        Debug.Log("Defense: " + monster.GetCurrentDefense());
+        Debug.Log("Speed: " + monster.GetCurrentSpeed());
 
     }
 
@@ -335,9 +335,9 @@ public class BattleManager : MonoBehaviour {
 
         // Calcola la differenza di velocità tra i due combattenti
         if (fighter is Player) {
-            speedDifference = player.getCurrentSpeed() - monster.getCurrentSpeed();
+            speedDifference = player.GetCurrentSpeed() - monster.GetCurrentSpeed();
         } else {
-            speedDifference = monster.getCurrentSpeed() - player.getCurrentSpeed();
+            speedDifference = monster.GetCurrentSpeed() - player.GetCurrentSpeed();
         }
 
         // Aumenta la probabilità di fuga
@@ -364,7 +364,7 @@ public class BattleManager : MonoBehaviour {
 
         // La aumento nel caso il fighter sia di natura "HEAL"
         // Altrimenti rimane di base (0.45%)
-        if(fighter.getCurrentNatureBonus() == NatureBonus.HEAL) {
+        if(fighter.GetCurrentNatureBonus() == NatureBonus.HEAL) {
             currentHealProbability += 0.10f;
         }
 
@@ -381,8 +381,8 @@ public class BattleManager : MonoBehaviour {
 
     private void ChooseEnemyAction(bool isAggressive) {
 
-        float monsterHPPercentage = (float)monster.getCurrentHP() / monster.getMaxCurrentHP();
-        float playerHPPercentage = (float)player.getCurrentHP() / player.getMaxCurrentHP();
+        float monsterHPPercentage = (float)monster.GetCurrentHP() / monster.GetMaxCurrentHP();
+        float playerHPPercentage = (float)player.GetCurrentHP() / player.GetMaxCurrentHP();
         float randomValue = Random.Range(0f, 1f);
 
         // Se il giocatore ha meno del 50% degli HP
@@ -543,7 +543,7 @@ public class BattleManager : MonoBehaviour {
             StartCoroutine(RobotBattleAnimations.PlayerAttackRobotAnimation());
 
             Debug.Log("PLAYER ATTACK SUCCESSFUL!");
-            int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+            int dmgAmount = CalculateDamage(isCrit, player.data.baseAttackDamage, player.GetCurrentAttack(), monster.GetCurrentDefense());
             Debug.Log("Player DMG: " + dmgAmount);
             Debug.Log("Monster MITIGATED DMG: " + monsterMitigatedDamage);
 
@@ -579,7 +579,7 @@ public class BattleManager : MonoBehaviour {
             }
             else {
                 battleState = BattleState.ENEMY_TURN;
-                SetMonsterHPBar(monster.getCurrentHP());
+                SetMonsterHPBar(monster.GetCurrentHP());
 
                 yield return new WaitForSeconds(2f);
                 StartCoroutine(EnemyTurn());
@@ -607,7 +607,7 @@ public class BattleManager : MonoBehaviour {
             // Animazione robot
             StartCoroutine(RobotBattleAnimations.PlayerDamagedRobotAnimation());
 
-            int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+            int dmgAmount = CalculateDamage(isCrit, monster.data.baseAttackDamage, monster.GetCurrentAttack(), player.GetCurrentDefense());
             
             Debug.Log("Monster DMG: " + dmgAmount);
             Debug.Log("Player MITIGATED DMG: " + monsterMitigatedDamage);
@@ -640,7 +640,7 @@ public class BattleManager : MonoBehaviour {
             }
             else {
                 battleState = BattleState.PLAYER_TURN;
-                SetPlayerHPBar(player.getCurrentHP());
+                SetPlayerHPBar(player.GetCurrentHP());
 
                 yield return new WaitForSeconds(2f);
                 PlayerTurn();
@@ -674,7 +674,7 @@ public class BattleManager : MonoBehaviour {
         MasterManager.instance.battleEffectsManager.ShowOverlay(BattleEffect.PLAYER_DEFEND);
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
-        playerMitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.getCurrentAttack(), player.getCurrentDefense());
+        playerMitigatedDamage = CalculateMitigatedDamage(monster.data.baseAttackDamage, monster.GetCurrentAttack(), player.GetCurrentDefense());
         Debug.Log("MITIGATED DMG BY PLAYER: " + playerMitigatedDamage);
 
         // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
@@ -698,7 +698,7 @@ public class BattleManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
 
         // Adesso il prossimo attacco dell'avversario farà meno danno
-        monsterMitigatedDamage = CalculateMitigatedDamage(player.data.baseAttackDamage, player.getCurrentAttack(), monster.getCurrentDefense());
+        monsterMitigatedDamage = CalculateMitigatedDamage(player.data.baseAttackDamage, player.GetCurrentAttack(), monster.GetCurrentDefense());
         Debug.Log("MITIGATED DMG BY MOSTER: " + monsterMitigatedDamage);
 
         // Modifica il testo di dialogo in base al tipo di difensore (giocatore o nemico)
@@ -718,7 +718,7 @@ public class BattleManager : MonoBehaviour {
         StartCoroutine(RobotBattleAnimations.PlayerAttackRobotAnimation());
 
         battleState = BattleState.ENEMY_TURN;
-        int healingAmount = CalculateHealingPoints(player.getCurrentHeal(), healingPointsVariation);
+        int healingAmount = CalculateHealingPoints(player.GetCurrentHeal(), healingPointsVariation);
 
         if(IsHealSuccessful(player)) {
             
@@ -731,11 +731,11 @@ public class BattleManager : MonoBehaviour {
             MasterManager.instance.audioManager.PlaySound("Healing");
 
             // Se supero gli HP massimi del giocatore, li metto al max
-            if(player.getCurrentHP() + healingAmount > player.getMaxCurrentHP()) {
-                SetPlayerHPBar(player.getMaxCurrentHP());
+            if(player.GetCurrentHP() + healingAmount > player.GetMaxCurrentHP()) {
+                SetPlayerHPBar(player.GetMaxCurrentHP());
                 dialogueText.SetText ("You succesfully healed " + healingAmount + " HP! You are full HP!");
             }else {
-                SetPlayerHPBar(player.getCurrentHP() + healingAmount);
+                SetPlayerHPBar(player.GetCurrentHP() + healingAmount);
                 dialogueText.SetText ("You succesfully healed " + healingAmount + " HP!");
             }
             
@@ -753,7 +753,7 @@ public class BattleManager : MonoBehaviour {
 	 IEnumerator MonsterHeal() {
 
         battleState = BattleState.PLAYER_TURN;
-        int healingAmount = CalculateHealingPoints(monster.getCurrentHeal(), healingPointsVariation);
+        int healingAmount = CalculateHealingPoints(monster.GetCurrentHeal(), healingPointsVariation);
 
         if(IsHealSuccessful(monster)) {
             
@@ -763,11 +763,11 @@ public class BattleManager : MonoBehaviour {
             MasterManager.instance.audioManager.PlaySound("Healing");
 
             // Se supero gli HP massimi del mostro, li metto al max
-            if(monster.getCurrentHP() + healingAmount > monster.getMaxCurrentHP()) {
-                SetMonsterHPBar(monster.getMaxCurrentHP());
+            if(monster.GetCurrentHP() + healingAmount > monster.GetMaxCurrentHP()) {
+                SetMonsterHPBar(monster.GetMaxCurrentHP());
                 dialogueText.SetText(monster.data.name + " succesfully healed " + healingAmount + " HP! It's now at full HP!");
             }else {
-                SetMonsterHPBar(monster.getCurrentHP() + healingAmount);
+                SetMonsterHPBar(monster.GetCurrentHP() + healingAmount);
                 dialogueText.SetText(monster.data.name + " succesfully healed " + healingAmount + " HP!");
             }
             
@@ -833,7 +833,7 @@ public class BattleManager : MonoBehaviour {
 
         yield return new WaitForSeconds(2f);
 
-        int playerLevelBefore = player.getLevel();
+        int playerLevelBefore = player.GetLevel();
 
         // Ne do un quarto se il mostro è scappato o se il giocatore è scappato
         if (isMonsterDefeated)
@@ -841,7 +841,7 @@ public class BattleManager : MonoBehaviour {
         else
             player.GainExp(monster.GetPlayerExp() / 4);
 
-        int playerLevelAfter = player.getLevel();
+        int playerLevelAfter = player.GetLevel();
         SetPlayerExpBar();
 
         dialogueText.SetText("You gained " + monster.GetPlayerExp() + " XP points!");
@@ -849,8 +849,8 @@ public class BattleManager : MonoBehaviour {
 
         // Il giocatore è aumentato di livello
         if (playerLevelAfter > playerLevelBefore) {
-            playerLevelText.SetText("Lvl: " + player.getLevel());
-            dialogueText.SetText("You are now level " + player.getLevel() + "!");
+            playerLevelText.SetText("Lvl: " + player.GetLevel());
+            dialogueText.SetText("You are now level " + player.GetLevel() + "!");
         }
 
         yield return new WaitForSeconds(2f);
@@ -902,7 +902,7 @@ public class BattleManager : MonoBehaviour {
 
     private void SetPlayerHPBar(int currentHP) {
 
-        float ratio = (float)currentHP / (float)player.getMaxCurrentHP();
+        float ratio = (float)currentHP / (float)player.GetMaxCurrentHP();
 
         // Modifico la barra degli HP
         playerHP.localScale = new Vector3(ratio, 1, 1);
@@ -912,7 +912,7 @@ public class BattleManager : MonoBehaviour {
 
     private void SetPlayerExpBar() {
 
-        float ratio = (float)player.getCurrentExp() / (float)player.getExpRequiredForNextLevel();
+        float ratio = (float)player.GetCurrentExp() / (float)player.GetExpRequiredForNextLevel();
 
         // Modifico la barra degli HP
         playerExp.localScale = new Vector3(ratio, 1, 1);
@@ -921,7 +921,7 @@ public class BattleManager : MonoBehaviour {
 
     private void SetMonsterHPBar(int currentHP) {
 
-        float ratio = (float)currentHP / (float)monster.getMaxCurrentHP();
+        float ratio = (float)currentHP / (float)monster.GetMaxCurrentHP();
 
         // Modifico la barra degli HP
         enemyHP.localScale = new Vector3(ratio, 1, 1);

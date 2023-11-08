@@ -69,13 +69,7 @@ public class LoadPrefs : MonoBehaviour {
             } else {
                 menuController.ResetButton("Connection");
             }
-
-
-           
-
-
-           
-
+            
 
         }
 

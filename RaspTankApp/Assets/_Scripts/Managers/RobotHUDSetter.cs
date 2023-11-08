@@ -165,35 +165,35 @@ public class RobotHUDSetter : MonoBehaviour {
         if(PlayerPrefs.HasKey("playerCurrentLevel")) {
             playerCurrentLevel = PlayerPrefs.GetInt("playerCurrentLevel");
         } else {
-            playerCurrentLevel = player.getLevel();
+            playerCurrentLevel = player.GetLevel();
         }
 
         // CurrentHP
         if(PlayerPrefs.HasKey("playerCurrentHP")) {
             playerCurrentHP = PlayerPrefs.GetInt("playerCurrentHP");
         } else {
-            playerCurrentHP = player.getCurrentHP();
+            playerCurrentHP = player.GetCurrentHP();
         }
 
         // MaxCurrentHP
         if(PlayerPrefs.HasKey("playerMaxCurrentHP")) {
             playerMaxCurrentHP = PlayerPrefs.GetInt("playerMaxCurrentHP");
         } else {
-            playerMaxCurrentHP = player.getMaxCurrentHP();
+            playerMaxCurrentHP = player.GetMaxCurrentHP();
         }
 
         // CurrentExp
         if(PlayerPrefs.HasKey("playerCurrentExp")) {
             playerCurrentExp = PlayerPrefs.GetInt("playerCurrentExp");
         } else {
-            playerCurrentExp = player.getCurrentExp();
+            playerCurrentExp = player.GetCurrentExp();
         }
 
         // ExpRequiredForNextLevel
         if(PlayerPrefs.HasKey("playerExpRequiredForNextLevel")) {
             playerExpRequiredForNextLevel = PlayerPrefs.GetInt("playerExpRequiredForNextLevel");
         } else {
-            playerExpRequiredForNextLevel = player.getExpRequiredForNextLevel();
+            playerExpRequiredForNextLevel = player.GetExpRequiredForNextLevel();
         }
 
     }

@@ -137,7 +137,6 @@ public class ClientTCPManager : MonoBehaviour {
                 Debug.Log("COMANDO START: " + RobotCommands.start + GetMyIPAddress() + ":" + port);
                 MasterManager.instance.clientTCPManager.SendData(RobotCommands.start + GetMyIPAddress() + ":" + port);
                 break;
-
             case RobotCommands.identifyResponseKing:
                 battleMonster = "Primordial Blue Wizard";
                 break;
