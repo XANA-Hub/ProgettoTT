@@ -1,5 +1,6 @@
 # Modified from:
 #     https://github.com/github/gitignore/blob/master/Unity.gitignore
+#     https://gist.github.com/IJEMIN/92c1ec8dc06cf0f853813cdaa5115a9f
 
 /[Ll]ibrary/
 /[Uu]serSettings/
@@ -11,10 +12,20 @@
 /[Mm]emoryCaptures/
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
-# [Aa]ssets/AssetStoreTools*
+[Aa]ssets/AssetStoreTools*
+
+# Unity local user project setting
+UserSettings/
 
 # Visual Studio cache directory
 .vs/
+
+# Jetbrain Rider Cache
+.idea/
+Assets/Plugins/Editor/JetBrains*
+
+# Visual Studio Code
+.vscode/
 
 # Gradle cache directory
 .gradle/
