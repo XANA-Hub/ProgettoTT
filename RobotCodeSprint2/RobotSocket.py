@@ -5,7 +5,7 @@ import sys
 
 TEST = True
 
-HOST = "localhost"                  # Standard loopback interface address (localhost)
+HOST = "192.168.1.16"                      # Standard loopback interface address (localhost)
 PORT = 25565                            # Standard port to listen on (non-privileged ports are > 1023)
 
 socketVideo = None
@@ -24,7 +24,7 @@ def startSocket(ip = HOST, port = PORT):
             while True:
                 conn, addr = s.accept()
                 
-                conn.send(b"ready")  #questa send "sblocca" il clinet in attesa di poter mandare i comandi, serve per la gestione di più utenti che cercano di collegarsi contemporaneamente
+                conn.send(b"ready")  #questa send "sblocca" il client in attesa di poter mandare i comandi, serve per la gestione di più utenti che cercano di collegarsi contemporaneamente
                 print("Collegato utente: " + str(addr))
                 
                 #Message format: "ID:init;TYPE:Camera"
@@ -53,13 +53,18 @@ def startSocket(ip = HOST, port = PORT):
 
 def startVideoSocket(ip, port):
     socketVideo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    print("--------------- test1 ----------------")
-    socketVideo.connect((ip, port))         #qua crasha
-    print("--------------- test2 ----------------")
+    socketVideo.connect((ip, port))
     return socketVideo.makefile('wb')
 
 def closeVideoSocket():
     print("closing video socket")
-    if socketVideo is not None:
+    if socketVideo is not None:         #da rivedere questo IF
         socketVideo.close()
 
+def sendImg(ip, imgPath):
+    socketVideo = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    with open(imgPath, 'rb') as file:
+        file_data = file.read()
+        print("Immagine letta")
+        socketVideo.sendto(file_data,(ip,PORT))
+        socketVideo.close()

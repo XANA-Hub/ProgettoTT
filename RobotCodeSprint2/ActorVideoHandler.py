@@ -16,22 +16,20 @@ class Actor(pykka.ThreadingActor):
 
         if "Start" in message:
             messageToken = message.split(";")           # Start;192.168.n.n:PORTA
-            #Body = messageToken[0]
             Address = messageToken[1]
             if TEST: print("--RobotVideoHandler-- starting video transmission with address: " + str(Address))
             self.startVideo(Address)
             
+        #NOTA: for now Crash e Disconnection will be handled in the same way
         elif "Disconnect" in message:
             if TEST: print("--RobotVideoHandler-- stopping video transmission")
             self.stopVideo()
-        elif "Client Crashed" in message:  #check sintassi e check se fare le stesse cose che fa Disconnect
+        elif "Client Crashed" in message:
             if TEST: print("--RobotVideoHandler-- stopping video transmission")
             self.stopVideo()
 
         elif "Terminate" in message:
             if TEST: print("--RobotVideoHandler-- terminating")
-            #potrebbe venire invocata quando il video è in corso? devo fare una chiusura della socket video?
-            #un admin potrebbe spegnere tutto in qualsiasi momento, meglio chiuderla
             self.stopVideo()
             self.stop()                                 # teminazione dell'attore
         else:
@@ -50,6 +48,6 @@ class Actor(pykka.ThreadingActor):
         RobotCameraControl.stopVideo(self.camera)
         rs.closeVideoSocket()
         if TEST: print("--ActorVideoHandler-- stop stream video conclusa")
-        #se invoco la close quando non esiste la socket? Possibile da "Terminate"
+        #se invoco la close quando non esiste la socket? Possibile da "Terminate" <-- DA TESTARE
 
 

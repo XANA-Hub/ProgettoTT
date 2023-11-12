@@ -2,8 +2,9 @@ import RPi.GPIO as GPIO
 import time
 import pigpio
 
-pwm = None
+#pwm = None
 rangePWM=4000
+dutycyclePWM=4000
 
 '''
 range - range massimo del valore di duty_cycle, ci garantisce un certo livello di precisione
@@ -19,150 +20,175 @@ pinLF = 23
 pinRB = 5
 pinRF = 6
 
-def Stop(pwm):
-        StopForward(pwm)
-        StopBackward(pwm)
+def stop(pwm):
+        stopForward(pwm)
+        stopBackward(pwm)
 
-def Terminate(pwm):
-       Stop(pwm)
-       pwm.set_mode(pinRF, 0)
-       pwm.set_mode(pinRB, 0)
-       pwm.set_mode(pinLF, 0)
-       pwm.set_mode(pinLB, 0)
-       pwm.stop()
+def terminate(pwm):
+        stop(pwm)
+        pwm.set_mode(pinRF, 0)
+        pwm.set_mode(pinRB, 0)
+        pwm.set_mode(pinLF, 0)
+        pwm.set_mode(pinLB, 0)
+        pwm.stop()
 
-def StopForward(pwm):
+def stopForward(pwm):
         pwm.set_PWM_dutycycle(pinRF, 0)
         pwm.set_PWM_dutycycle(pinLF, 0)
     
-def StopBackward(pwm):
+def stopBackward(pwm):
         pwm.set_PWM_dutycycle(pinRB, 0)
         pwm.set_PWM_dutycycle(pinLB, 0)
 
-def StopLeft(pwm):
+def stopLeft(pwm):
         pwm.set_PWM_dutycycle(pinRF, 0)
         pwm.set_PWM_dutycycle(pinLB, 0)
 
-def StopRight(pwm):
+def stopRight(pwm):
         pwm.set_PWM_dutycycle(pinRB, 0)
+        pwm.set_PWM_dutycycle(pinLF, 0)
+        
+def stopRightWheel(pwm):
+        pwm.set_PWM_dutycycle(pinRB, 0)
+        pwm.set_PWM_dutycycle(pinRF, 0)
+
+def stopLeftWheel(pwm):
+        pwm.set_PWM_dutycycle(pinLB, 0)
         pwm.set_PWM_dutycycle(pinLF, 0)
 
 #HO INVERITO I PIN IN MODO DA UNIFORMARE IL COMPORTAMENTO ESSENDO I MOTORI SPECULARI
-def TurnRightWheelForward(pwm):
-        pwm.set_PWM_dutycycle(pinRF, rangePWM)
+def turnRightWheelForward(pwm):
+        pwm.set_PWM_dutycycle(pinRF, dutycyclePWM)
         pwm.set_PWM_dutycycle(pinRB, 0)
-def TurnRightWheelBackward(pwm):
+def turnRightWheelBackward(pwm):
         pwm.set_PWM_dutycycle(pinRF, 0)
-        pwm.set_PWM_dutycycle(pinRB, rangePWM)
-def TurnLeftWheelForward(pwm):
-        pwm.set_PWM_dutycycle(pinLF, rangePWM)
+        pwm.set_PWM_dutycycle(pinRB, dutycyclePWM)
+def turnLeftWheelForward(pwm):
+        pwm.set_PWM_dutycycle(pinLF, dutycyclePWM)
         pwm.set_PWM_dutycycle(pinLB, 0)
-def TurnLeftWheelBackward(pwm):
+def turnLeftWheelBackward(pwm):
         pwm.set_PWM_dutycycle(pinLF, 0)
-        pwm.set_PWM_dutycycle(pinLB, rangePWM)
+        pwm.set_PWM_dutycycle(pinLB, dutycyclePWM)
 
-def MoveForward(pwm):
-        TurnRightWheelForward(pwm)
-        TurnLeftWheelForward(pwm)
+def moveForward(pwm):
+        turnRightWheelForward(pwm)
+        turnLeftWheelForward(pwm)
 
-def MoveBackward(pwm):
-        TurnRightWheelBackward(pwm)
-        TurnLeftWheelBackward(pwm)
+def moveBackward(pwm):
+        turnRightWheelBackward(pwm)
+        turnLeftWheelBackward(pwm)
 
-def SteerLeft(pwm):
-        TurnRightWheelForward(pwm)
-        TurnLeftWheelBackward(pwm)
+def steerLeft(pwm):
+        turnRightWheelForward(pwm)
+        turnLeftWheelBackward(pwm)
 
-def SteerRight(pwm):
-        TurnRightWheelBackward(pwm)
-        TurnLeftWheelForward(pwm)
+def steerRight(pwm):
+        turnRightWheelBackward(pwm)
+        turnLeftWheelForward(pwm)
 
 #DA TARARE - Frequenza default 800
-def InitLeftWheelForward(pwm):
-        pwm.set_PWM_frequency(pinLF, 1)
+def initLeftWheelForward(pwm):
+        pwm.set_PWM_frequency(pinLF, 40)
         pwm.set_PWM_range(pinLF, rangePWM)
         pwm.set_mode(pinLF, 0)
-
-def InitLeftWheelBackward(pwm):
-        pwm.set_PWM_frequency(pinLB, 1)
+def initLeftWheelBackward(pwm):
+        pwm.set_PWM_frequency(pinLB, 40)
         pwm.set_PWM_range(pinLB, rangePWM)
         pwm.set_mode(pinLB, 0)
-def InitRightWheelForward(pwm):
-        pwm.set_PWM_frequency(pinRF, 1)
+def initRightWheelForward(pwm):
+        pwm.set_PWM_frequency(pinRF, 40)
         pwm.set_PWM_range(pinRF, rangePWM)
         pwm.set_mode(pinRF, 0)
-def InitRightWheelBackward(pwm):
-        pwm.set_PWM_frequency(pinRB, 1)
+def initRightWheelBackward(pwm):
+        pwm.set_PWM_frequency(pinRB, 40)
         pwm.set_PWM_range(pinRB, rangePWM)
         pwm.set_mode(pinRB, 0)
 
-def PrintModes(pwm):
-        print("LF: "+str(pwm.get_mode(pinLF)))
-        print("LB: "+str(pwm.get_mode(pinLB)))
-        print("RF: "+str(pwm.get_mode(pinRF)))
-        print("RB: "+str(pwm.get_mode(pinRB)))
+def printPins(pwm):
+        print(" Forward")
+        print("         Right")
+        printPinInfo(pwm, pinRF)
+        print("         Left")
+        printPinInfo(pwm, pinLF)
+        print(" Backward")
+        print("         Right")
+        printPinInfo(pwm, pinRB)
+        print("         Left")
+        printPinInfo(pwm, pinLB)
 
-def PrintPinInfo(pwm, pin):
+def printPinInfo(pwm, pin):
+        print("PIN: "+str(pin))
         print("mode: "+str(pwm.get_mode(pin)))
         print("frequency: "+str(pwm.get_PWM_frequency(pin)))
         print("range: "+str(pwm.get_PWM_range(pin)))
         print("dutycycle: "+str(pwm.get_PWM_dutycycle(pin)))
         print("real range: "+str(pwm.get_PWM_real_range(pin)))
 
-def InitPwm():
+def setSpeedPercentage(percentage):     #IN REALTA VALORE TRA 0 E 1 MA MI PIACE CHIAMARLO PERCENTUALE
+        global dutycyclePWM     #Per modificarla per tutti i blocchi  e non solo all'interno della func
+        if (percentage<0):
+                dutycyclePWM=0
+        elif (percentage>1):
+                dutycyclePWM=rangePWM
+        else:
+                dutycyclePWM=int(percentage*rangePWM)
+               
+
+def initPwm():
         pwm = pigpio.pi()
-        InitLeftWheelForward(pwm)
-        InitLeftWheelBackward(pwm)
-        InitRightWheelForward(pwm)
-        InitRightWheelBackward(pwm)
+        initLeftWheelForward(pwm)
+        initLeftWheelBackward(pwm)
+        initRightWheelForward(pwm)
+        initRightWheelBackward(pwm)
+        stop(pwm)
+        setSpeedPercentage(1)
         return pwm
       
 
 def test():
     try:
+
         print ('Test')
-        pwm = InitPwm()
-        PrintModes(pwm)
+        pwm = initPwm()
+        setSpeedPercentage(1)
+        time.sleep(2)
+        printPins(pwm)
         time.sleep(2)
 
         print("Prova forward")
-        MoveForward(pwm)
-        PrintModes(pwm)
+        moveForward(pwm)
         time.sleep(2)
         print("Stop forward")
-        StopForward(pwm)
+        stopForward(pwm)
         time.sleep(2)
 
         print("Prova backward")
-        MoveBackward(pwm)
-        PrintModes(pwm)
+        moveBackward(pwm)
         time.sleep(2)
         print("Stop Backward")
-        StopBackward(pwm)
+        stopBackward(pwm)
         time.sleep(2)
 
         print("Prova Destra")
-        SteerRight(pwm)
-        PrintModes(pwm)
+        steerRight(pwm)
         time.sleep(2)
         print("Stop Destra")
-        StopRight(pwm)
+        stopRight(pwm)
         time.sleep(2)
 
         print("Prova Sinistra")
-        SteerLeft(pwm)
-        PrintModes(pwm)
+        steerLeft(pwm)
         time.sleep(2)
         print("Stop Sinistra")
-        StopLeft(pwm)
+        stopLeft(pwm)
         time.sleep(2)
 
         print("Stop")
-        Terminate(pwm)
+        terminate(pwm)
         print("Test terminato")
     except KeyboardInterrupt:
         if pwm is not None:
-              Stop(pwm)
+              terminate(pwm)
               
 if __name__=='__main__':
         test()

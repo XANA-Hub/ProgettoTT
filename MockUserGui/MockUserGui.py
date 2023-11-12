@@ -2,7 +2,7 @@ import socket
 from time import sleep
 import tkinter as tk
 
-HOST = "localhost"        # The server's hostname or IP address
+HOST = "192.168.1.16"        # The server's hostname or IP address
 PORT = 25565              # The port used by the server
 
 #command

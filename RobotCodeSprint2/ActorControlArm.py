@@ -29,6 +29,7 @@ class Actor(pykka.ThreadingActor):
             self.ResetPos()
         elif "Terminate" in message:            #turn off ActorControlArm
             print("--RobotControlArm-- terminating")
+            self.Terminate()
             self.stop()
         else:
             print("--RobotControlArm ERROR-- malformed message: " + message)
@@ -55,3 +56,6 @@ class Actor(pykka.ThreadingActor):
 
     def ResetPos(self):
         RobotArmControl.resetPosition(self.pwm)
+
+    def Terminate(self):
+        RobotArmControl.terminate(self.pwm)

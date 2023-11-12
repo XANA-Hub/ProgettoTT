@@ -2,8 +2,19 @@ import RPi.GPIO as GPIO
 import time
 import pigpio
 
-pwm = None
+#pwm = None
+#AVENDO UN PASSO DI 10 ALLA VOLTA E' PREFERIBILE UTILIZZARE MULTIPLI DI 10
+defaultVariation=10
+defaultArmPosition=400
+defaultClawPosition=1950
 rangePWM=4000
+sAttesa=0
+currentArmDutyCycle=defaultArmPosition
+currentClawDutyCycle=defaultClawPosition
+armHighPosition=900
+armLowPosition=400
+openedClawPosition=1400
+closedClawPosition=1950
 '''
 range - range massimo del valore di duty_cycle, ci garantisce un certo livello di precisione
 frequency - frequenza del segnale
@@ -16,124 +27,137 @@ pinArm = 7
 pinClaw = 8
 
 def resetPosition(pwm):
-      setServoPwm(pwm, pinArm, 90)
-      setServoPwm(pwm, pinClaw, 140)
+      global currentArmDutyCycle
+      global currentClawDutyCycle
+      setServoArmPwm(pwm, pinArm, defaultArmPosition)
+      currentArmDutyCycle=defaultArmPosition
+      setServoClawPwm(pwm, pinClaw, defaultClawPosition)
+      currentClawDutyCycle=defaultClawPosition
+
+def terminate(pwm):
+      resetPosition(pwm)
       pwm.set_mode(pinArm, 0)
       pwm.set_mode(pinClaw, 0)
+      pwm.stop()
 
 def riseArm(pwm):
-      pwm.set_PWM_dutycycle(pinArm, 1000)
-      #time.sleep(1)
-      #pwm.set_PWM_dutycycle(pinArm, 0)
+      global currentArmDutyCycle
+      setServoArmPwm(pwm, pinArm, armHighPosition)
+      currentArmDutyCycle=armHighPosition
 
 def lowArm(pwm):
-      pwm.set_PWM_dutycycle(pinArm, 300)
-      #time.sleep(1)
-      #pwm.set_PWM_dutycycle(pinArm, 0)
+      global currentArmDutyCycle
+      setServoArmPwm(pwm, pinArm, armLowPosition)
+      currentArmDutyCycle=armLowPosition
 
 def openClaw(pwm):
-      pwm.set_PWM_dutycycle(pinClaw, 80+(400/180)*140)
-      time.sleep(1)
-      pwm.set_PWM_dutycycle(pinClaw, 0)
+      global currentClawDutyCycle
+      setServoClawPwm(pwm, pinClaw, openedClawPosition)
+      currentClawDutyCycle=openedClawPosition
 
 def closeClaw(pwm):
-      pwm.set_PWM_dutycycle(pinClaw, 80+(400/180)*90)
-      time.sleep(1)
-      pwm.set_PWM_dutycycle(pinClaw, 0)
+      global currentClawDutyCycle
+      setServoClawPwm(pwm, pinClaw, closedClawPosition)
+      currentClawDutyCycle=closedClawPosition
 
 def initializeArm(pwm):
-      pwm.set_mode(pinArm, pigpio.OUTPUT)
-      #print("Arm range: "+str(pwm.get_PWM_real_range(pinArm)))
       pwm.set_PWM_frequency(pinArm, 180)
       pwm.set_PWM_range(pinArm, rangePWM)
+      pwm.set_mode(pinArm, 0)
 
 def initializeClaw(pwm):
-      pwm.set_mode(pinClaw, pigpio.OUTPUT)
-      #print("Claw range: "+str(pwm.get_PWM_real_range(pinClaw)))
       pwm.set_PWM_frequency(pinClaw, 180)
       pwm.set_PWM_range(pinClaw, rangePWM)
+      pwm.set_mode(pinClaw, 0)
 
 def InitPwm():
-      pwm = pigpio.pi() 
-      #print("25 range: "+str(pwm.get_PWM_real_range(25)))
-      #pwm.set_mode(25, pigpio.OUTPUT)
-      #pwm.set_PWM_frequency(25, 200)
-      #pwm.set_PWM_range(25, rangePWM)
+      pwm = pigpio.pi()
+      initializeArm(pwm)
+      initializeClaw(pwm)
+      resetPosition(pwm)
+      setWaitingTimeInms(10)
       return pwm  
 
 def PrintModes(pwm):
-        print("Arm: "+str(pwm.get_mode(pinArm)))
-        print("Arm freq: "+str(pwm.get_PWM_frequency(pinArm)))
-        print("Arm range: "+str(pwm.get_PWM_range(pinArm)))
-        print("Claw: "+str(pwm.get_mode(pinClaw)))
-        print("Claw freq: "+str(pwm.get_PWM_frequency(pinClaw)))
-        print("Claw range: "+str(pwm.get_PWM_range(pinClaw)))
+      print("Arm: "+str(pinArm))
+      print("Arm mode: "+str(pwm.get_mode(pinArm)))
+      print("Arm freq: "+str(pwm.get_PWM_frequency(pinArm)))
+      print("Arm dutycycle: "+str(pwm.get_PWM_dutycycle(pinArm)))
+      print("Arm range: "+str(pwm.get_PWM_range(pinArm)))
+      print("Arm real range: "+str(pwm.get_PWM_real_range(pinArm)))
+      print("Claw: "+str(pinClaw))
+      print("Claw mode: "+str(pwm.get_mode(pinClaw)))
+      print("Claw freq: "+str(pwm.get_PWM_frequency(pinClaw)))
+      print("Claw dutycycle: "+str(pwm.get_PWM_dutycycle(pinClaw)))
+      print("Claw range: "+str(pwm.get_PWM_range(pinClaw)))
+      print("Claw real range: "+str(pwm.get_PWM_real_range(pinClaw)))
 
-def setServoPwm(pwm, pin, angle):
-            angle=int(angle)
-            pwm.set_PWM_dutycycle(pin, angle)
+def setServoArmPwm(pwm, pin, angle):
+      global currentArmDutyCycle
+      variation=0
+      angle=int(angle)
+      if(currentArmDutyCycle<angle):
+            variation=defaultVariation
+      else: variation=-defaultVariation
+      for i in range(currentArmDutyCycle,angle,variation):
+            pwm.set_PWM_dutycycle(pin, i)
+            #print("Il pin "+str(pin)+" si è spostato a "+str(i))
+            time.sleep(sAttesa)
+      pwm.set_PWM_dutycycle(pin, angle)
+      currentArmDutyCycle=angle
+
+def setServoClawPwm(pwm, pin, angle):
+      global currentClawDutyCycle
+      variation=0
+      angle=int(angle)
+      if(currentClawDutyCycle<angle):
+            variation=defaultVariation
+      else: variation=-defaultVariation
+      for i in range(currentClawDutyCycle,angle,variation):
+            pwm.set_PWM_dutycycle(pin, i)
+            print("Il pin "+str(pin)+" si è spostato a "+str(i))
+            time.sleep(sAttesa)
+      pwm.set_PWM_dutycycle(pin, angle)
+      currentClawDutyCycle=angle
+
+def setWaitingTimeInms(ms):
+        global sAttesa
+        if (ms<0):
+                sAttesa=0
+        else:
+                sAttesa=ms/1000
 
 def test():
       try:
             print ('Test')
             pwm = InitPwm()
-            PrintModes(pwm)
-            print ('Inizializzo')
-            initializeArm(pwm)
-            initializeClaw(pwm)
-            PrintModes(pwm)
+            time.sleep(2)
+
+            #setWaitingTimeInms(10)
             
-            time.sleep(1)
             print("Alzo braccio")
             riseArm(pwm)
             time.sleep(1)
-            print("Abbasso braccio ")
-            lowArm(pwm)
-            time.sleep(1)
-            
-            '''
-            for i in range(200,1000,10):
-                  print(str(i)+" pinArm")
-                  setServoPwm(pwm, pinArm, i)
-                  time.sleep(0.01)
-            time.sleep(1)
-            
-            for i in range(1000,200,-10):
-                  print(str(i)+" pinArm")
-                  setServoPwm(pwm, pinArm, i)
-                  time.sleep(0.01)
+
             print("Apro artiglio")
             openClaw(pwm)
             time.sleep(1)
             print("Chiudo artiglio")
             closeClaw(pwm)
             time.sleep(1)
-            for i in range(140,90,-1):
-                  print(str(i)+" pinClaw")
-                  setServoPwm(pwm, pinClaw, i)
-                  time.sleep(0.01)
-            time.sleep(1)
-            for i in range(90,140,1):
-                  print(str(i)+" pinClaw")
-                  setServoPwm(pwm, pinClaw, i)
-                  time.sleep(0.01)
+
+            print("Abbasso braccio ")
+            lowArm(pwm)
             time.sleep(1)
 
-            for i in range(100,500,5):
-                  print("test con frequenza: " + str(i))
-                  time.sleep(1)
-                  pwm.set_PWM_frequency(pinArm, i)
-                  riseArm(pwm)
-                  time.sleep(1)
-            '''
-            time.sleep(1)
-            print("Resetto la posizione")
-            resetPosition(pwm)
-            print("Test terminato")
+            PrintModes(pwm)
+
+            print("Termino")
+            terminate(pwm)
             
       except KeyboardInterrupt:
             if pwm is not None:
-                  resetPosition(pwm)
+                  terminate(pwm)
               
 
 if __name__=='__main__':

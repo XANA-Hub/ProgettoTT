@@ -6,7 +6,7 @@ TEST = True
 class Actor(pykka.ThreadingActor):
     def __init__(self):
         super().__init__()
-        self.pwm = RobotWheelsControl.InitPwm()
+        self.pwm = RobotWheelsControl.initPwm()
 
     def on_receive(self, message):
         if "Forward" in message:
@@ -26,7 +26,8 @@ class Actor(pykka.ThreadingActor):
             self.ResetPos()
         elif "Terminate" in message:    #turn off ActorControlMovement
             if TEST: print("--RobotControlMovement-- terminating")
-            self.ResetPos()
+            self.Terminate()
+            self.stop()   
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -34,10 +35,10 @@ class Actor(pykka.ThreadingActor):
     def Forward(self, message):
         if "Start" in message:
             if TEST: print("--RobotControlMovement Forward-- " + message)
-            RobotWheelsControl.MoveForward(self.pwm)
+            RobotWheelsControl.moveForward(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Forward-- " + message)
-            RobotWheelsControl.StopForward(self.pwm)
+            RobotWheelsControl.stopForward(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -45,10 +46,10 @@ class Actor(pykka.ThreadingActor):
     def Backward(self, message):
         if "Start" in message:
             if TEST: print("--RobotControlMovement Backward-- " + message)
-            RobotWheelsControl.MoveBackward(self.pwm)
+            RobotWheelsControl.moveBackward(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Backward-- " + message)
-            RobotWheelsControl.StopBackward(self.pwm)
+            RobotWheelsControl.stopBackward(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -56,10 +57,10 @@ class Actor(pykka.ThreadingActor):
     def Rotate_Left(self, message):
         if "Start" in message:
             if TEST: print("--RobotControlMovement Rotate_Left-- " + message)
-            RobotWheelsControl.SteerLeft(self.pwm)
+            RobotWheelsControl.steerLeft(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Rotate_Left-- " + message)
-            RobotWheelsControl.StopLeft(self.pwm)
+            RobotWheelsControl.stopLeft(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
@@ -67,12 +68,15 @@ class Actor(pykka.ThreadingActor):
     def Rotate_Right(self, message):
         if "Start" in message:
             if TEST: print("--RobotControlMovement Rotate_Right-- " + message)
-            RobotWheelsControl.SteerRight(self.pwm)
+            RobotWheelsControl.steerRight(self.pwm)
         elif "Stop" in message:
             if TEST: print("--RobotControlMovement Rotate_Right-- " + message)
-            RobotWheelsControl.StopRight(self.pwm)
+            RobotWheelsControl.stopRight(self.pwm)
         else:
             print("--RobotControlMovement ERROR-- malformed message: " + message)
 
     def ResetPos(self):
-        RobotWheelsControl.Stop(self.pwm)
+        RobotWheelsControl.stop(self.pwm)
+
+    def Terminate(self):
+        RobotWheelsControl.terminate(self.pwm)
