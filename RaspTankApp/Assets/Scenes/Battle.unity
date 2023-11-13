@@ -255,6 +255,7 @@ MonoBehaviour:
   clientTCPManagerEnabled: 1
   videoReceiverManagerEnabled: 0
   battleManagerEnabled: 1
+  monsterDatabaseEnabled: 1
   battleHUDEnabled: 1
   battleEffectsManagerEnabled: 1
   robotHUDEnabled: 0

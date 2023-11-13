@@ -48,10 +48,10 @@ MonoBehaviour:
     name: Player
     sprite: {fileID: 21300000, guid: c02fd5af35cfd8d43a1bd3bd415cc65a, type: 3}
     preferredNatureBonus: 0
-    baseHP: 115
-    baseAttack: 115
-    baseDefense: 115
-    baseSpeed: 115
+    baseHP: 200
+    baseAttack: 200
+    baseDefense: 200
+    baseSpeed: 200
     baseHeal: 20
     baseAttackDamage: 15
     healProbability: 0.45

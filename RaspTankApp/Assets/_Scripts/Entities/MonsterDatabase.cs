@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MonsterDatabase : MonoBehaviour {
 
-    public Monster[] monsters;
+    [SerializeField] private Monster[] monsters;
 
     // Metodo per ottenere un mostro casuale con il nome e lo sprite associato
     public Monster GetRandomMonster() {
@@ -11,10 +11,10 @@ public class MonsterDatabase : MonoBehaviour {
     }
 
     public Monster GetSpecificMonster(string monsterName) {
-
+        
         // Trovo il mostro in base al nome
-        for(int i=0; i<monsterName.Length; i++) {
-            if (monsters[i].name == monsterName) {
+        for(int i=0; i<monsters.Length; i++) {
+            if (monsters[i].data.name == monsterName) {
                 return monsters[i];
             }
         }

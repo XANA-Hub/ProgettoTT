@@ -10,6 +10,7 @@ public class SceneInitialization : MonoBehaviour {
     [SerializeField] private bool clientTCPManagerEnabled = false;
     [SerializeField] private bool videoReceiverManagerEnabled = false;
     [SerializeField] private bool battleManagerEnabled = false;
+    [SerializeField] private bool monsterDatabaseEnabled = false;
     [SerializeField] private bool battleHUDEnabled = false;
     [SerializeField] private bool battleEffectsManagerEnabled = false;
     [SerializeField] private bool robotHUDEnabled = false;
@@ -42,6 +43,11 @@ public class SceneInitialization : MonoBehaviour {
             MasterManager.instance.battleManager.Enable();
         } else {
             MasterManager.instance.battleManager.Disable();
+        }
+        if(monsterDatabaseEnabled) {
+            MasterManager.instance.monsterDatabase.Enable();
+        } else {
+            MasterManager.instance.monsterDatabase.Disable();
         }
         if(robotHUDEnabled) {
             MasterManager.instance.robotHUD.SetActive(true);

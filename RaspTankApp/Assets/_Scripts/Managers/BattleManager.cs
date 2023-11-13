@@ -50,7 +50,7 @@ public class BattleManager : MonoBehaviour {
     [Range(0, 10)] public int healingPointsVariation = 5; // Di quanto può variare la cura
 
 
-    private void Start() {
+    private void OnEnable() {
 
         // Inizialmente disattivato
         EndBattleDialogue.SetActive(false);
@@ -74,12 +74,18 @@ public class BattleManager : MonoBehaviour {
     //
 
     private void ChooseMonster() {
+
+        string monsterToBattle = MasterManager.instance.clientTCPManager.GetMonsterToBattle();
+        Debug.Log("BattleManager: stringa del mostro è " + monsterToBattle);
         
-        if(PlayerPrefs.HasKey("monsterToBattle")) {
-            monster = Instantiate(MasterManager.instance.monsterDatabase.GetSpecificMonster(PlayerPrefs.GetString("monsterToBattle")));
+        if(!string.IsNullOrEmpty(monsterToBattle)) {
+            monster = Instantiate(MasterManager.instance.monsterDatabase.GetSpecificMonster(monsterToBattle));
         } else {
+            Debug.Log("BattleManager: stringa del mostro vuota! Verrà usato un mostro random!");
             monster = Instantiate(MasterManager.instance.monsterDatabase.GetRandomMonster());
-        } 
+        }
+
+        MasterManager.instance.clientTCPManager.CleanMonsterToBattle();
     }
 
     private void ChooseBattleMusic() {
@@ -830,9 +836,17 @@ public class BattleManager : MonoBehaviour {
 
 
     IEnumerator GivePlayerExp(bool isMonsterDefeated) {
-
+        
         yield return new WaitForSeconds(2f);
-
+        
+        // Controlla se il giocatore è di livello 100
+        if (player.GetLevel() >= 100) {
+            dialogueText.SetText("You are already at max level!");
+            // Il giocatore è già di livello 100, non fare nulla
+            yield break;
+        }
+        
+        // Se il giocatore non è al livello massimo
         int playerLevelBefore = player.GetLevel();
 
         // Ne do un quarto se il mostro è scappato o se il giocatore è scappato
@@ -892,7 +906,8 @@ public class BattleManager : MonoBehaviour {
             Debug.LogError("BattleManager error: Unknown battle state!");
             dialogueText.SetText ("ERROR: Unknown battle state!");
         }
-
+        
+        //Destroy(monster);
         StartCoroutine(ShowEndBattleDialogue());
     }
 

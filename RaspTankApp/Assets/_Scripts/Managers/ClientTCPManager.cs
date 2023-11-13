@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using UnityEditor.MemoryProfiler;
 using UnityEngine;
 
 
@@ -15,9 +14,10 @@ public class ClientTCPManager : MonoBehaviour {
     private string ipAddress = "";
     private string port = "";
     private string serverMessage = "EMPTY";
+    private string monsterToBattle = "";
     private bool isApplicationQuitting = false;
     private ConnectionState connectionState;
-
+    
     private TcpClient client;
 
     private void Start() {
@@ -58,7 +58,6 @@ public class ClientTCPManager : MonoBehaviour {
     private string GetMyIPAddress() {
 
         string ipAddress = string.Empty;
-
         IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
 
         foreach (IPAddress ip in localIPs) {
@@ -85,9 +84,12 @@ public class ClientTCPManager : MonoBehaviour {
                 }
 
                 try {
+                    Debug.Log("PRIMA RECEIVE AND PRINT DATAAAA");
                     client = new TcpClient(ipAddress, int.Parse(port));
-                    ReceiveAndPrintData();
                     connectionState = ConnectionState.CONNECTED;
+                    ReceiveAndPrintData();
+                    Debug.Log("DOPO RECEIVE AND PRINT DATAAAA");
+                    
                     break; // Esci dal ciclo se la connessione ha successo
                 } catch (SocketException socketException) {
 
@@ -126,34 +128,31 @@ public class ClientTCPManager : MonoBehaviour {
     private void CheckMessage(string message) {
 
         Debug.Log("TCP: messaggio ricevuto: " + message);
-
-        // Inizialmente vuota
-        string battleMonster = "";
-
-        switch (message) {
+        
+        switch(message) {
 
             case RobotCommands.readyResponse:
                 Debug.Log("Ho ricevuto il comando READY - avvio il flusso video");
-                Debug.Log("COMANDO START: " + RobotCommands.start + GetMyIPAddress() + ":" + port);
-                MasterManager.instance.clientTCPManager.SendData(RobotCommands.start + GetMyIPAddress() + ":" + port);
+                Debug.Log("COMANDO START INVIATO: " + RobotCommands.start + GetMyIPAddress() + ":" + port);
+                SendData(RobotCommands.start + GetMyIPAddress() + ":" + port);
                 break;
             case RobotCommands.identifyResponseKing:
-                battleMonster = "Primordial Blue Wizard";
+                monsterToBattle = "Primordial Blue Wizard";
                 break;
             case RobotCommands.identifyResponseQueen:
-                battleMonster = "Forgotten Evil";
+                monsterToBattle = "Forgotten Evil";
                 break;
             case RobotCommands.identifyResponseRook:
-                battleMonster = "Archaic Minotaur";
+                monsterToBattle = "Archaic Minotaur";
                 break;
             case RobotCommands.identifyResponseBishop:
-                battleMonster = "Vampire Lord";
+                monsterToBattle = "Vampire Lord";
                 break;
             case RobotCommands.identifyResponseKnight:
-                battleMonster = "Shadow Dragons";
+                monsterToBattle = "Shadow Dragons";
                 break;
             case RobotCommands.identifyResponsePawn:
-                battleMonster = "Red-Eyes Witch";
+                monsterToBattle = "Red-Eyes Witch";
                 break;
             case RobotCommands.identifyResponseNothing:
                 Debug.LogWarning("Non è stato riconosciuto nulla!");
@@ -161,10 +160,10 @@ public class ClientTCPManager : MonoBehaviour {
         }
 
         // Se la stringa non è vuota
-        if (!string.IsNullOrEmpty(battleMonster)) {
+        if (!string.IsNullOrEmpty(monsterToBattle)) {
+            
             Debug.LogWarning("Riconosciuto " + message + ": avvio la battaglia!");
-            Debug.LogWarning("Mostro da combattere: " + battleMonster);
-            PlayerPrefs.SetString("monsterToBattle", battleMonster);
+            Debug.LogWarning("Mostro da combattere: " + monsterToBattle);
         }
         
     }
@@ -202,6 +201,7 @@ public class ClientTCPManager : MonoBehaviour {
         client?.Close();
         connectionState = ConnectionState.NOT_CONNECTED;
     }
+    
 
     private void OnApplicationQuit() {
         isApplicationQuitting = true; // Imposta il flag quando l'applicazione sta terminando
@@ -224,6 +224,15 @@ public class ClientTCPManager : MonoBehaviour {
     public int GetMaxConnectionRetries() {
         return maxRetries;
     }
+    
+    public string GetMonsterToBattle() {
+        return monsterToBattle;
+    }
+    
+    public void CleanMonsterToBattle() {
+        monsterToBattle = "";
+    }
+    
 
 
     public void Enable() {

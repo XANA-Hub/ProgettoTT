@@ -6,10 +6,11 @@ public class ConnectionStateManager : MonoBehaviour {
 
 
     private void Start() {
-
+        
         if(!MasterManager.instance.clientTCPManager.isActiveAndEnabled) {
             ChangeConnectionState(Color.red, "CONNECTOR COMPONENT DISABLED");
         }
+        
     }
 
     private void Update () {
@@ -26,7 +27,7 @@ public class ConnectionStateManager : MonoBehaviour {
             ChangeConnectionState(Color.green, "CONNECTED");
             
             // Inizia la battaglia solo se sono nella scena del Robot!
-            if(SceneHelper.GetCurrentSceneName() == "Robot") {
+            if(SceneHelper.GetCurrentSceneName() == "Robot" && !string.IsNullOrEmpty(MasterManager.instance.clientTCPManager.GetMonsterToBattle())) {
                 SceneHelper.LoadScene("Battle"); 
             }
             

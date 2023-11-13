@@ -41,6 +41,8 @@ public class VideoReceiverManager : MonoBehaviour {
 
     private void ReceiveData() {
 
+        Debug.Log("UDPManager: sono dentro a ReceiveData");
+        
         while (isListening) {
             try {
                 IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
