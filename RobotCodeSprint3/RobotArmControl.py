@@ -55,11 +55,15 @@ def openClaw(pwm):
       global currentClawDutyCycle
       setServoClawPwm(pwm, pinClaw, openedClawPosition)
       currentClawDutyCycle=openedClawPosition
+      pwm.set_mode(pinClaw, 0)
+      pwm.set_mode(pinClaw, 1)
 
 def closeClaw(pwm):
       global currentClawDutyCycle
       setServoClawPwm(pwm, pinClaw, closedClawPosition)
       currentClawDutyCycle=closedClawPosition
+      pwm.set_mode(pinClaw, 0)
+      pwm.set_mode(pinClaw, 1)
 
 def initializeArm(pwm):
       pwm.set_PWM_frequency(pinArm, 180)
@@ -89,7 +93,7 @@ def PrintModes(pwm):
       print("Claw: "+str(pinClaw))
       print("Claw mode: "+str(pwm.get_mode(pinClaw)))
       print("Claw freq: "+str(pwm.get_PWM_frequency(pinClaw)))
-      print("Claw dutycycle: "+str(pwm.get_PWM_dutycycle(pinClaw)))
+      #print("Claw dutycycle: "+str(pwm.get_PWM_dutycycle(pinClaw)))
       print("Claw range: "+str(pwm.get_PWM_range(pinClaw)))
       print("Claw real range: "+str(pwm.get_PWM_real_range(pinClaw)))
 
