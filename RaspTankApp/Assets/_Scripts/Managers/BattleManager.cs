@@ -49,7 +49,7 @@ public class BattleManager : MonoBehaviour {
     [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int healingPointsVariation = 5; // Di quanto può variare la cura
 
-
+    // Forse da mettere uno Start insieme a questo metodo???
     private void OnEnable() {
 
         // Inizialmente disattivato
