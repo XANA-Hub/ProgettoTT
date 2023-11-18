@@ -49,7 +49,8 @@ public class BattleManager : MonoBehaviour {
     [Range(0, 10)] public int attackDamageVariation = 5; // I mostri possono apparire con una variazione del livello del giocatore
     [Range(0, 10)] public int healingPointsVariation = 5; // Di quanto può variare la cura
 
-    // Forse da mettere uno Start insieme a questo metodo???
+    
+    // TODO: Forse da mettere uno Start insieme a questo metodo???
     private void OnEnable() {
 
         // Inizialmente disattivato
@@ -537,7 +538,7 @@ public class BattleManager : MonoBehaviour {
     //
     	
 
-    IEnumerator PlayerAttack() {
+    private IEnumerator PlayerAttack() {
 
         // Ottengo il danno fatto dal giocatore 
         bool isMissed = IsMissedAttack(player);
@@ -602,7 +603,7 @@ public class BattleManager : MonoBehaviour {
     }
 	
 	
-	IEnumerator MonsterAttack() {
+	private IEnumerator MonsterAttack() {
         
         // Ottengo il danno fatto dal nemico 
         bool isMissed = IsMissedAttack(monster);
@@ -664,7 +665,7 @@ public class BattleManager : MonoBehaviour {
     }
 
 
-    IEnumerator PlayerDefend() {
+    private IEnumerator PlayerDefend() {
 
         // Animazione robot
         StartCoroutine(RobotBattleAnimations.PlayerDefendRobotAnimation());
@@ -695,7 +696,7 @@ public class BattleManager : MonoBehaviour {
 
 
 
-    IEnumerator MonsterDefend() {
+    private IEnumerator MonsterDefend() {
 
         battleState = BattleState.PLAYER_TURN;
         dialogueText.SetText(monster.data.name + " takes a defensive stance!");
@@ -718,7 +719,7 @@ public class BattleManager : MonoBehaviour {
     }
 
 	
-	 IEnumerator PlayerHeal() {
+    private IEnumerator PlayerHeal() {
 
         // Animazione robot
         StartCoroutine(RobotBattleAnimations.PlayerAttackRobotAnimation());
@@ -756,7 +757,7 @@ public class BattleManager : MonoBehaviour {
     }
 
     	
-	 IEnumerator MonsterHeal() {
+    private IEnumerator MonsterHeal() {
 
         battleState = BattleState.PLAYER_TURN;
         int healingAmount = CalculateHealingPoints(monster.GetCurrentHeal(), healingPointsVariation);
@@ -788,7 +789,7 @@ public class BattleManager : MonoBehaviour {
     }
 
 
-    IEnumerator PlayerRun() {
+    private IEnumerator PlayerRun() {
 
         if(IsFleeSuccessful(player)) {
 
@@ -811,7 +812,7 @@ public class BattleManager : MonoBehaviour {
     }
 
 
-    IEnumerator MonsterRun() {
+    private IEnumerator MonsterRun() {
 
         if(IsFleeSuccessful(monster)) {
             MasterManager.instance.audioManager.PlaySound("SuccessfulEscape");
@@ -835,7 +836,7 @@ public class BattleManager : MonoBehaviour {
 
 
 
-    IEnumerator GivePlayerExp(bool isMonsterDefeated) {
+    private IEnumerator GivePlayerExp(bool isMonsterDefeated) {
         
         yield return new WaitForSeconds(2f);
         
@@ -871,7 +872,7 @@ public class BattleManager : MonoBehaviour {
         
     }
 
-    IEnumerator ShowEndBattleDialogue() {
+    private IEnumerator ShowEndBattleDialogue() {
         
         yield return new WaitForSeconds(6f);
         EndBattleDialogue.SetActive(true);
