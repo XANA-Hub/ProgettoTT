@@ -84,11 +84,9 @@ public class ClientTCPManager : MonoBehaviour {
                 }
 
                 try {
-                    Debug.Log("PRIMA RECEIVE AND PRINT DATAAAA");
                     client = new TcpClient(ipAddress, int.Parse(port));
                     connectionState = ConnectionState.CONNECTED;
                     ReceiveAndPrintData();
-                    Debug.Log("DOPO RECEIVE AND PRINT DATAAAA");
                     
                     break; // Esci dal ciclo se la connessione ha successo
                 } catch (SocketException socketException) {
