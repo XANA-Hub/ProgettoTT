@@ -63,8 +63,8 @@ public class BattleManager : MonoBehaviour {
         // Inizia la battaglia
         battleState = BattleState.START;
 
-        // Scelgo la musica
-        ChooseBattleMusic();
+        // Scelgo la musica (non usato per ora)
+        // ChooseBattleMusic();
 
         // Per inizializzare la battaglia
         StartCoroutine(SetUpBattle());
@@ -89,6 +89,8 @@ public class BattleManager : MonoBehaviour {
         MasterManager.instance.clientTCPManager.CleanMonsterToBattle();
     }
 
+    
+    // Non usato per ora
     private void ChooseBattleMusic() {
         
         if (monster.name.Equals("Primordial Sorcerer") ||
@@ -102,7 +104,8 @@ public class BattleManager : MonoBehaviour {
         }
 
     }
-
+    
+    
     //
     // Bottoni
     //
