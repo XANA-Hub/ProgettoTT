@@ -3,7 +3,9 @@ from tensorflow.keras.layers import Conv2D , MaxPooling2D , Flatten, Dense, Drop
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping , ModelCheckpoint
+import tensorflow as tf
 import matplotlib.pyplot as plt
+
 from glob import glob
 
 imgWidth = 256
@@ -74,6 +76,22 @@ model = Sequential([
 print (model.summary() )
 
 model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+@tf.function
+def traceme(x):
+    return model(x)
+
+
+logdir = "log"
+writer = tf.summary.create_file_writer(logdir)
+tf.summary.trace_on(graph=True, profiler=True)
+# Forward pass
+traceme(tf.zeros((1,256,256,3)))
+with writer.as_default():
+    tf.summary.trace_export(name="model_trace", step=0, profiler_outdir=logdir)
+#tf.keras.utils.plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+
+exit(0)
 
 history = model.fit(train_generator,
                     epochs = numOfEpochs,
